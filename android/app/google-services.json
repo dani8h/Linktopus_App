@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "972010493205",
+    "project_id": "linktopus-abd56",
+    "storage_bucket": "linktopus-abd56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972010493205:android:8657cdb7fe9e3e6b1f451c",
+        "android_client_info": {
+          "package_name": "com.example.linktopus_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "972010493205-9n8bpknidhect8pl9js50efj81vet0u2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-RuMZS-Rra16QUXsJ94D5d9XuMqSkWEw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "972010493205-9n8bpknidhect8pl9js50efj81vet0u2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
