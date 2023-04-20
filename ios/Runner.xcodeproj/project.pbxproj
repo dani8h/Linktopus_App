@@ -296,7 +296,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+<<<<<<< HEAD
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.linkto;
+=======
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.linktopusApp;
+>>>>>>> fdcecc1dcb226d31a25ddb6461af9f90f44f81b7
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -424,7 +428,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+<<<<<<< HEAD
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.linkto;
+=======
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.linktopusApp;
+>>>>>>> fdcecc1dcb226d31a25ddb6461af9f90f44f81b7
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -446,7 +454,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+<<<<<<< HEAD
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.linkto;
+=======
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.linktopusApp;
+>>>>>>> fdcecc1dcb226d31a25ddb6461af9f90f44f81b7
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

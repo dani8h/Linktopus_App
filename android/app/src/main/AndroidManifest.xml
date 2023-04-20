@@ -1,7 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
     package="com.example.linkto">
    <application
         android:label="linkto"
+=======
+    package="com.example.linktopus_app">
+   <application
+        android:label="linktopus_app"
+>>>>>>> fdcecc1dcb226d31a25ddb6461af9f90f44f81b7
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

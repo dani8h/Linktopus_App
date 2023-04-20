@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
     "name": "linkto",
     "short_name": "linkto",
+=======
+    "name": "linktopus_app",
+    "short_name": "linktopus_app",
+>>>>>>> fdcecc1dcb226d31a25ddb6461af9f90f44f81b7
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -90,12 +90,21 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
+<<<<<<< HEAD
             VALUE "FileDescription", "linkto" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "linkto" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
             VALUE "OriginalFilename", "linkto.exe" "\0"
             VALUE "ProductName", "linkto" "\0"
+=======
+            VALUE "FileDescription", "linktopus_app" "\0"
+            VALUE "FileVersion", VERSION_AS_STRING "\0"
+            VALUE "InternalName", "linktopus_app" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
+            VALUE "OriginalFilename", "linktopus_app.exe" "\0"
+            VALUE "ProductName", "linktopus_app" "\0"
+>>>>>>> fdcecc1dcb226d31a25ddb6461af9f90f44f81b7
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

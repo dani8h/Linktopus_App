@@ -15,7 +15,11 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< HEAD
                BuildableName = "linkto.app"
+=======
+               BuildableName = "linktopus_app.app"
+>>>>>>> fdcecc1dcb226d31a25ddb6461af9f90f44f81b7
                BlueprintName = "Runner"
                ReferencedContainer = "container:Runner.xcodeproj">
             </BuildableReference>
@@ -31,7 +35,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< HEAD
             BuildableName = "linkto.app"
+=======
+            BuildableName = "linktopus_app.app"
+>>>>>>> fdcecc1dcb226d31a25ddb6461af9f90f44f81b7
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
@@ -54,7 +62,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< HEAD
             BuildableName = "linkto.app"
+=======
+            BuildableName = "linktopus_app.app"
+>>>>>>> fdcecc1dcb226d31a25ddb6461af9f90f44f81b7
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
@@ -71,7 +83,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "33CC10EC2044A3C60003C045"
+<<<<<<< HEAD
             BuildableName = "linkto.app"
+=======
+            BuildableName = "linktopus_app.app"
+>>>>>>> fdcecc1dcb226d31a25ddb6461af9f90f44f81b7
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>

@@ -5,10 +5,17 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
+<<<<<<< HEAD
 PRODUCT_NAME = linkto
 
 // The application's bundle identifier
 PRODUCT_BUNDLE_IDENTIFIER = com.example.linkto
+=======
+PRODUCT_NAME = linktopus_app
+
+// The application's bundle identifier
+PRODUCT_BUNDLE_IDENTIFIER = com.example.linktopusApp
+>>>>>>> fdcecc1dcb226d31a25ddb6461af9f90f44f81b7
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.
