@@ -303,7 +303,7 @@ class _ProfileState extends State<Profile> {
                       margin: EdgeInsets.fromLTRB(
                           0 * fem, 0 * fem, 0 * fem, 31 * fem),
                       padding: EdgeInsets.fromLTRB(
-                          18 * fem, 12 * fem, 114 * fem, 10 * fem),
+                          18 * fem, 12 * fem, 18 * fem, 10 * fem),
                       width: double.infinity,
                       decoration: BoxDecoration(
                         border: Border.all(color: Color(0xffa8a8a8)),
@@ -314,11 +314,11 @@ class _ProfileState extends State<Profile> {
                         onTap: () => selectFile(),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              // vector5T6 (40:7636)
                               margin: EdgeInsets.fromLTRB(
-                                  0 * fem, 0 * fem, 76 * fem, 1.91 * fem),
+                                  0 * fem, 0 * fem, 0 * fem, 1.91 * fem),
                               width: 20 * fem,
                               height: 19.09 * fem,
                               child: Icon(Icons.upload_rounded,
@@ -334,6 +334,11 @@ class _ProfileState extends State<Profile> {
                                 color: Color(0xffffffff),
                               ),
                             ),
+                            Container(
+                              width: 1 * fem,
+                              height: 1 * fem,
+                              color: Colors.transparent,
+                            ),
                           ],
                         ),
                       ),
@@ -341,7 +346,7 @@ class _ProfileState extends State<Profile> {
                     Container(
                       // group167ua (40:7643)
                       padding: EdgeInsets.fromLTRB(
-                          18 * fem, 12 * fem, 91 * fem, 10 * fem),
+                          18 * fem, 12 * fem, 18 * fem, 10 * fem),
                       width: double.infinity,
                       decoration: BoxDecoration(
                         border: Border.all(color: Color(0xffa8a8a8)),
@@ -350,11 +355,12 @@ class _ProfileState extends State<Profile> {
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
                             // vectorDxc (40:7640)
                             margin: EdgeInsets.fromLTRB(
-                                0 * fem, 0 * fem, 52 * fem, 1 * fem),
+                                0 * fem, 0 * fem, 0 * fem, 1 * fem),
                             width: 20 * fem,
                             height: 20 * fem,
                             child: Icon(Icons.person,
@@ -369,6 +375,11 @@ class _ProfileState extends State<Profile> {
                               height: 1.5 * ffem / fem,
                               color: Color(0xffffffff),
                             ),
+                          ),
+                          Container(
+                            width: 1 * fem,
+                            height: 1 * fem,
+                            color: Colors.transparent,
                           ),
                         ],
                       ),
