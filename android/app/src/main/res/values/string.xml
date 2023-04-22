@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Linktopus App</string>
+    <string name="facebook_app_id">542679257980447</string>
+    <string name="fb_login_protocol_scheme">fb542679257980447</string>
+    <string name="facebook_client_token">1cf24222749486dd0e1c85a667f6b2f0</string>
+</resources>
