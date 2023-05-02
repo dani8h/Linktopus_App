@@ -2,10 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:linktopus_app/job_select.dart';
 import 'package:linktopus_app/services/auth_service.dart';
 import '../firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Landing_Page extends StatefulWidget {
   const Landing_Page({super.key});
@@ -186,17 +188,37 @@ class _Landing_PageState extends State<Landing_Page> {
 
   facebookLogin() async {
     try {
-      final result =
-          await FacebookAuth.i.login(permissions: ['public_profile', 'email']);
-      if (result.status == LoginStatus.success) {
-        final userData = await FacebookAuth.i.getUserData();
-        print('facebook_login_data:-');
-        print(userData);
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(image: userData['picture']['data']['url'],
-        //   name: userData['name'], email: userData['email'])));
+      // Log in with Facebook
+      final LoginResult result = await FacebookAuth.instance.login();
+
+      // Get the Facebook access token
+      final OAuthCredential credential =
+          FacebookAuthProvider.credential(result.accessToken!.token);
+
+      // Sign in with the Facebook credential
+      UserCredential firebaseResult =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Check if the user exists in Firebase
+      bool exists = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(firebaseResult.user!.uid)
+          .get()
+          .then((doc) => doc.exists);
+
+      if (!exists) {
+        // Redirect to Edit_Profile()
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => JOB_Selection()),
+        );
       }
-    } catch (error) {
-      print(error);
+    } on FirebaseAuthException catch (e) {
+      // Handle FirebaseAuthException
+      print('FirebaseAuthException: $e');
+    } catch (e) {
+      // Handle other exceptions
+      print('Error: $e');
     }
   }
 }
