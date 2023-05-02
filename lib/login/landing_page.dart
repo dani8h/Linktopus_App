@@ -8,6 +8,7 @@ import '../firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:linktopus_app/profile.dart';
 
 class Landing_Page extends StatefulWidget {
   const Landing_Page({super.key});
@@ -51,7 +52,7 @@ class _Landing_PageState extends State<Landing_Page> {
                     height: height * 0.33,
                   ),
                   GestureDetector(
-                    onTap: () => AuthService().signIngWithGoogle(),
+                    onTap: () => AuthService().signIngWithGoogle(context),
                     child: Card(
                       elevation: 10,
                       shape: RoundedRectangleBorder(
@@ -210,7 +211,7 @@ class _Landing_PageState extends State<Landing_Page> {
         // Redirect to Edit_Profile()
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => JOB_Selection()),
+          MaterialPageRoute(builder: (context) => Profile()),
         );
       }
     } on FirebaseAuthException catch (e) {
