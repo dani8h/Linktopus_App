@@ -16,6 +16,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 String _dropdownValue = 'Male';
 
 class Profile extends StatefulWidget {
+  final uid;
+
+  Profile({Key? key, @required this.uid}) : super(key: key);
   @override
   State<Profile> createState() => _ProfileState();
 }
@@ -69,9 +72,10 @@ class _ProfileState extends State<Profile> {
 
       if (confirm) {
         // Upload file to Firebase Storage
-        String user = _username.text;
+        //String user = _username.text;
+        final id = widget.uid;
         Reference firebaseStorageRef =
-            FirebaseStorage.instance.ref().child('users/$user/$fileName');
+            FirebaseStorage.instance.ref().child('users/$id/$fileName');
         UploadTask uploadTask = firebaseStorageRef.putFile(file);
 
         // Get download URL for the file
@@ -83,7 +87,7 @@ class _ProfileState extends State<Profile> {
         String username = _username.text; // replace with the user's username
         FirebaseFirestore firestore = FirebaseFirestore.instance;
         DocumentReference userDocRef =
-            firestore.collection('users').doc(username);
+            firestore.collection('users').doc(widget.uid);
         await userDocRef.update({
           'Resume': downloadURL,
         });
@@ -142,7 +146,8 @@ class _ProfileState extends State<Profile> {
   //       builder: (BuildContext context) {
   //         return AlertDialog(
   //           title: Text("Upload file?"),
-  //           content: Text("Do you want to upload $fileName?"),
+  //           content: Text(
+  //               "Do you want to upload $fileName?; (Username field must not be empty)"),
   //           actions: <Widget>[
   //             TextButton(
   //               child: Text("No"),
@@ -158,17 +163,191 @@ class _ProfileState extends State<Profile> {
   //     );
 
   //     if (confirm) {
+  //       FirebaseFirestore firestore = FirebaseFirestore.instance;
+  //       String username = _username.text;
+  //       final userCollectionRef = firestore.collection('users');
+
+  //       QuerySnapshot querySnapshot = await userCollectionRef
+  //           .where('Username', isEqualTo: username)
+  //           .limit(1)
+  //           .get();
+  //       bool exists = querySnapshot.docs.isNotEmpty;
+  //       String userid = querySnapshot.docs[0].id;
   //       // Upload file to Firebase Storage
-  //       Reference firebaseStorageRef =
-  //           FirebaseStorage.instance.ref().child(fileName);
-  //       UploadTask uploadTask = firebaseStorageRef.putFile(file);
-  //       await uploadTask
-  //           .whenComplete(() => print('File uploaded to Firebase Storage'));
+
+  //       DocumentReference userDocRef =
+  //           firestore.collection('users').doc(userid);
+
+  //       if (exists) {
+  //         String user = _username.text;
+  //         Reference firebaseStorageRef =
+  //             FirebaseStorage.instance.ref().child('users/$userid/$fileName');
+  //         UploadTask uploadTask = firebaseStorageRef.putFile(file);
+
+  //         // Get download URL for the file
+  //         String downloadURL = await uploadTask.then(
+  //           (snapshot) => snapshot.ref.getDownloadURL(),
+  //         );
+
+  //         //Update user's document in Firestore with the download URL
+  //         await userDocRef.update({
+  //           'Resume': downloadURL,
+  //         });
+
+  //         print(
+  //             'File uploaded to Firebase Storage and download URL updated in Firestore');
+
+  //         // Show success dialog
+  //         showDialog(
+  //           context: context,
+  //           builder: (context) => AlertDialog(
+  //             title: const Text('User Resume Updated'),
+  //             content:
+  //                 Text('User $username resume has been updated successfully'),
+  //             actions: [
+  //               TextButton(
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //                 child: const Text('OK'),
+  //               )
+  //             ],
+  //           ),
+  //         );
+  //       } else
+  //         return;
   //     }
-  //     // Do something with the selected file
   //   } else {
   //     // User canceled the file selection
+
+  //     // Show success dialog
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) => AlertDialog(
+  //         title: const Text('Error'),
+  //         content: Text('No file selected'),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: const Text('OK'),
+  //           )
+  //         ],
+  //       ),
+  //     );
   //   }
+  // }
+
+  // Future<void> sendUserData(
+  //   String username,
+  //   String bio,
+  //   String fullName,
+  //   String phoneNumber,
+  //   String qualification,
+  //   DateTime dateOfBirth,
+  //   String gender,
+  //   String location,
+  //   File? image,
+  //   BuildContext context,
+  // ) async {
+  //   // Get a Firestore instance
+  //   final firestore = FirebaseFirestore.instance;
+
+  //   // Get a reference to the collection where you want to write the data
+  //   final userCollectionRef = firestore.collection('users');
+
+  //   // Check if user already exists
+  //   QuerySnapshot querySnapshot = await userCollectionRef
+  //       .where('Username', isEqualTo: username)
+  //       .limit(1)
+  //       .get();
+  //   bool exists = querySnapshot.docs.isNotEmpty;
+  //   DocumentReference userDocRef;
+
+  //   if (exists) {
+  //     // Get reference to the existing document
+  //     userDocRef = querySnapshot.docs[0].reference;
+
+  //     // Show confirmation dialog
+  //     bool confirm = await showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return AlertDialog(
+  //           title: Text("Update details?"),
+  //           content: Text("Do you want to update your details?"),
+  //           actions: <Widget>[
+  //             TextButton(
+  //               child: Text("No"),
+  //               onPressed: () => Navigator.of(context).pop(false),
+  //             ),
+  //             TextButton(
+  //               child: Text("Yes"),
+  //               onPressed: () => Navigator.of(context).pop(true),
+  //             ),
+  //           ],
+  //         );
+  //       },
+  //     );
+
+  //     if (!confirm) {
+  //       return;
+  //     }
+  //   } else {
+  //     // Create new document with auto-generated ID
+  //     userDocRef = userCollectionRef.doc();
+
+  //     // Set username field to the document ID
+  //     //username = userDocRef.id;
+  //   }
+
+  //   // Upload profile picture to Firebase Storage
+  //   String? profilePicURL;
+  //   if (image != null) {
+  //     Reference firebaseStorageRef = FirebaseStorage.instance
+  //         .ref()
+  //         .child('users')
+  //         .child(userDocRef.id)
+  //         .child('ProfilePic');
+  //     UploadTask uploadTask = firebaseStorageRef.putFile(image);
+  //     await uploadTask.whenComplete(() async {
+  //       profilePicURL = await uploadTask.snapshot.ref.getDownloadURL();
+  //       print('Profile picture uploaded to Firebase Storage');
+  //     });
+  //   }
+
+  //   // Update existing or create new document
+  //   Map<String, dynamic> userData = {
+  //     'Username': username,
+  //     'Bio': bio,
+  //     'Full Name': fullName,
+  //     'Phone Number': phoneNumber,
+  //     'Qualification': qualification,
+  //     'Date Of Birth': dateOfBirth,
+  //     'Gender': gender,
+  //     'Your Location': location,
+  //   };
+  //   if (profilePicURL != null) {
+  //     userData['ProfilePic'] = profilePicURL;
+  //   }
+
+  //   await userDocRef.set(userData, SetOptions(merge: true));
+
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: const Text('User Data Updated'),
+  //       content: Text('User data has been updated successfully'),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () {
+  //             Navigator.of(context).pop();
+  //           },
+  //           child: const Text('OK'),
+  //         )
+  //       ],
+  //     ),
+  //   );
   // }
 
   Future<void> sendUserData(
@@ -187,7 +366,7 @@ class _ProfileState extends State<Profile> {
     final firestore = FirebaseFirestore.instance;
 
     // Get a reference to the document where you want to write the data
-    final userDocRef = firestore.collection('users').doc(username);
+    final userDocRef = firestore.collection('users').doc(widget.uid);
 
     // Check if user already exists
     DocumentSnapshot doc = await userDocRef.get();
@@ -220,7 +399,7 @@ class _ProfileState extends State<Profile> {
           Reference firebaseStorageRef = FirebaseStorage.instance
               .ref()
               .child('users')
-              .child(username)
+              .child(widget.uid)
               .child('ProfilePic');
           UploadTask uploadTask = firebaseStorageRef.putFile(image);
           await uploadTask.whenComplete(() async {
@@ -267,7 +446,7 @@ class _ProfileState extends State<Profile> {
         Reference firebaseStorageRef = FirebaseStorage.instance
             .ref()
             .child('users')
-            .child(username)
+            .child(widget.uid)
             .child('ProfilePic');
         UploadTask uploadTask = firebaseStorageRef.putFile(image);
         await uploadTask.whenComplete(() async {
@@ -328,157 +507,6 @@ class _ProfileState extends State<Profile> {
       );
     }
   }
-
-  // Future<void> sendUserData(
-  //   String username,
-  //   String bio,
-  //   String fullName,
-  //   String phoneNumber,
-  //   String qualification,
-  //   DateTime dateOfBirth,
-  //   String gender,
-  //   String location,
-  //   File? image,
-  //   BuildContext context,
-  // ) async {
-  //   //send image to firestore
-  //   String user = _username.text;
-  //   Reference firebaseStorageRef =
-  //       FirebaseStorage.instance.ref().child('$user/Images/$image');
-  //   UploadTask uploadTask = firebaseStorageRef.putFile(image!);
-  //   // Get a Firestore instance
-  //   final firestore = FirebaseFirestore.instance;
-
-  //   // Get a reference to the document where you want to write the data
-  //   final userDocRef = firestore.collection('users').doc(username);
-
-  //   // Check if user already exists
-  //   DocumentSnapshot doc = await userDocRef.get();
-
-  //   if (doc.exists) {
-  //     // Show confirmation dialog
-  //     bool confirm = await showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return AlertDialog(
-  //           title: Text("Update details?"),
-  //           content: Text("Do you want to update your details?"),
-  //           actions: <Widget>[
-  //             TextButton(
-  //               child: Text("No"),
-  //               onPressed: () => Navigator.of(context).pop(false),
-  //             ),
-  //             TextButton(
-  //               child: Text("Yes"),
-  //               onPressed: () => Navigator.of(context).pop(true),
-  //             ),
-  //           ],
-  //         );
-  //       },
-  //     );
-
-  //     if (confirm) {
-  //       // Update existing document
-  //       await userDocRef.update({
-  //         'Bio': bio,
-  //         'Full Name': fullName,
-  //         'Phone Number': phoneNumber,
-  //         'Qualification': qualification,
-  //         'Date Of Birth': dateOfBirth,
-  //         'Gender': gender,
-  //         'Your Location': location,
-  //         'ProfilePic': firebaseStorageRef,
-  //       });
-  //       showDialog(
-  //         context: context,
-  //         builder: (context) => AlertDialog(
-  //           title: const Text('User Updated Successfully'),
-  //           content: Text('User $username has been updated successfully'),
-  //           actions: [
-  //             TextButton(
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //               child: const Text('OK'),
-  //             )
-  //           ],
-  //         ),
-  //       );
-  //     }
-  //   } else {
-  //     // Create new document
-  //     await userDocRef.set({
-  //       'Username': username,
-  //       'Bio': bio,
-  //       'Full Name': fullName,
-  //       'Phone Number': phoneNumber,
-  //       'Qualification': qualification,
-  //       'Date Of Birth': dateOfBirth,
-  //       'Gender': gender,
-  //       'Your Location': location,
-  //       'ProfilePic': firebaseStorageRef,
-  //     });
-  //     showDialog(
-  //       context: context,
-  //       builder: (context) => AlertDialog(
-  //         title: const Text('User Created Successfully'),
-  //         content: Text('User $username has been created successfully'),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: const Text('OK'),
-  //           )
-  //         ],
-  //       ),
-  //     );
-  //   }
-  // }
-
-  // Future<void> sendUserData(
-  //   String username,
-  //   String bio,
-  //   String fullName,
-  //   String phoneNumber,
-  //   String qualification,
-  //   DateTime dateOfBirth,
-  //   String gender,
-  //   String location,
-  // ) async {
-  //   // Get a Firestore instance
-  //   final firestore = FirebaseFirestore.instance;
-
-  //   // Get a reference to the document where you want to write the data
-  //   final userDocRef = firestore.collection('users').doc(username);
-
-  //   // Set the data on the document
-  //   await userDocRef.set({
-  //     'Username': username,
-  //     'Bio': bio,
-  //     'Full Name': fullName,
-  //     'Phone Number': phoneNumber,
-  //     'Qualification': qualification,
-  //     'Date Of Birth': dateOfBirth,
-  //     'Gender': gender,
-  //     'Your Location': location,
-  //   });
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => AlertDialog(
-  //       title: const Text('User Created Successfully'),
-  //       content: Text('User $username has been created successfully'),
-  //       actions: [
-  //         TextButton(
-  //           onPressed: () {
-  //             Navigator.of(context).pop();
-  //           },
-  //           child: const Text('OK'),
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
 
   TextEditingController _dateController = TextEditingController();
   TextEditingController _locController = TextEditingController();

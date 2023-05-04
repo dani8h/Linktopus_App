@@ -1,5 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import './job_select.dart';
+import './login/landing_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:linktopus_app/SignUp/codeverification.dart';
 import 'package:linktopus_app/SignUp/googlesignin.dart';
 import 'package:linktopus_app/SignUp/otplogin.dart';
@@ -8,12 +14,14 @@ import 'package:linktopus_app/profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -33,7 +41,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: Profile(),
+      // home: Profile(),
+      home: Landing_Page(),
     );
   }
 }
