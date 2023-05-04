@@ -67,7 +67,7 @@ class _VerifyState extends State<Verify> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/images/LinktopusLogo.png',
+                'assets/images/Linktopus_app.png',
                 width: fem * 250,
                 height: fem * 250,
               ),

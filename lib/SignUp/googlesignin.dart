@@ -38,7 +38,7 @@ class _GoogleSignInState extends State<GoogleSignIn> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Image.asset(
-                      'assets/images/LinktopusLogo.png',
+                      'assets/images/Linktopus_app.png',
                       width: 180 * fem,
                       height: 180 * fem,
                       fit: BoxFit.cover,
