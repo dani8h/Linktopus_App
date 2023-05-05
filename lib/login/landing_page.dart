@@ -200,6 +200,7 @@ class _Landing_PageState extends State<Landing_Page> {
       UserCredential firebaseResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
+      final FirebaseAuth auth = FirebaseAuth.instance;
       // Check if the user exists in Firebase
       bool exists = await FirebaseFirestore.instance
           .collection('users')
@@ -209,9 +210,11 @@ class _Landing_PageState extends State<Landing_Page> {
 
       if (!exists) {
         // Redirect to Edit_Profile()
+        final uid = auth.currentUser?.uid;
+        print(uid);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Profile()),
+          MaterialPageRoute(builder: (context) => Profile(uid: uid)),
         );
       }
     } on FirebaseAuthException catch (e) {
