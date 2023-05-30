@@ -29,10 +29,13 @@ class _GoogleSignInState extends State<GoogleSignIn> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  Icons.arrow_back_ios,
-                  color: Color(0xff243443),
-                  size: 25 * ffem,
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    color: Color(0xff243443),
+                    size: 25 * ffem,
+                  ),
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
