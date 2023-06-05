@@ -44,6 +44,8 @@ dependencies:
   flutter_facebook_auth: any
   cloud_firestore: ^4.5.3
   firebase_storage: ^11.1.1
+  font_awesome_flutter: ^10.4.0
+  syncfusion_flutter_pdfviewer: ^21.2.8
 
 dev_dependencies:
   flutter_test:
