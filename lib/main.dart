@@ -13,7 +13,6 @@ import 'package:linktopus_app/profile.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'Sliding_screen.dart';
 import 'popup/dummy.dart';
-import '/popup/slider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
