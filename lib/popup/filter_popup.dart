@@ -76,8 +76,8 @@ class _JobPopupState extends State<JobPopup> {
           width: popupWidth,
           height: popupHeight,
           padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Filter',
@@ -166,7 +166,7 @@ class _JobPopupState extends State<JobPopup> {
               ),
               SizedBox(height: 16.0),
               Text(
-                'Company',
+                'Companies',
                 style: TextStyle(
                   fontSize: screenWidth * 0.052,
                   fontWeight: FontWeight.w600,
