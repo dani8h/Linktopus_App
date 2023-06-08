@@ -3,6 +3,21 @@
 <plist version="1.0">
 <dict>
 
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+	<key>CFBundleURLSchemes</key>
+	<array>
+		<string>fb542679257980447</string>
+	</array>
+	</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>542679257980447</string>
+	<key>FacebookClientToken</key>
+	<string>CLIENT-TOKEN</string>
+	<key>FacebookDisplayName</key>
+	<string>APP-NAME</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -30,7 +45,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.972010493205-h49u97g86n9in748jei2v6gu9bs27n4</string>
+				<string>com.googleusercontent.apps.972010493205-h49u97g86n9in748jei2v6gu9bs27n40</string>
 			</array>
 		</dict>
 		<dict>
@@ -41,6 +56,7 @@
 				<string>com.googleusercontent.apps.972010493205-h49u97g86n9in748jei2v6gu9bs27n4</string>
 			</array>
 		</dict>
+		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>

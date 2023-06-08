@@ -43,6 +43,7 @@ dependencies:
   sign_in_with_apple: ^4.3.0
   flutter_facebook_auth: any
   cloud_firestore: ^4.5.3
+  url_launcher: ^6.1.11
   firebase_storage: ^11.1.1
 
 dev_dependencies:

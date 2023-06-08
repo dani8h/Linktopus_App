@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:linktopus_app/SignUp/googlesignin.dart';
-
-import 'getstarted.dart';
 
 class SlidingScreen extends StatefulWidget {
   @override
@@ -31,11 +28,6 @@ class _SlidingScreenState extends State<SlidingScreen> {
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => GetStarted()),
-      );
     }
   }
 
@@ -44,11 +36,6 @@ class _SlidingScreenState extends State<SlidingScreen> {
       _pageController.nextPage(
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-      );
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => GoogleSignIn()),
       );
     }
   }

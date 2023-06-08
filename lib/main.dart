@@ -10,41 +10,48 @@ import 'package:linktopus_app/SignUp/codeverification.dart';
 import 'package:linktopus_app/SignUp/googlesignin.dart';
 import 'package:linktopus_app/SignUp/otplogin.dart';
 import 'package:linktopus_app/profile.dart';
-
-import 'getstarted1.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'Sliding_screen.dart';
+import 'popup/dummy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = ThemeData(
+      primaryColor: Color(0xffEF5DA8),
+      primarySwatch: MaterialColor(0xffEF5DA8, {
+        50: Color(0xFFFCE4F6),
+        100: Color(0xFFFFD1E2),
+        200: Color(0xFFFFACC6),
+        300: Color(0xFFFF85AA),
+        400: Color(0xFFFF5D8D),
+        500: Color(0xffEF5DA8), // primaryColor
+        600: Color(0xFFE54691),
+        700: Color(0xFFD73C80),
+        800: Color(0xFFC5326E),
+        900: Color(0xFFA71D54),
+      }),
+      // Customize other theme properties as needed
+      // fontFamily: 'Roboto',
+      // textTheme: TextTheme(
+      //   headline6: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      //   bodyText2: TextStyle(fontSize: 16),
+      // ),
+    );
+
     return MaterialApp(
-        color: Colors.white,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          primarySwatch: Colors.blue,
-        ),
-        // home: Profile(),
-        //home: Landing_Page(),
-        home: GetStarted());
+      color: Colors.white,
+      title: 'Flutter Demo',
+      theme: themeData,
+      home: Dummy(),
+    );
   }
 }
