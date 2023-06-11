@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class Jobs_page extends StatefulWidget {
   @override
@@ -8,10 +9,53 @@ class Jobs_page extends StatefulWidget {
 
 class _Jobs_pageState extends State<Jobs_page> {
   TextEditingController _searchController = new TextEditingController();
+  final ref = FirebaseDatabase.instance.ref();
+  List<dynamic> companylist = [];
+  bool _loading = true;
+  int n = 0;
+  ScrollController _scrollController = new ScrollController();
+  bool gettingmore = false;
+  bool moreAvailable = true;
+
+  _getcompanies() async {
+    Query q = ref
+        .child('1N3PmKSTY7isdFNXaKFCALDT9-OoYNiQ3txilEqUR5UM/Sheet1')
+        .orderByKey()
+        .startAfter(n.toString())
+        .endAt((n + 10).toString());
+    _loading = true;
+    DataSnapshot dataSnapshot = await q.get();
+    companylist.addAll(dataSnapshot.children);
+    setState(() {
+      _loading = false;
+    });
+  }
+
+  _getmore() async {
+    print('getmore called');
+    n = n + 10;
+    await _getcompanies();
+    setState(() {
+      gettingmore = false;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    _getcompanies();
+
+    _scrollController.addListener(() {
+      double maxScroll = _scrollController.position.maxScrollExtent;
+      double currentScroll = _scrollController.position.pixels;
+      double delta = MediaQuery.of(context).size.height * 0.25;
+      if (maxScroll - currentScroll < delta && gettingmore == false) {
+        setState(() {
+          gettingmore = true;
+        });
+        _getmore();
+      }
+    });
   }
 
   @override
@@ -82,16 +126,35 @@ class _Jobs_pageState extends State<Jobs_page> {
                 height: 30,
               ),
               Expanded(
-                child: ListView(
-                  children: [
-                    _jdcard(),
-                    _jdcard(),
-                    _jdcard(),
-                    _jdcard(),
-                    _jdcard()
-                  ],
-                ),
-              )
+                  child: companylist.length == 0
+                      ? Center(
+                          child: Text('No results found ...'),
+                        )
+                      : ListView.builder(
+                          controller: _scrollController,
+                          itemCount: companylist.length,
+                          itemBuilder: (BuildContext ctx, int index) {
+                            return _jdcard(
+                                companylist[index].child('Role').value,
+                                companylist[index].child('Company Name').value,
+                                companylist[index].child('Location').value,
+                                companylist[index].child('Description').value,
+                                companylist[index].child('Image').value);
+                            //     ListTile(
+                            //   title: Text(
+                            //       companylist[index].child('location').value),
+                            // );
+                          })
+                  // ListView(
+                  //     children: [
+                  //       _jdcard(),
+                  //       _jdcard(),
+                  //       _jdcard(),
+                  //       _jdcard(),
+                  //       _jdcard()
+                  //     ],
+                  //   ),
+                  )
             ],
           ),
         ),
@@ -173,12 +236,16 @@ class _buttonRowState extends State<_buttonRow> {
   }
 }
 
-Widget _jdcard() {
+Widget _jdcard(String? role, String? cname, String? location, String? info,
+    String? imgUrl) {
+  if (info == null) {
+    info = 'NA';
+  }
   return Container(
     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
     padding: EdgeInsets.all(10),
     decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10), color: Colors.grey[300]),
+        borderRadius: BorderRadius.circular(10), color: Color(0xffE5E5E5)),
     child: Row(
       // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -186,18 +253,33 @@ Widget _jdcard() {
           padding: EdgeInsets.only(right: 15),
           child: CircleAvatar(
             radius: 20,
-            backgroundImage: AssetImage('assets/images/apple_icon.png'),
+            backgroundImage: NetworkImage(imgUrl!),
           ),
         ),
         Expanded(
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Google LLC'),
-            Text('Company Name'),
-            Text('location'),
+            Text(
+              role ?? 'NA',
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+            ),
+            Text(
+              cname ?? 'NA',
+              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+            ),
+            Text(
+              location ?? 'NA',
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13,
+                  color: Colors.grey),
+            ),
             SizedBox(height: 10),
-            Text('Description...\nbaigan \nbaigan')
+            Text(
+              info!.length > 80 ? '${info.substring(0, 80)}...Read more' : info,
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
+            )
           ],
         )),
         Column(
