@@ -10,6 +10,8 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:linktopus_app/profile.dart';
 
+import '../joblistings.dart';
+
 class Landing_Page extends StatefulWidget {
   const Landing_Page({super.key});
 
@@ -215,6 +217,11 @@ class _Landing_PageState extends State<Landing_Page> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Profile(uid: uid)),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => JobListings()),
         );
       }
     } on FirebaseAuthException catch (e) {

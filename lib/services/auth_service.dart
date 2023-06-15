@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../joblistings.dart';
 import '../profile.dart';
 
 class AuthService {
@@ -50,6 +51,11 @@ class AuthService {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Profile(uid: uid)),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => JobListings()),
         );
       }
 

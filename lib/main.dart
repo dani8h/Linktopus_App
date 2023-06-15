@@ -10,6 +10,7 @@ import 'package:linktopus_app/SignUp/codeverification.dart';
 import 'package:linktopus_app/SignUp/googlesignin.dart';
 import 'package:linktopus_app/SignUp/otplogin.dart';
 import 'package:linktopus_app/profile.dart';
+
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'Sliding_screen.dart';
 import 'popup/dummy.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       color: Colors.white,
       title: 'Flutter Demo',
+
       theme: themeData,
       home: Dummy(),
     );

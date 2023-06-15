@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:linktopus_app/SignUp/otplogin.dart';
 import 'package:linktopus_app/homepg.dart';
+import 'package:linktopus_app/joblistings.dart';
 import 'package:pinput/pinput.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -121,7 +122,8 @@ class _VerifyState extends State<Verify> {
                     await auth.signInWithCredential(credential);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
+                      MaterialPageRoute(
+                          builder: (context) => const JobListings()),
                     );
                   } catch (e) {
                     showDialog(
