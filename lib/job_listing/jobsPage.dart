@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+import 'filter_popup.dart';
+import 'bottom_sheet.dart';
+
 class Jobs_page extends StatefulWidget {
   @override
   State<Jobs_page> createState() => _Jobs_pageState();
@@ -134,27 +137,25 @@ class _Jobs_pageState extends State<Jobs_page> {
                           controller: _scrollController,
                           itemCount: companylist.length,
                           itemBuilder: (BuildContext ctx, int index) {
-                            return _jdcard(
-                                companylist[index].child('Role').value,
-                                companylist[index].child('Company Name').value,
-                                companylist[index].child('Location').value,
-                                companylist[index].child('Description').value,
-                                companylist[index].child('Image').value);
-                            //     ListTile(
-                            //   title: Text(
-                            //       companylist[index].child('location').value),
-                            // );
-                          })
-                  // ListView(
-                  //     children: [
-                  //       _jdcard(),
-                  //       _jdcard(),
-                  //       _jdcard(),
-                  //       _jdcard(),
-                  //       _jdcard()
-                  //     ],
-                  //   ),
-                  )
+                            return GestureDetector(
+                              onTap: () => showModalBottomSheet<void>(
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (BuildContext context) {
+                                  return Bottomsheet();
+                                },
+                              ),
+                              child: _jdcard(
+                                  companylist[index].child('Role').value,
+                                  companylist[index]
+                                      .child('Company Name')
+                                      .value,
+                                  companylist[index].child('Location').value,
+                                  companylist[index].child('Description').value,
+                                  companylist[index].child('Image').value),
+                            );
+                          }))
             ],
           ),
         ),
@@ -214,7 +215,14 @@ class _buttonRowState extends State<_buttonRow> {
               ),
             )),
         ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return JobPopup();
+                },
+              );
+            },
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.white)),
             child: Container(

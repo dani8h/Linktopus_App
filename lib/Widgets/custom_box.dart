@@ -62,7 +62,7 @@ class _CustomTextbox2State extends State<CustomTextbox2> {
                   widget.text,
                   style: GoogleFonts.poppins(
                     textStyle: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width * 0.038,
+                      fontSize: MediaQuery.of(context).size.width * 0.03,
                       fontWeight: FontWeight.w400,
                       color: _isPressed ? Colors.white : Colors.black,
                     ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '/Widgets/Customtextbox_widget.dart';
-import 'custom_box.dart';
+import '../Widgets/custom_box.dart';
 
 class JobPopup extends StatefulWidget {
   @override
@@ -9,16 +9,34 @@ class JobPopup extends StatefulWidget {
 }
 
 class _JobPopupState extends State<JobPopup> {
-  List<bool> isPressed = [
-    false,
-    false,
-    false,
+  final List<String> companies = [
+    "Google",
+    "Deloitte",
+    "Microsoft",
+    "Adobe",
+    "Hp",
+    "TCS",
+    "Bosch",
+    "Hindustan Unilever",
+    "American Tourister"
   ];
-  final List<String> companies = ["Google", "Deloitte", "Microsoft"];
+  List<bool> isPressed = [];
+  List<String> selectedCompanies = [];
   final TextEditingController searchController = TextEditingController();
   int selectedCompanyIndex = 0;
   int selectedWorkType = 0;
   RangeValues selectedRangeValues = RangeValues(100000, 900000);
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      companies.forEach((element) {
+        isPressed.add(false);
+      });
+    });
+  }
+
 //Container for work type
   Widget buildWorkTypeContainer(
       int index, String imagePath, String text, double screenWidth) {
@@ -63,7 +81,7 @@ class _JobPopupState extends State<JobPopup> {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
     final double popupWidth = screenWidth * 0.95;
-    final double popupHeight = screenHeight * 0.75;
+    final double popupHeight = screenHeight * 0.6;
 
     return Dialog(
       backgroundColor: Colors.white,
@@ -277,6 +295,7 @@ class _JobPopupState extends State<JobPopup> {
                         'Salary Range: ${selectedRangeValues.start} - ${selectedRangeValues.end}');
                   },
                   child: Container(
+                    margin: EdgeInsets.only(bottom: 30),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),

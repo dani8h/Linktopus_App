@@ -78,7 +78,7 @@ class _BottomsheetState extends State<Bottomsheet> {
           child: Column(
             children: [
               Container(
-                height: size.height * 0.15,
+                height: size.height * 0.2,
                 width: double.infinity,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -92,11 +92,12 @@ class _BottomsheetState extends State<Bottomsheet> {
                           color: Colors.red,
                         ),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Senior Software Engineer',
                               style: GoogleFonts.poppins(
-                                  fontSize: size.width * 0.055,
+                                  fontSize: size.width * 0.04,
                                   fontWeight: FontWeight.w700),
                             ),
                             Text(
@@ -109,7 +110,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                               'Bangalore, Karnataka(In-office)',
                               style: GoogleFonts.poppins(
                                   color: Color(0xffA9A9A9),
-                                  fontSize: size.width * 0.043,
+                                  fontSize: size.width * 0.04,
                                   fontWeight: FontWeight.w600),
                             ),
                           ],
@@ -119,10 +120,10 @@ class _BottomsheetState extends State<Bottomsheet> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        TagWidget('Top Rated'),
-                        TagWidget('In Office'),
-                        TagWidget('For You'),
-                        TagWidget('Rupees'),
+                        TagWidget('Top Rated', Icon(Icons.star)),
+                        TagWidget('In Office', Icon(Icons.apartment)),
+                        TagWidget('For You', Icon(Icons.favorite_outlined)),
+                        TagWidget('Rupees', Icon(Icons.currency_rupee)),
                       ],
                     ),
                   ],
@@ -177,7 +178,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                                   child: Text(
                                     'Apply Now',
                                     style: GoogleFonts.poppins(
-                                      fontSize: size.width * 0.057,
+                                      fontSize: size.width * 0.045,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.white,
                                     ),
@@ -199,30 +200,16 @@ class _BottomsheetState extends State<Bottomsheet> {
     );
   }
 
-  Widget TagWidget(String str) {
+  Widget TagWidget(String str, Icon icn) {
     var size = MediaQuery.of(context).size;
-    return Card(
-      elevation: 2.0,
-      child: Center(
-        child: Row(children: [
-          str == 'Top Rated'
-              ? Icon(Icons.star)
-              : str == 'In Office'
-                  ? Icon(Icons.corporate_fare)
-                  : str == 'For You'
-                      ? Icon(Icons.favorite)
-                      : Icon(FontAwesomeIcons.rupeeSign),
-          SizedBox(
-            width: size.width * 0.01,
-          ),
-          str == 'Top Rated'
-              ? Text('Top Rated')
-              : str == 'In Office'
-                  ? Text('In Office')
-                  : str == 'For You'
-                      ? Text('For You')
-                      : Text('Rupees'),
-        ]),
+    return Material(
+      elevation: 2,
+      borderRadius: BorderRadius.circular(6),
+      child: Container(
+        padding: EdgeInsets.all(2),
+        child: Center(
+          child: Row(children: [icn, SizedBox(width: 0.1), Text(str)]),
+        ),
       ),
     );
   }
@@ -252,7 +239,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                         horizontal: size.width * 0.1),
                     child: Text(
                       item['title'],
-                      style: TextStyle(fontSize: size.width * 0.05),
+                      style: TextStyle(fontSize: size.width * 0.035),
                     )),
                 body: Container(
                   padding: EdgeInsets.only(
@@ -287,7 +274,7 @@ class _BottomsheetState extends State<Bottomsheet> {
               child: Text(
                 'Choose Your Resume',
                 style: GoogleFonts.poppins(
-                  fontSize: size.width * 0.053,
+                  fontSize: size.width * 0.04,
                   fontWeight: FontWeight.w700,
                   color: Colors.black,
                 ),
@@ -327,7 +314,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                       child: Text(
                         'Choose From Device',
                         style: GoogleFonts.poppins(
-                          fontSize: size.width * 0.053,
+                          fontSize: size.width * 0.04,
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
                         ),

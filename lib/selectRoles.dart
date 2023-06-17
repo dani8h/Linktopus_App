@@ -3,12 +3,12 @@ import 'Widgets/Customtextbox_widget.dart';
 //import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class JOB_Selection extends StatefulWidget {
+class SelectRoles extends StatefulWidget {
   @override
-  _JOB_SelectionState createState() => _JOB_SelectionState();
+  _SelectRolesState createState() => _SelectRolesState();
 }
 
-class _JOB_SelectionState extends State<JOB_Selection> {
+class _SelectRolesState extends State<SelectRoles> {
   List<bool> isPressed = [
     false,
     false,

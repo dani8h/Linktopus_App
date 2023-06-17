@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import './job_select.dart';
+import 'package:linktopus_app/job_listing/jobsPage.dart';
+import './selectRoles.dart';
 import './login/landing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -12,8 +13,6 @@ import 'package:linktopus_app/SignUp/otplogin.dart';
 import 'package:linktopus_app/profile.dart';
 
 // import 'package:firebase_auth/firebase_auth.dart';
-import 'Sliding_screen.dart';
-import 'popup/dummy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,9 +50,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       color: Colors.white,
       title: 'Flutter Demo',
-
       theme: themeData,
-      home: Dummy(),
+      home: Jobs_page(),
     );
   }
 }
