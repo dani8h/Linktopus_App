@@ -22,11 +22,10 @@ class _JobPopupState extends State<JobPopup> {
   ];
   List<bool> isPressed = [];
   List<String> selectedCompanies = [];
+  List<String> workTypes = [];
   final TextEditingController searchController = TextEditingController();
-  int selectedCompanyIndex = 0;
-  int selectedWorkType = 0;
   RangeValues selectedRangeValues = RangeValues(100000, 900000);
-
+  Map<String, dynamic> res = {};
   @override
   void initState() {
     super.initState();
@@ -40,15 +39,18 @@ class _JobPopupState extends State<JobPopup> {
 //Container for work type
   Widget buildWorkTypeContainer(
       int index, String imagePath, String text, double screenWidth) {
-    bool isSelected = selectedWorkType == index;
-    Color borderColor = isSelected ? Colors.black : Colors.grey;
+    Color borderColor = workTypes.contains(text) ? Colors.black : Colors.grey;
 
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: GestureDetector(
         onTap: () {
           setState(() {
-            selectedWorkType = index;
+            if (workTypes.contains(text)) {
+              workTypes.remove(text);
+            } else {
+              workTypes.add(text);
+            }
           });
         },
         child: Container(
@@ -211,9 +213,11 @@ class _JobPopupState extends State<JobPopup> {
                           isPressed: isPressed[index],
                           onPressed: (isPressed) {
                             setState(() {
-                              this.isPressed[index] = isPressed;
-                              if (isPressed) {
-                                selectedCompanyIndex = index;
+                              if (selectedCompanies
+                                  .contains(companies[index])) {
+                                selectedCompanies.remove(companies[index]);
+                              } else {
+                                selectedCompanies.add(companies[index]);
                               }
                             });
                           },
@@ -286,13 +290,12 @@ class _JobPopupState extends State<JobPopup> {
                 alignment: Alignment.center,
                 child: GestureDetector(
                   onTap: () {
-                    // Print selected options
-                    print(
-                        'Work Type: ${selectedWorkType != null ? selectedWorkType : ''}');
-                    print('Location: ${searchController.text}');
-                    print('Company: ${companies[selectedCompanyIndex]}');
-                    print(
-                        'Salary Range: ${selectedRangeValues.start} - ${selectedRangeValues.end}');
+                    res['Work Type'] = workTypes;
+                    res['Location'] = searchController.text;
+                    res['upper range'] = selectedRangeValues.start;
+                    res['lower range'] = selectedRangeValues.end;
+                    res['Companies'] = selectedCompanies;
+                    print(res);
                   },
                   child: Container(
                     margin: EdgeInsets.only(bottom: 30),
