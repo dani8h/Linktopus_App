@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:linktopus_app/SplashScreen/getstarted.dart';
 import 'package:linktopus_app/job_listing/jobsPage.dart';
 import './selectRoles.dart';
 import './login/landing_page.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
       color: Colors.white,
       title: 'Flutter Demo',
       theme: themeData,
-      home: Jobs_page(),
+      home: GetStarted(),
     );
   }
 }

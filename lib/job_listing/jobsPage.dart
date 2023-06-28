@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:linktopus_app/profile.dart';
 import 'filter_popup.dart';
 import 'bottom_sheet.dart';
 
@@ -26,6 +28,13 @@ class _Jobs_pageState extends State<Jobs_page> {
   int n = 0;
   ScrollController _scrollController = new ScrollController();
   bool gettingmore = false;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  var uid;
+
+  void inputData() {
+    final User? user = auth.currentUser;
+    uid = user?.uid;
+  }
 
   _getcompanies() async {
     Query q = ref
@@ -103,6 +112,7 @@ class _Jobs_pageState extends State<Jobs_page> {
   @override
   void initState() {
     super.initState();
+    inputData();
     _getcompanies();
     if (!_scrollController.hasClients) {
       setState(() {
@@ -142,9 +152,20 @@ class _Jobs_pageState extends State<Jobs_page> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundImage: AssetImage('assets/images/apple_icon.png'),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Profile(uid: uid),
+                        ),
+                      );
+                    },
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundImage:
+                          AssetImage('assets/images/apple_icon.png'),
+                    ),
                   ),
                   GestureDetector(
                     onTap: () {},
