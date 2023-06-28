@@ -1,11 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-
 import 'filter_popup.dart';
 import 'bottom_sheet.dart';
 
 class Jobs_page extends StatefulWidget {
+  bool filterapplied = false;
+  Map<String, dynamic> myfilter = {};
+  Jobs_page([Map<String, dynamic>? filter]) {
+    if (filter != null) {
+      filterapplied = true;
+      myfilter = filter;
+    }
+  }
   @override
   State<Jobs_page> createState() => _Jobs_pageState();
 }
@@ -14,11 +21,11 @@ class _Jobs_pageState extends State<Jobs_page> {
   TextEditingController _searchController = new TextEditingController();
   final ref = FirebaseDatabase.instance.ref();
   List<dynamic> companylist = [];
+  List<dynamic> finallist = [];
   bool _loading = true;
   int n = 0;
   ScrollController _scrollController = new ScrollController();
   bool gettingmore = false;
-  bool moreAvailable = true;
 
   _getcompanies() async {
     Query q = ref
@@ -32,6 +39,7 @@ class _Jobs_pageState extends State<Jobs_page> {
     setState(() {
       _loading = false;
     });
+    applyfilter();
   }
 
   _getmore() async {
@@ -43,11 +51,65 @@ class _Jobs_pageState extends State<Jobs_page> {
     });
   }
 
+  applyfilter() {
+    finallist = companylist;
+
+    if (widget.filterapplied) {
+      if (widget.myfilter['Companies'] != null) {
+        List<String> companyfilter = [];
+        companyfilter.addAll(widget.myfilter['Companies']);
+        if (companyfilter.length > 0) {
+          finallist = finallist
+              .where((element) =>
+                  companyfilter.contains(element.child('Company Name').value))
+              .toList();
+        }
+      }
+
+      if (widget.myfilter['Location'] != null) {
+        String location = widget.myfilter['Location'].toString().toLowerCase();
+        finallist = finallist
+            .where((element) => element
+                .child('Location')
+                .value
+                .toString()
+                .toLowerCase()
+                .contains(location))
+            .toList();
+      }
+
+      if (widget.myfilter['upper range'] != null &&
+          widget.myfilter['upper range'] != 5000000) {
+        double upperRange = widget.myfilter['upper range'];
+        finallist = finallist
+            .where((element) => element.child('Salary').value <= upperRange)
+            .toList();
+      }
+      if (widget.myfilter['upper range'] != null &&
+          widget.myfilter['upper range'] != 0) {
+        double lowerRange = widget.myfilter['lower range'];
+        finallist = finallist
+            .where((element) => element.child('Salary').value >= lowerRange)
+            .toList();
+      }
+
+      // print('filtered companylist');
+      // for (var e in finallist) {
+      //   print(e.child('Salary').value);
+      // }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _getcompanies();
-
+    if (!_scrollController.hasClients) {
+      setState(() {
+        gettingmore = true;
+      });
+      _getmore();
+    }
     _scrollController.addListener(() {
       double maxScroll = _scrollController.position.maxScrollExtent;
       double currentScroll = _scrollController.position.pixels;
@@ -124,38 +186,28 @@ class _Jobs_pageState extends State<Jobs_page> {
                   ),
                 ),
               ),
-              _buttonRow(),
+              _buttonRow(widget.filterapplied),
               SizedBox(
                 height: 30,
               ),
               Expanded(
-                  child: companylist.length == 0
-                      ? Center(
-                          child: Text('No results found ...'),
-                        )
-                      : ListView.builder(
-                          controller: _scrollController,
-                          itemCount: companylist.length,
-                          itemBuilder: (BuildContext ctx, int index) {
-                            return GestureDetector(
-                              onTap: () => showModalBottomSheet<void>(
-                                backgroundColor: Colors.transparent,
-                                context: context,
-                                isScrollControlled: true,
-                                builder: (BuildContext context) {
-                                  return Bottomsheet();
-                                },
-                              ),
-                              child: _jdcard(
-                                  companylist[index].child('Role').value,
-                                  companylist[index]
-                                      .child('Company Name')
-                                      .value,
-                                  companylist[index].child('Location').value,
-                                  companylist[index].child('Description').value,
-                                  companylist[index].child('Image').value),
-                            );
-                          }))
+                child: companylist.length == 0
+                    ? Center(
+                        child: Text('No results found ...'),
+                      )
+                    : ListView.builder(
+                        controller: _scrollController,
+                        itemCount: finallist.length,
+                        itemBuilder: (BuildContext ctx, int index) {
+                          return _jdcard(
+                              finallist[index].child('Role').value,
+                              finallist[index].child('Company Name').value,
+                              finallist[index].child('Location').value,
+                              finallist[index].child('Description').value,
+                              finallist[index].child('Image').value,
+                              context);
+                        }),
+              )
             ],
           ),
         ),
@@ -165,7 +217,8 @@ class _Jobs_pageState extends State<Jobs_page> {
 }
 
 class _buttonRow extends StatefulWidget {
-  const _buttonRow({Key? key}) : super(key: key);
+  final bool filterapplied;
+  _buttonRow(this.filterapplied);
 
   @override
   State<_buttonRow> createState() => _buttonRowState();
@@ -230,11 +283,13 @@ class _buttonRowState extends State<_buttonRow> {
                 children: [
                   Text(
                     'Filter',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(
+                        color:
+                            widget.filterapplied ? Colors.blue : Colors.black),
                   ),
                   Icon(
                     Icons.filter_alt_outlined,
-                    color: Colors.black,
+                    color: widget.filterapplied ? Colors.blue : Colors.black,
                   )
                 ],
               ),
@@ -245,7 +300,7 @@ class _buttonRowState extends State<_buttonRow> {
 }
 
 Widget _jdcard(String? role, String? cname, String? location, String? info,
-    String? imgUrl) {
+    String? imgUrl, BuildContext context) {
   if (info == null) {
     info = 'NA';
   }
@@ -298,7 +353,18 @@ Widget _jdcard(String? role, String? cname, String? location, String? info,
                   // print('button pressed');
                 },
                 icon: Icon(Icons.bookmark_add_outlined)),
-            IconButton(onPressed: () {}, icon: Icon(Icons.chevron_right))
+            IconButton(
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (BuildContext context) {
+                      return Bottomsheet();
+                    },
+                  );
+                },
+                icon: Icon(Icons.chevron_right))
           ],
         )
       ],

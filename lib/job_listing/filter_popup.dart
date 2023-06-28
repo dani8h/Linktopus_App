@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:linktopus_app/job_listing/jobsPage.dart';
 import '/Widgets/Customtextbox_widget.dart';
 import '../Widgets/custom_box.dart';
 
@@ -24,7 +25,7 @@ class _JobPopupState extends State<JobPopup> {
   List<String> selectedCompanies = [];
   List<String> workTypes = [];
   final TextEditingController searchController = TextEditingController();
-  RangeValues selectedRangeValues = RangeValues(100000, 900000);
+  RangeValues selectedRangeValues = RangeValues(100000, 4000000);
   Map<String, dynamic> res = {};
   @override
   void initState() {
@@ -257,7 +258,7 @@ class _JobPopupState extends State<JobPopup> {
                     RangeSlider(
                       values: selectedRangeValues,
                       min: 0,
-                      max: 1000000,
+                      max: 5000000,
                       divisions: 10,
                       labels: RangeLabels(
                         selectedRangeValues.start.toString(),
@@ -277,7 +278,7 @@ class _JobPopupState extends State<JobPopup> {
                           style: TextStyle(color: Colors.black),
                         ),
                         Text(
-                          '1,000,000+',
+                          '50,00,000+',
                           style: TextStyle(color: Colors.black),
                         ),
                       ],
@@ -292,10 +293,16 @@ class _JobPopupState extends State<JobPopup> {
                   onTap: () {
                     res['Work Type'] = workTypes;
                     res['Location'] = searchController.text;
-                    res['upper range'] = selectedRangeValues.start;
-                    res['lower range'] = selectedRangeValues.end;
+                    res['upper range'] = selectedRangeValues.end;
+                    res['lower range'] = selectedRangeValues.start;
                     res['Companies'] = selectedCompanies;
-                    print(res);
+                    // print(res);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => Jobs_page(res),
+                      ),
+                    );
                   },
                   child: Container(
                     margin: EdgeInsets.only(bottom: 30),
