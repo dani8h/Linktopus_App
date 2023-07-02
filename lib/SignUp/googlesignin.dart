@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:linktopus_app/SignUp/codeverification.dart';
+import 'package:linktopus_app/login/landing_page.dart';
 
 bool _passwordVisible = false;
 
@@ -243,12 +245,12 @@ class _GoogleSignInState extends State<GoogleSignIn> {
           ),
           TextButton(
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => SignUp(),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Landing_Page(),
+                ),
+              );
             },
             child: Text(
               'Sign up here',

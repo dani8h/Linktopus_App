@@ -2,8 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../joblistings.dart';
+import 'package:linktopus_app/job_listing/jobsPage.dart';
 import '../profile.dart';
 
 class AuthService {
@@ -52,12 +51,12 @@ class AuthService {
         print(uid);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Profile(uid: uid)),
+          MaterialPageRoute(builder: (context) => Profile()),
         );
       } else {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => JobListings(uid: uid)),
+          MaterialPageRoute(builder: (context) => Jobs_page()),
         );
       }
 

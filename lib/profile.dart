@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
@@ -16,14 +17,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 String _dropdownValue = 'Male';
 
 class Profile extends StatefulWidget {
-  final uid;
-
-  Profile({Key? key, @required this.uid}) : super(key: key);
+  Profile({Key? key}) : super(key: key);
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   File? image;
   //final TextEditingController controller_ph = TextEditingController();
   String controller_ph = "";
@@ -46,10 +46,8 @@ class _ProfileState extends State<Profile> {
   bool flag = false;
 
   Future<void> fetchUserData() async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(widget.uid)
-        .get();
+    DocumentSnapshot snapshot =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
 
     if (snapshot.exists) {
       setState(() {
@@ -123,7 +121,7 @@ class _ProfileState extends State<Profile> {
       if (confirm) {
         // Upload file to Firebase Storage
         //String user = _username.text;
-        final id = widget.uid;
+        final id = uid;
         Reference firebaseStorageRef =
             FirebaseStorage.instance.ref().child('users/$id/$fileName');
         UploadTask uploadTask = firebaseStorageRef.putFile(file);
@@ -136,8 +134,7 @@ class _ProfileState extends State<Profile> {
         // Update user's document in Firestore with the download URL
         String username = _username.text; // replace with the user's username
         FirebaseFirestore firestore = FirebaseFirestore.instance;
-        DocumentReference userDocRef =
-            firestore.collection('users').doc(widget.uid);
+        DocumentReference userDocRef = firestore.collection('users').doc(uid);
         await userDocRef.update({
           'Resume': downloadURL,
         });
@@ -312,9 +309,9 @@ class _ProfileState extends State<Profile> {
     final firestore = FirebaseFirestore.instance;
 
     // Get a reference to the document where you want to write the data
-    final userDocRef = firestore.collection('users').doc(widget.uid);
+    final userDocRef = firestore.collection('users').doc(uid);
 
-    if (widget.uid == null) {
+    if (uid == null) {
       AlertDialog(
         title: const Text('Error'),
         content: Text('Please sign in to update your details'),
@@ -360,7 +357,7 @@ class _ProfileState extends State<Profile> {
             Reference firebaseStorageRef = FirebaseStorage.instance
                 .ref()
                 .child('users')
-                .child(widget.uid)
+                .child(uid)
                 .child('ProfilePic');
             UploadTask uploadTask = firebaseStorageRef.putFile(image);
             await uploadTask.whenComplete(() async {
@@ -408,7 +405,7 @@ class _ProfileState extends State<Profile> {
           Reference firebaseStorageRef = FirebaseStorage.instance
               .ref()
               .child('users')
-              .child(widget.uid)
+              .child(uid)
               .child('ProfilePic');
           UploadTask uploadTask = firebaseStorageRef.putFile(image);
           await uploadTask.whenComplete(() async {
@@ -473,7 +470,7 @@ class _ProfileState extends State<Profile> {
 
   void check() async {
     final firestore = FirebaseFirestore.instance;
-    final userDocRef = firestore.collection('users').doc(widget.uid);
+    final userDocRef = firestore.collection('users').doc(uid);
     DocumentSnapshot doc = await userDocRef.get();
     if (doc.exists) flag = true;
 

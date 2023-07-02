@@ -2,16 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:linktopus_app/SignUp/otplogin.dart';
-import 'package:linktopus_app/job_select.dart';
+import 'package:linktopus_app/job_listing/jobsPage.dart';
+import 'package:linktopus_app/selectRoles.dart';
 import 'package:linktopus_app/services/auth_service.dart';
+import '../SignUp/otplogin.dart';
 import '../firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:linktopus_app/profile.dart';
-
-import '../joblistings.dart';
 
 class Landing_Page extends StatefulWidget {
   const Landing_Page({super.key});
@@ -223,12 +222,12 @@ class _Landing_PageState extends State<Landing_Page> {
 
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Profile(uid: uid)),
+          MaterialPageRoute(builder: (context) => Profile()),
         );
       } else {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => JobListings(uid: uid)),
+          MaterialPageRoute(builder: (context) => Jobs_page()),
         );
       }
     } on FirebaseAuthException catch (e) {
