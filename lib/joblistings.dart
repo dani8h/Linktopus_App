@@ -1,17 +1,37 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
+import 'package:linktopus_app/profile.dart';
 
 import 'bottom_sheet.dart';
 
 class JobListings extends StatelessWidget {
-  const JobListings({super.key});
+  final uid;
+  const JobListings({Key? key, this.uid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text('Job Listings'),
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(
+                  right: MediaQuery.of(context).size.width * 0.05),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Profile(uid: uid)),
+                  );
+                },
+                child: Icon(
+                  Icons.person,
+                  size: MediaQuery.of(context).size.width * 0.07,
+                ),
+              ),
+            ),
+          ],
         ),
         //backgroundColor: Colors.transparent,
         body: SingleChildScrollView(

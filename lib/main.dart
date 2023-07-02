@@ -11,7 +11,7 @@ import 'package:linktopus_app/SignUp/googlesignin.dart';
 import 'package:linktopus_app/SignUp/otplogin.dart';
 import 'package:linktopus_app/profile.dart';
 
-import 'getstarted1.dart';
+import 'getstarted.dart';
 import 'joblistings.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 

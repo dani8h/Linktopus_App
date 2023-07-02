@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:linktopus_app/SignUp/otplogin.dart';
 import 'package:linktopus_app/job_select.dart';
 import 'package:linktopus_app/services/auth_service.dart';
 import '../firebase_options.dart';
@@ -172,6 +173,10 @@ class _Landing_PageState extends State<Landing_Page> {
                     height: height * 0.007,
                   ),
                   GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => OtpPage()));
+                    },
                     child: Container(
                       child: Text(
                         "Sign Up",
@@ -210,10 +215,12 @@ class _Landing_PageState extends State<Landing_Page> {
           .get()
           .then((doc) => doc.exists);
 
+      final uid = auth.currentUser?.uid;
+      print(uid);
+
       if (!exists) {
         // Redirect to Edit_Profile()
-        final uid = auth.currentUser?.uid;
-        print(uid);
+
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Profile(uid: uid)),
@@ -221,7 +228,7 @@ class _Landing_PageState extends State<Landing_Page> {
       } else {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => JobListings()),
+          MaterialPageRoute(builder: (context) => JobListings(uid: uid)),
         );
       }
     } on FirebaseAuthException catch (e) {

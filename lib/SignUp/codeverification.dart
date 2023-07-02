@@ -120,10 +120,12 @@ class _VerifyState extends State<Verify> {
                             verificationId: OtpPage.verify, smsCode: code);
 
                     await auth.signInWithCredential(credential);
+                    final uid = auth.currentUser?.uid;
+                    print(uid);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const JobListings()),
+                          builder: (context) => JobListings(uid: uid)),
                     );
                   } catch (e) {
                     showDialog(

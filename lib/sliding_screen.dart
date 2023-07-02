@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/SignUp/googlesignin.dart';
-
-import 'getstarted1.dart';
+import 'getstarted.dart';
 
 class SlidingScreen extends StatefulWidget {
   @override
