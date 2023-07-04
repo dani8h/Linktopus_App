@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
@@ -16,14 +17,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 String _dropdownValue = 'Male';
 
 class Profile extends StatefulWidget {
-  final uid;
-
-  Profile({Key? key, @required this.uid}) : super(key: key);
+  Profile({Key? key}) : super(key: key);
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  final uid = FirebaseAuth.instance.currentUser!.uid;
   File? image;
   //final TextEditingController controller_ph = TextEditingController();
   String controller_ph = "";
@@ -32,6 +32,54 @@ class _ProfileState extends State<Profile> {
   final TextEditingController _bio = TextEditingController();
   final TextEditingController _fullname = TextEditingController();
   final TextEditingController _qualification = TextEditingController();
+
+  String bio = '';
+  Timestamp dateOfBirth = Timestamp.now();
+  String fullName = '';
+  String gender = '';
+  String phoneNumber = '';
+  String profilePic = '';
+  String qualification = '';
+  String username = '';
+  String location = '';
+
+  bool flag = false;
+
+  Future<void> fetchUserData() async {
+    DocumentSnapshot snapshot =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+    if (snapshot.exists) {
+      setState(() {
+        bio = snapshot.get('Bio') ?? '';
+        dateOfBirth = snapshot.get('Date Of Birth') ?? Timestamp.now();
+        fullName = snapshot.get('Full Name') ?? '';
+        gender = snapshot.get('Gender') ?? '';
+        phoneNumber = snapshot.get('Phone Number') ?? '';
+        profilePic = snapshot.get('ProfilePic') ?? '';
+        qualification = snapshot.get('Qualification') ?? '';
+        username = snapshot.get('Username') ?? '';
+        location = snapshot.get('Your Location') ?? '';
+
+        _username.text = username;
+        _bio.text = bio;
+        _fullname.text = fullName;
+        _qualification.text = qualification;
+        DateTime dateTime = dateOfBirth.toDate();
+        _dateController.text = DateFormat('dd/MM/yyyy').format(dateTime);
+        _locController.text = location;
+        controller_ph = phoneNumber;
+        _dropdownValue = gender;
+        // this.image = image;
+      });
+    }
+
+    // print(bio);
+    // print(dateOfBirth);
+    // print(username);
+    // print(fullName);
+    // print(qualification);
+  }
 
   Future pickImage() async {
     try {
@@ -73,7 +121,7 @@ class _ProfileState extends State<Profile> {
       if (confirm) {
         // Upload file to Firebase Storage
         //String user = _username.text;
-        final id = widget.uid;
+        final id = uid;
         Reference firebaseStorageRef =
             FirebaseStorage.instance.ref().child('users/$id/$fileName');
         UploadTask uploadTask = firebaseStorageRef.putFile(file);
@@ -86,8 +134,7 @@ class _ProfileState extends State<Profile> {
         // Update user's document in Firestore with the download URL
         String username = _username.text; // replace with the user's username
         FirebaseFirestore firestore = FirebaseFirestore.instance;
-        DocumentReference userDocRef =
-            firestore.collection('users').doc(widget.uid);
+        DocumentReference userDocRef = firestore.collection('users').doc(uid);
         await userDocRef.update({
           'Resume': downloadURL,
         });
@@ -134,110 +181,6 @@ class _ProfileState extends State<Profile> {
       );
     }
   }
-
-  // Future<void> selectFile() async {
-  //   FilePickerResult? result = await FilePicker.platform.pickFiles();
-  //   if (result != null) {
-  //     File file = File(result.files.single.path!);
-  //     String fileName = result.files.single.name;
-
-  //     bool confirm = await showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return AlertDialog(
-  //           title: Text("Upload file?"),
-  //           content: Text(
-  //               "Do you want to upload $fileName?; (Username field must not be empty)"),
-  //           actions: <Widget>[
-  //             TextButton(
-  //               child: Text("No"),
-  //               onPressed: () => Navigator.of(context).pop(false),
-  //             ),
-  //             TextButton(
-  //               child: Text("Yes"),
-  //               onPressed: () => Navigator.of(context).pop(true),
-  //             ),
-  //           ],
-  //         );
-  //       },
-  //     );
-
-  //     if (confirm) {
-  //       FirebaseFirestore firestore = FirebaseFirestore.instance;
-  //       String username = _username.text;
-  //       final userCollectionRef = firestore.collection('users');
-
-  //       QuerySnapshot querySnapshot = await userCollectionRef
-  //           .where('Username', isEqualTo: username)
-  //           .limit(1)
-  //           .get();
-  //       bool exists = querySnapshot.docs.isNotEmpty;
-  //       String userid = querySnapshot.docs[0].id;
-  //       // Upload file to Firebase Storage
-
-  //       DocumentReference userDocRef =
-  //           firestore.collection('users').doc(userid);
-
-  //       if (exists) {
-  //         String user = _username.text;
-  //         Reference firebaseStorageRef =
-  //             FirebaseStorage.instance.ref().child('users/$userid/$fileName');
-  //         UploadTask uploadTask = firebaseStorageRef.putFile(file);
-
-  //         // Get download URL for the file
-  //         String downloadURL = await uploadTask.then(
-  //           (snapshot) => snapshot.ref.getDownloadURL(),
-  //         );
-
-  //         //Update user's document in Firestore with the download URL
-  //         await userDocRef.update({
-  //           'Resume': downloadURL,
-  //         });
-
-  //         print(
-  //             'File uploaded to Firebase Storage and download URL updated in Firestore');
-
-  //         // Show success dialog
-  //         showDialog(
-  //           context: context,
-  //           builder: (context) => AlertDialog(
-  //             title: const Text('User Resume Updated'),
-  //             content:
-  //                 Text('User $username resume has been updated successfully'),
-  //             actions: [
-  //               TextButton(
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //                 child: const Text('OK'),
-  //               )
-  //             ],
-  //           ),
-  //         );
-  //       } else
-  //         return;
-  //     }
-  //   } else {
-  //     // User canceled the file selection
-
-  //     // Show success dialog
-  //     showDialog(
-  //       context: context,
-  //       builder: (context) => AlertDialog(
-  //         title: const Text('Error'),
-  //         content: Text('No file selected'),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: const Text('OK'),
-  //           )
-  //         ],
-  //       ),
-  //     );
-  //   }
-  // }
 
   // Future<void> sendUserData(
   //   String username,
@@ -366,40 +309,103 @@ class _ProfileState extends State<Profile> {
     final firestore = FirebaseFirestore.instance;
 
     // Get a reference to the document where you want to write the data
-    final userDocRef = firestore.collection('users').doc(widget.uid);
+    final userDocRef = firestore.collection('users').doc(uid);
 
-    // Check if user already exists
-    DocumentSnapshot doc = await userDocRef.get();
-    if (doc.exists) {
-      // Show confirmation dialog
-      bool confirm = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Update details?"),
-            content: Text("Do you want to update your details?"),
-            actions: <Widget>[
-              TextButton(
-                child: Text("No"),
-                onPressed: () => Navigator.of(context).pop(false),
-              ),
-              TextButton(
-                child: Text("Yes"),
-                onPressed: () => Navigator.of(context).pop(true),
-              ),
-            ],
-          );
-        },
+    if (uid == null) {
+      AlertDialog(
+        title: const Text('Error'),
+        content: Text('Please sign in to update your details'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          )
+        ],
       );
+      return;
+    } else {
+      // Check if user already exists
+      DocumentSnapshot doc = await userDocRef.get();
+      if (doc.exists) {
+        // Show confirmation dialog
+        bool confirm = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Update details?"),
+              content: Text("Do you want to update your details?"),
+              actions: <Widget>[
+                TextButton(
+                  child: Text("No"),
+                  onPressed: () => Navigator.of(context).pop(false),
+                ),
+                TextButton(
+                  child: Text("Yes"),
+                  onPressed: () => Navigator.of(context).pop(true),
+                ),
+              ],
+            );
+          },
+        );
 
-      if (confirm) {
+        if (confirm) {
+          // Upload profile picture to Firebase Storage
+          String? profilePicURL;
+          if (image != null) {
+            Reference firebaseStorageRef = FirebaseStorage.instance
+                .ref()
+                .child('users')
+                .child(uid)
+                .child('ProfilePic');
+            UploadTask uploadTask = firebaseStorageRef.putFile(image);
+            await uploadTask.whenComplete(() async {
+              profilePicURL = await uploadTask.snapshot.ref.getDownloadURL();
+              print('Profile picture uploaded to Firebase Storage');
+            });
+          }
+
+          // Update existing document
+          Map<String, dynamic> updatedData = {
+            'Bio': bio,
+            'Full Name': fullName,
+            'Phone Number': phoneNumber,
+            'Qualification': qualification,
+            'Date Of Birth': dateOfBirth,
+            'Gender': gender,
+            'Your Location': location,
+            'Username': username,
+          };
+          if (profilePicURL != null) {
+            updatedData['ProfilePic'] = profilePicURL;
+          }
+          await userDocRef.update(updatedData);
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('User Updated Successfully'),
+              content: Text('User $username has been updated successfully'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                )
+              ],
+            ),
+          );
+        }
+      } else {
+        // Create new document
         // Upload profile picture to Firebase Storage
         String? profilePicURL;
         if (image != null) {
           Reference firebaseStorageRef = FirebaseStorage.instance
               .ref()
               .child('users')
-              .child(widget.uid)
+              .child(uid)
               .child('ProfilePic');
           UploadTask uploadTask = firebaseStorageRef.putFile(image);
           await uploadTask.whenComplete(() async {
@@ -409,7 +415,8 @@ class _ProfileState extends State<Profile> {
         }
 
         // Update existing document
-        Map<String, dynamic> updatedData = {
+        Map<String, dynamic> userData = {
+          'Username': username,
           'Bio': bio,
           'Full Name': fullName,
           'Phone Number': phoneNumber,
@@ -419,56 +426,8 @@ class _ProfileState extends State<Profile> {
           'Your Location': location,
         };
         if (profilePicURL != null) {
-          updatedData['ProfilePic'] = profilePicURL;
+          userData['ProfilePic'] = profilePicURL;
         }
-        await userDocRef.update(updatedData);
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('User Updated Successfully'),
-            content: Text('User $username has been updated successfully'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('OK'),
-              )
-            ],
-          ),
-        );
-      }
-    } else {
-      // Create new document
-      // Upload profile picture to Firebase Storage
-      String? profilePicURL;
-      if (image != null) {
-        Reference firebaseStorageRef = FirebaseStorage.instance
-            .ref()
-            .child('users')
-            .child(widget.uid)
-            .child('ProfilePic');
-        UploadTask uploadTask = firebaseStorageRef.putFile(image);
-        await uploadTask.whenComplete(() async {
-          profilePicURL = await uploadTask.snapshot.ref.getDownloadURL();
-          print('Profile picture uploaded to Firebase Storage');
-        });
-      }
-
-      // Update existing document
-      Map<String, dynamic> userData = {
-        'Username': username,
-        'Bio': bio,
-        'Full Name': fullName,
-        'Phone Number': phoneNumber,
-        'Qualification': qualification,
-        'Date Of Birth': dateOfBirth,
-        'Gender': gender,
-        'Your Location': location,
-      };
-      if (profilePicURL != null) {
-        userData['ProfilePic'] = profilePicURL;
-      }
 
 // // Add image to Firebase Storage and get download URL
 //       if (image != null) {
@@ -487,25 +446,42 @@ class _ProfileState extends State<Profile> {
 //       }
 
 // Update user document in Firestore with new data
-      await userDocRef.set(userData, SetOptions(merge: true));
+        await userDocRef.set(userData, SetOptions(merge: true));
 
 // Show success dialog
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('User Data Updated'),
-          content: Text('User $username data has been updated successfully'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            )
-          ],
-        ),
-      );
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('User Data Updated'),
+            content: Text('User $username data has been updated successfully'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              )
+            ],
+          ),
+        );
+      }
     }
+  }
+
+  void check() async {
+    final firestore = FirebaseFirestore.instance;
+    final userDocRef = firestore.collection('users').doc(uid);
+    DocumentSnapshot doc = await userDocRef.get();
+    if (doc.exists) flag = true;
+
+    print(flag);
+  }
+
+  @override
+  void initState() {
+    check();
+    super.initState();
+    fetchUserData();
   }
 
   TextEditingController _dateController = TextEditingController();
@@ -544,9 +520,11 @@ class _ProfileState extends State<Profile> {
                     Container(
                       margin: EdgeInsets.fromLTRB(
                           25 * fem, 5 * fem, 0 * fem, 0 * fem),
-                      child: Icon(Icons.arrow_back_ios,
-                          color: Color(0xffffffff),
-                          size: 30 * fem), //mediaquery
+                      child: GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Icon(Icons.arrow_back_ios,
+                            color: Color(0xffffffff), size: 30 * fem),
+                      ), //mediaquery
                     ),
                     Container(
                       margin: EdgeInsets.fromLTRB(
@@ -594,12 +572,17 @@ class _ProfileState extends State<Profile> {
                                     0xff010088), //                   <--- border color
                                 width: 2.0,
                               ),
-                              image: image != null
+                              image: (flag == true && image == null)
                                   ? DecorationImage(
-                                      image: FileImage(image!),
+                                      image: NetworkImage(profilePic),
                                       fit: BoxFit.cover,
                                     )
-                                  : null,
+                                  : (image != null)
+                                      ? DecorationImage(
+                                          image: FileImage(image!),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : null,
                             ),
                             child: Align(
                               alignment: Alignment.bottomRight,
@@ -678,6 +661,7 @@ class _ProfileState extends State<Profile> {
                               autoValidateMode: AutovalidateMode.disabled,
                               selectorTextStyle: TextStyle(color: Colors.black),
                               initialValue: number,
+                              hintText: phoneNumber.substring(3),
                               //textFieldController: controller_ph,
                               formatInput: false,
                               keyboardType: TextInputType.numberWithOptions(
@@ -858,16 +842,8 @@ class _ProfileState extends State<Profile> {
                         children: [
                           TextButton(
                             onPressed: () async {
+                              print('pressed');
                               //i want to write a function to push all the textediting controller fields to a firebase document called users
-                              // print(_username.text);
-                              // print(_bio.text);
-                              // print(_fullname.text);
-                              // print(controller_ph);
-                              // print(_qualification.text);
-                              // print(new DateFormat('dd/MM/yyyy')
-                              //     .parse(_dateController.text));
-                              // print(_dropdownValue);
-                              // print(_locController.text);
                               await sendUserData(
                                 _username.text,
                                 _bio.text,
@@ -1000,6 +976,15 @@ class _ProfileState extends State<Profile> {
                   : EdgeInsets.fromLTRB(16 * fem, 13 * fem, 16 * fem, 9 * fem),
               border: InputBorder.none,
               hintText: type,
+              // hintText: (type == 'Bio' && flag == true
+              //     ? bio
+              //     : type == 'Username' && flag == true
+              //         ? username
+              //         : type == 'Full Name' && flag == true
+              //             ? fullName
+              //             : type == 'Qualification' && flag == true
+              //                 ? qualification
+              //                 : type),
               hintStyle: GoogleFonts.poppins(
                 fontSize: 15 * ffem,
                 fontWeight: FontWeight.w500,
@@ -1061,8 +1046,19 @@ class _ProfileState extends State<Profile> {
                     contentPadding: EdgeInsets.fromLTRB(
                         16 * fem, 13 * fem, 16 * fem, 9 * fem),
                     border: InputBorder.none,
-                    hintText:
-                        type == 'Date Of Birth' ? type : 'eg: Bengaluru, India',
+                    hintText: type == 'Date Of Birth'
+                        ? 'YYYY-MM-DD hrs:min:sec'
+                        : 'eg: Bengaluru, India',
+                    // hintText: type == 'Date Of Birth' && flag == false
+                    //     ? 'DOB'
+                    //     : type == 'Your Location' && flag == false
+                    //         ? 'eg: Bengaluru, India'
+                    //         : type == 'Date Of Birth' && flag == true
+                    //             ? dateOfBirth
+                    //                 .toDate()
+                    //                 .toString()
+                    //                 .substring(0, 20)
+                    //             : location,
                     hintStyle: GoogleFonts.poppins(
                       fontSize: 15 * ffem,
                       fontWeight: FontWeight.w500,
@@ -1117,28 +1113,4 @@ class _ProfileState extends State<Profile> {
       print("Date is not selected");
     }
   }
-
-  // void _selectDate() async {
-  //   DateTime? pickedDate = await showDatePicker(
-  //     context: context,
-  //     initialDate: DateTime.now(),
-  //     firstDate: DateTime(
-  //         2000), //DateTime.now() - not to allow to choose before today.
-  //     lastDate: DateTime(2101),
-  //   );
-
-  //   if (pickedDate != null) {
-  //     print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-  //     String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
-  //     print(
-  //         formattedDate); //formatted date output using intl package =>  2021-03-16
-  //     //you can implement different kind of Date Format here according to your requirement
-
-  //     setState(() {
-  //       _date.text = formattedDate; //set output date to TextField value.
-  //     });
-  //   } else {
-  //     print("Date is not selected");
-  //   }
-  // }
 }

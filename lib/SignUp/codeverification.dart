@@ -119,6 +119,8 @@ class _VerifyState extends State<Verify> {
                             verificationId: OtpPage.verify, smsCode: code);
 
                     await auth.signInWithCredential(credential);
+                    final uid = auth.currentUser?.uid;
+                    print(uid);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => Jobs_page()),

@@ -157,7 +157,7 @@ class _Jobs_pageState extends State<Jobs_page> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Profile(uid: uid),
+                          builder: (context) => Profile(),
                         ),
                       );
                     },

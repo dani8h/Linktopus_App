@@ -43,13 +43,15 @@ class AuthService {
           .collection('users')
           .doc(user.uid)
           .get();
+      final uid = _auth.currentUser?.uid;
+      print(uid);
       if (!userExists.exists) {
         // Redirect to Profile() under profile.dart
         final uid = _auth.currentUser?.uid;
         print(uid);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Profile(uid: uid)),
+          MaterialPageRoute(builder: (context) => Profile()),
         );
       } else {
         Navigator.push(
