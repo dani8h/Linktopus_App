@@ -32,6 +32,7 @@ class _ProfileState extends State<Profile> {
   final TextEditingController _bio = TextEditingController();
   final TextEditingController _fullname = TextEditingController();
   final TextEditingController _qualification = TextEditingController();
+  bool isPaidUser = false;
 
   Future pickImage() async {
     try {
@@ -359,6 +360,7 @@ class _ProfileState extends State<Profile> {
     DateTime dateOfBirth,
     String gender,
     String location,
+    bool isPaidUser,
     File? image,
     BuildContext context,
   ) async {
@@ -465,6 +467,7 @@ class _ProfileState extends State<Profile> {
         'Date Of Birth': dateOfBirth,
         'Gender': gender,
         'Your Location': location,
+        'Paid User': isPaidUser,
       };
       if (profilePicURL != null) {
         userData['ProfilePic'] = profilePicURL;
@@ -878,6 +881,7 @@ class _ProfileState extends State<Profile> {
                                     .parse(_dateController.text),
                                 _dropdownValue,
                                 _locController.text,
+                                isPaidUser,
                                 image,
                                 context,
                               );
