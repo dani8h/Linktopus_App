@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:linktopus_app/job_listing/jobsPage.dart';
 import 'package:linktopus_app/selectRoles.dart';
 import 'package:linktopus_app/services/auth_service.dart';
+import '../SignUp/otplogin.dart';
 import '../firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -148,7 +149,7 @@ class _Landing_PageState extends State<Landing_Page> {
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.07,
+                    height: height * 0.05,
                   ),
                   Text(
                     "------  OR ------",
@@ -158,26 +159,36 @@ class _Landing_PageState extends State<Landing_Page> {
                         color: Color(0xff58616A)),
                   ),
                   SizedBox(
-                    height: height * 0.07,
-                  ),
-                  Text(
-                    "Don't have an account? ",
-                    style: GoogleFonts.poppins(
-                        fontSize: width * 0.05,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff243443)),
-                  ),
-                  SizedBox(
-                    height: height * 0.007,
+                    height: height * 0.05,
                   ),
                   GestureDetector(
-                    child: Container(
-                      child: Text(
-                        "Sign Up",
-                        style: GoogleFonts.poppins(
-                            fontSize: width * 0.05,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xffC11E5D)),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => OtpPage()));
+                    },
+                    child: Card(
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9.03)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 20),
+                        child: Row(
+                          //  mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Image.asset("assets/images/facebook_icon.png"),
+
+                            Text(
+                              "Continue with phone number",
+                              style: GoogleFonts.poppins(
+                                fontSize: width * 0.04,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xff000000),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -209,13 +220,15 @@ class _Landing_PageState extends State<Landing_Page> {
           .get()
           .then((doc) => doc.exists);
 
+      final uid = auth.currentUser?.uid;
+      print(uid);
+
       if (!exists) {
         // Redirect to Edit_Profile()
-        final uid = auth.currentUser?.uid;
-        print(uid);
+
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Profile(uid: uid)),
+          MaterialPageRoute(builder: (context) => Profile()),
         );
       } else {
         Navigator.push(
