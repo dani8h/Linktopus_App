@@ -32,6 +32,7 @@ class _ProfileState extends State<Profile> {
   final TextEditingController _bio = TextEditingController();
   final TextEditingController _fullname = TextEditingController();
   final TextEditingController _qualification = TextEditingController();
+  bool isPaidUser = false;
 
   String bio = '';
   Timestamp dateOfBirth = Timestamp.now();
@@ -298,6 +299,7 @@ class _ProfileState extends State<Profile> {
     DateTime dateOfBirth,
     String gender,
     String location,
+    bool isPaidUser,
     File? image,
     BuildContext context,
   ) async {
@@ -852,6 +854,7 @@ class _ProfileState extends State<Profile> {
                                     .parse(_dateController.text),
                                 _dropdownValue,
                                 _locController.text,
+                                isPaidUser,
                                 image,
                                 context,
                               );
