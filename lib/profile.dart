@@ -60,25 +60,21 @@ class _ProfileState extends State<Profile> {
         qualification = snapshot.get('Qualification') ?? '';
         username = snapshot.get('Username') ?? '';
         location = snapshot.get('Your Location') ?? '';
+        setState(() {
+          _username.text = username;
+          _bio.text = bio;
+          _fullname.text = fullName;
+          _qualification.text = qualification;
+          DateTime dateTime = dateOfBirth.toDate();
+          _dateController.text = DateFormat('dd/MM/yyyy').format(dateTime);
+          _locController.text = location;
+          controller_ph = phoneNumber;
+          _dropdownValue = gender;
+        });
 
-        _username.text = username;
-        _bio.text = bio;
-        _fullname.text = fullName;
-        _qualification.text = qualification;
-        DateTime dateTime = dateOfBirth.toDate();
-        _dateController.text = DateFormat('dd/MM/yyyy').format(dateTime);
-        _locController.text = location;
-        controller_ph = phoneNumber;
-        _dropdownValue = gender;
         // this.image = image;
       });
     }
-
-    // print(bio);
-    // print(dateOfBirth);
-    // print(username);
-    // print(fullName);
-    // print(qualification);
   }
 
   Future pickImage() async {
@@ -661,7 +657,9 @@ class _ProfileState extends State<Profile> {
                               autoValidateMode: AutovalidateMode.disabled,
                               selectorTextStyle: TextStyle(color: Colors.black),
                               initialValue: number,
-                              hintText: phoneNumber.substring(3),
+                              hintText: phoneNumber == ''
+                                  ? ''
+                                  : phoneNumber.substring(3),
                               //textFieldController: controller_ph,
                               formatInput: false,
                               keyboardType: TextInputType.numberWithOptions(

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -30,10 +31,19 @@ class _Jobs_pageState extends State<Jobs_page> {
   bool gettingmore = false;
   final FirebaseAuth auth = FirebaseAuth.instance;
   var uid;
+  var profilePic;
+  String? ImgUrl;
 
-  void inputData() {
+  Future<void> inputData() async {
     final User? user = auth.currentUser;
     uid = user?.uid;
+    if (uid != null) {
+      String? path = 'users/${uid}/ProfilePic';
+      print('image path is ${path}');
+      final storageRef = FirebaseStorage.instance.ref().child(path);
+      ImgUrl = await storageRef.getDownloadURL();
+      print('image url ${ImgUrl}');
+    }
   }
 
   _getcompanies() async {
@@ -162,10 +172,10 @@ class _Jobs_pageState extends State<Jobs_page> {
                       );
                     },
                     child: CircleAvatar(
-                      radius: 25,
-                      backgroundImage:
-                          AssetImage('assets/images/apple_icon.png'),
-                    ),
+                        radius: 25,
+                        backgroundImage: ImgUrl == null
+                            ? AssetImage('assets/images/profilepic.jpg')
+                            : NetworkImage(ImgUrl!) as ImageProvider),
                   ),
                   GestureDetector(
                     onTap: () {},
