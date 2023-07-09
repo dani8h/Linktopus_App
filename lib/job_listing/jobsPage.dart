@@ -25,6 +25,7 @@ class _Jobs_pageState extends State<Jobs_page> {
   final ref = FirebaseDatabase.instance.ref();
   List<dynamic> companylist = [];
   List<dynamic> finallist = [];
+  List<dynamic> textfilteredlist = [];
   bool _loading = true;
   int n = 0;
   ScrollController _scrollController = new ScrollController();
@@ -112,10 +113,26 @@ class _Jobs_pageState extends State<Jobs_page> {
             .toList();
       }
 
+      textfilteredlist = finallist;
       // print('filtered companylist');
       // for (var e in finallist) {
       //   print(e.child('Salary').value);
       // }
+    }
+  }
+
+  void textFilter(String t) {
+    if (t.isEmpty) {
+      textfilteredlist = finallist;
+    } else {
+      textfilteredlist = finallist
+          .where((element) => element
+              .child('Role')
+              .value
+              .toString()
+              .toLowerCase()
+              .contains(t.toLowerCase()))
+          .toList();
     }
   }
 
@@ -211,9 +228,10 @@ class _Jobs_pageState extends State<Jobs_page> {
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                     controller: _searchController,
                     placeholder: 'Search',
-                    onSubmitted: (String s) {
-                      print("string searched ${s}");
-                    },
+                    onChanged: (value) => textFilter(value),
+                    // onSubmitted: (String s) {
+                    //   print("string searched ${s}");
+                    // },
                   ),
                 ),
               ),
@@ -228,14 +246,18 @@ class _Jobs_pageState extends State<Jobs_page> {
                       )
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: finallist.length,
+                        itemCount: textfilteredlist.length,
                         itemBuilder: (BuildContext ctx, int index) {
                           return _jdcard(
-                              finallist[index].child('Role').value,
-                              finallist[index].child('Company Name').value,
-                              finallist[index].child('Location').value,
-                              finallist[index].child('Description').value,
-                              finallist[index].child('Image').value,
+                              textfilteredlist[index].child('Role').value,
+                              textfilteredlist[index]
+                                  .child('Company Name')
+                                  .value,
+                              textfilteredlist[index].child('Location').value,
+                              textfilteredlist[index]
+                                  .child('Description')
+                                  .value,
+                              textfilteredlist[index].child('Image').value,
                               context);
                         }),
               )
