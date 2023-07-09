@@ -227,9 +227,9 @@ class _Landing_PageState extends State<Landing_Page> {
         // Redirect to Edit_Profile()
 
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Profile()),
-        );
+            context,
+            // MaterialPageRoute(builder: (context) => Profile()),
+            MaterialPageRoute(builder: (context) => Jobs_page()));
       } else {
         Navigator.push(
           context,

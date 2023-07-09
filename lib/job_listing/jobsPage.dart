@@ -113,12 +113,12 @@ class _Jobs_pageState extends State<Jobs_page> {
             .toList();
       }
 
-      textfilteredlist = finallist;
       // print('filtered companylist');
       // for (var e in finallist) {
       //   print(e.child('Salary').value);
       // }
     }
+    textfilteredlist = finallist;
   }
 
   void textFilter(String t) {
