@@ -32,6 +32,7 @@ class _ProfileState extends State<Profile> {
   final TextEditingController _bio = TextEditingController();
   final TextEditingController _fullname = TextEditingController();
   final TextEditingController _qualification = TextEditingController();
+  bool isPaidUser = false;
 
   String bio = '';
   Timestamp dateOfBirth = Timestamp.now();
@@ -60,25 +61,21 @@ class _ProfileState extends State<Profile> {
         qualification = snapshot.get('Qualification') ?? '';
         username = snapshot.get('Username') ?? '';
         location = snapshot.get('Your Location') ?? '';
+        setState(() {
+          _username.text = username;
+          _bio.text = bio;
+          _fullname.text = fullName;
+          _qualification.text = qualification;
+          DateTime dateTime = dateOfBirth.toDate();
+          _dateController.text = DateFormat('dd/MM/yyyy').format(dateTime);
+          _locController.text = location;
+          controller_ph = phoneNumber;
+          _dropdownValue = gender;
+        });
 
-        _username.text = username;
-        _bio.text = bio;
-        _fullname.text = fullName;
-        _qualification.text = qualification;
-        DateTime dateTime = dateOfBirth.toDate();
-        _dateController.text = DateFormat('dd/MM/yyyy').format(dateTime);
-        _locController.text = location;
-        controller_ph = phoneNumber;
-        _dropdownValue = gender;
         // this.image = image;
       });
     }
-
-    // print(bio);
-    // print(dateOfBirth);
-    // print(username);
-    // print(fullName);
-    // print(qualification);
   }
 
   Future pickImage() async {
@@ -302,6 +299,7 @@ class _ProfileState extends State<Profile> {
     DateTime dateOfBirth,
     String gender,
     String location,
+    bool isPaidUser,
     File? image,
     BuildContext context,
   ) async {
@@ -857,6 +855,7 @@ class _ProfileState extends State<Profile> {
                                     .parse(_dateController.text),
                                 _dropdownValue,
                                 _locController.text,
+                                isPaidUser,
                                 image,
                                 context,
                               );

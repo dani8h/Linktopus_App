@@ -12,7 +12,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class Bottomsheet extends StatefulWidget {
-  const Bottomsheet({super.key});
+  final dynamic jobdata;
+  Bottomsheet({required this.jobdata});
 
   @override
   State<Bottomsheet> createState() => _BottomsheetState();
@@ -33,11 +34,12 @@ class _BottomsheetState extends State<Bottomsheet> {
         if (index == 0) {
           title = 'Job Description';
           description =
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+              widget.jobdata.child('Description').value.toString() == null
+                  ? 'NA'
+                  : widget.jobdata.child('Description').value.toString();
         } else if (index == 1) {
           title = 'Minimum Qualifications';
-          description =
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+          description = widget.jobdata.child('Experience').value.toString();
         } else {
           title = 'Preferred Qualifications';
           description =
