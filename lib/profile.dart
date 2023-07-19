@@ -659,9 +659,12 @@ class _ProfileState extends State<Profile> {
                               ),
                               ignoreBlank: false,
                               autoValidateMode: AutovalidateMode.disabled,
-                              selectorTextStyle: TextStyle(color: Colors.black),
+                              selectorTextStyle:
+                                  GoogleFonts.poppins(color: Colors.black),
                               initialValue: number,
-                              hintText: phoneNumber.substring(3),
+                              hintText: phoneNumber == ''
+                                  ? ''
+                                  : phoneNumber.substring(3),
                               //textFieldController: controller_ph,
                               formatInput: false,
                               keyboardType: TextInputType.numberWithOptions(
@@ -717,7 +720,7 @@ class _ProfileState extends State<Profile> {
                                 // icon: const Icon(Icons.arrow_downward),
                                 // iconSize: 24,
                                 elevation: 16,
-                                style: const TextStyle(
+                                style: GoogleFonts.poppins(
                                   color: Colors.black,
                                 ),
                                 // underline: Container(

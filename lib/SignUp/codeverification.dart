@@ -23,7 +23,7 @@ class _VerifyState extends State<Verify> {
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
-      textStyle: TextStyle(
+      textStyle: GoogleFonts.poppins(
           fontSize: 20,
           color: Color.fromRGBO(30, 60, 87, 1),
           fontWeight: FontWeight.w600),
@@ -194,7 +194,7 @@ class _VerifyState extends State<Verify> {
                       },
                       child: Text(
                         "Edit Phone Number ?",
-                        style: TextStyle(color: Colors.black),
+                        style: GoogleFonts.poppins(color: Colors.black),
                       ))
                 ],
               )

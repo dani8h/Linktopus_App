@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/profile.dart';
 import 'filter_popup.dart';
 import 'bottom_sheet.dart';
@@ -190,7 +191,8 @@ class _Jobs_pageState extends State<Jobs_page> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Job listings',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
+                  style: GoogleFonts.poppins(
+                      fontSize: 25, fontWeight: FontWeight.w700),
                 ),
               ),
               //search bar
@@ -260,7 +262,7 @@ class _buttonRowState extends State<_buttonRow> {
               children: [
                 Text(
                   'Sort',
-                  style: TextStyle(color: Colors.black),
+                  style: GoogleFonts.poppins(color: Colors.black),
                 ),
                 Icon(
                   Icons.sort,
@@ -279,7 +281,7 @@ class _buttonRowState extends State<_buttonRow> {
                 children: [
                   Text(
                     'Bookmarked',
-                    style: TextStyle(color: Colors.black),
+                    style: GoogleFonts.poppins(color: Colors.black),
                   ),
                   Icon(
                     Icons.bookmark_border,
@@ -304,7 +306,7 @@ class _buttonRowState extends State<_buttonRow> {
                 children: [
                   Text(
                     'Filter',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                         color:
                             widget.filterapplied ? Colors.blue : Colors.black),
                   ),
@@ -346,15 +348,17 @@ Widget _jdcard(String? role, String? cname, String? location, String? info,
           children: [
             Text(
               role ?? 'NA',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w700, fontSize: 18),
             ),
             Text(
               cname ?? 'NA',
-              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w400, fontSize: 15),
             ),
             Text(
               location ?? 'NA',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w500,
                   fontSize: 13,
                   color: Colors.grey),
@@ -362,7 +366,8 @@ Widget _jdcard(String? role, String? cname, String? location, String? info,
             SizedBox(height: 10),
             Text(
               info!.length > 80 ? '${info.substring(0, 80)}...Read more' : info,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w500, fontSize: 12),
             )
           ],
         )),
