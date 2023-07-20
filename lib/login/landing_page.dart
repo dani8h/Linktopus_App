@@ -26,7 +26,7 @@ class _Landing_PageState extends State<Landing_Page> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-        backgroundColor: Color(0xffE5E5E5),
+        backgroundColor: Color(0xffffffff),
         body: Stack(
           children: [
             Container(
@@ -73,7 +73,7 @@ class _Landing_PageState extends State<Landing_Page> {
                             Text(
                               "Sign in with Google",
                               style: GoogleFonts.poppins(
-                                fontSize: width * 0.05,
+                                fontSize: width * 0.043,
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xff000000),
                               ),
@@ -106,7 +106,7 @@ class _Landing_PageState extends State<Landing_Page> {
                             Text(
                               "Sign in with Facebook",
                               style: GoogleFonts.poppins(
-                                fontSize: width * 0.05,
+                                fontSize: width * 0.043,
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xff000000),
                               ),
@@ -138,7 +138,7 @@ class _Landing_PageState extends State<Landing_Page> {
                             Text(
                               "Sign in with Apple",
                               style: GoogleFonts.poppins(
-                                fontSize: width * 0.05,
+                                fontSize: width * 0.043,
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xff000000),
                               ),
@@ -154,7 +154,7 @@ class _Landing_PageState extends State<Landing_Page> {
                   Text(
                     "------  OR ------",
                     style: GoogleFonts.poppins(
-                        fontSize: width * 0.07,
+                        fontSize: width * 0.06,
                         fontWeight: FontWeight.w500,
                         color: Color(0xff58616A)),
                   ),
@@ -167,7 +167,7 @@ class _Landing_PageState extends State<Landing_Page> {
                           MaterialPageRoute(builder: (context) => OtpPage()));
                     },
                     child: Card(
-                      elevation: 10,
+                      elevation: 6,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(9.03)),
                       child: Padding(
@@ -182,7 +182,7 @@ class _Landing_PageState extends State<Landing_Page> {
                             Text(
                               "Continue with phone number",
                               style: GoogleFonts.poppins(
-                                fontSize: width * 0.04,
+                                fontSize: width * 0.043,
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xff000000),
                               ),
@@ -227,9 +227,9 @@ class _Landing_PageState extends State<Landing_Page> {
         // Redirect to Edit_Profile()
 
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Profile()),
-        );
+            context,
+            // MaterialPageRoute(builder: (context) => Profile()),
+            MaterialPageRoute(builder: (context) => Jobs_page()));
       } else {
         Navigator.push(
           context,
