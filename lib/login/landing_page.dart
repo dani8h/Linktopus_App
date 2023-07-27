@@ -11,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:linktopus_app/profile.dart';
+import 'mail_signup.dart';
 
 class Landing_Page extends StatefulWidget {
   const Landing_Page({super.key});
@@ -87,7 +88,8 @@ class _Landing_PageState extends State<Landing_Page> {
                     height: height * 0.01,
                   ),
                   GestureDetector(
-                    onTap: () => facebookLogin(),
+                    onTap: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => EmailSignup())),
                     child: Card(
                       elevation: 10,
                       shape: RoundedRectangleBorder(
@@ -99,12 +101,12 @@ class _Landing_PageState extends State<Landing_Page> {
                           //  mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Image.asset("assets/images/facebook_icon.png"),
+                            Icon(Icons.email),
                             SizedBox(
                               width: width * 0.17,
                             ),
                             Text(
-                              "Sign in with Facebook",
+                              "Sign up with email",
                               style: GoogleFonts.poppins(
                                 fontSize: width * 0.05,
                                 fontWeight: FontWeight.w500,
@@ -199,49 +201,52 @@ class _Landing_PageState extends State<Landing_Page> {
         ));
   }
 
-  facebookLogin() async {
-    try {
-      // Log in with Facebook
-      final LoginResult result = await FacebookAuth.instance.login();
+  //Discarded Meta login code
 
-      // Get the Facebook access token
-      final OAuthCredential credential =
-          FacebookAuthProvider.credential(result.accessToken!.token);
+//   facebookLogin() async {
+//     try {
+//       // Log in with Facebook
+//       final LoginResult result = await FacebookAuth.instance.login();
 
-      // Sign in with the Facebook credential
-      UserCredential firebaseResult =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+//       // Get the Facebook access token
+//       final OAuthCredential credential =
+//           FacebookAuthProvider.credential(result.accessToken!.token);
 
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      // Check if the user exists in Firebase
-      bool exists = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(firebaseResult.user!.uid)
-          .get()
-          .then((doc) => doc.exists);
+//       // Sign in with the Facebook credential
+//       UserCredential firebaseResult =
+//           await FirebaseAuth.instance.signInWithCredential(credential);
 
-      final uid = auth.currentUser?.uid;
-      print(uid);
+//       final FirebaseAuth auth = FirebaseAuth.instance;
+//       // Check if the user exists in Firebase
+//       bool exists = await FirebaseFirestore.instance
+//           .collection('users')
+//           .doc(firebaseResult.user!.uid)
+//           .get()
+//           .then((doc) => doc.exists);
 
-      if (!exists) {
-        // Redirect to Edit_Profile()
+//       final uid = auth.currentUser?.uid;
+//       print(uid);
 
-        Navigator.push(
-            context,
-            // MaterialPageRoute(builder: (context) => Profile()),
-            MaterialPageRoute(builder: (context) => Jobs_page()));
-      } else {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Jobs_page()),
-        );
-      }
-    } on FirebaseAuthException catch (e) {
-      // Handle FirebaseAuthException
-      print('FirebaseAuthException: $e');
-    } catch (e) {
-      // Handle other exceptions
-      print('Error: $e');
-    }
-  }
+//       if (!exists) {
+//         // Redirect to Edit_Profile()
+
+//         Navigator.push(
+//             context,
+//             // MaterialPageRoute(builder: (context) => Profile()),
+//             MaterialPageRoute(builder: (context) => Jobs_page()));
+//       } else {
+//         Navigator.push(
+//           context,
+//           MaterialPageRoute(builder: (context) => Jobs_page()),
+//         );
+//       }
+//     } on FirebaseAuthException catch (e) {
+//       // Handle FirebaseAuthException
+//       print('FirebaseAuthException: $e');
+//     } catch (e) {
+//       // Handle other exceptions
+//       print('Error: $e');
+//     }
+//   }
+// }
 }
