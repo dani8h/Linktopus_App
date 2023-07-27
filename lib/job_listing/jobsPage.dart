@@ -25,6 +25,7 @@ class _Jobs_pageState extends State<Jobs_page> {
   final ref = FirebaseDatabase.instance.ref();
   List<dynamic> companylist = [];
   List<dynamic> finallist = [];
+  List<dynamic> textfilteredlist = [];
   bool _loading = true;
   int n = 0;
   ScrollController _scrollController = new ScrollController();
@@ -116,6 +117,22 @@ class _Jobs_pageState extends State<Jobs_page> {
       // for (var e in finallist) {
       //   print(e.child('Salary').value);
       // }
+    }
+    textfilteredlist = finallist;
+  }
+
+  void textFilter(String t) {
+    if (t.isEmpty) {
+      textfilteredlist = finallist;
+    } else {
+      textfilteredlist = finallist
+          .where((element) => element
+              .child('Role')
+              .value
+              .toString()
+              .toLowerCase()
+              .contains(t.toLowerCase()))
+          .toList();
     }
   }
 
@@ -211,9 +228,10 @@ class _Jobs_pageState extends State<Jobs_page> {
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                     controller: _searchController,
                     placeholder: 'Search',
-                    onSubmitted: (String s) {
-                      print("string searched ${s}");
-                    },
+                    onChanged: (value) => textFilter(value),
+                    // onSubmitted: (String s) {
+                    //   print("string searched ${s}");
+                    // },
                   ),
                 ),
               ),
@@ -228,15 +246,9 @@ class _Jobs_pageState extends State<Jobs_page> {
                       )
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: finallist.length,
+                        itemCount: textfilteredlist.length,
                         itemBuilder: (BuildContext ctx, int index) {
-                          return _jdcard(
-                              finallist[index].child('Role').value,
-                              finallist[index].child('Company Name').value,
-                              finallist[index].child('Location').value,
-                              finallist[index].child('Description').value,
-                              finallist[index].child('Image').value,
-                              context);
+                          return _jdcard(textfilteredlist[index], context);
                         }),
               )
             ],
@@ -330,11 +342,21 @@ class _buttonRowState extends State<_buttonRow> {
   }
 }
 
-Widget _jdcard(String? role, String? cname, String? location, String? info,
-    String? imgUrl, BuildContext context) {
-  if (info == null) {
-    info = 'NA';
-  }
+Widget _jdcard(dynamic cdata, BuildContext context) {
+  // textfilteredlist[index].child('Role').value,
+  // textfilteredlist[index]
+  //     .child('Company Name')
+  //     .value,
+  // textfilteredlist[index].child('Location').value,
+  // textfilteredlist[index]
+  //     .child('Description')
+  //     .value,
+  // textfilteredlist[index].child('Image').value,
+  String info = cdata.child('Description').value.toString() == null
+      ? 'NA'
+      : cdata.child('Description').value.toString();
+  info = info.length > 80 ? '${info.substring(0, 80)}...Read more' : info;
+
   return Container(
     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
     padding: EdgeInsets.all(10),
@@ -347,7 +369,7 @@ Widget _jdcard(String? role, String? cname, String? location, String? info,
           padding: EdgeInsets.only(right: 15),
           child: CircleAvatar(
             radius: 20,
-            backgroundImage: NetworkImage(imgUrl!),
+            backgroundImage: NetworkImage(cdata.child('Image').value),
           ),
         ),
         Expanded(
@@ -355,15 +377,21 @@ Widget _jdcard(String? role, String? cname, String? location, String? info,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              role ?? 'NA',
+              cdata.child('Role').value.toString() == null
+                  ? 'NA'
+                  : cdata.child('Role').value.toString(),
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
             ),
             Text(
-              cname ?? 'NA',
+              cdata.child('Company Name').value.toString() == null
+                  ? 'NA'
+                  : cdata.child('Company Name').value.toString(),
               style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
             ),
             Text(
-              location ?? 'NA',
+              cdata.child('Location').value.toString() == null
+                  ? 'NA'
+                  : cdata.child('Location').value.toString(),
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 13,
@@ -371,7 +399,7 @@ Widget _jdcard(String? role, String? cname, String? location, String? info,
             ),
             SizedBox(height: 10),
             Text(
-              info!.length > 80 ? '${info.substring(0, 80)}...Read more' : info,
+              info,
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
             )
           ],
@@ -391,7 +419,7 @@ Widget _jdcard(String? role, String? cname, String? location, String? info,
                     context: context,
                     isScrollControlled: true,
                     builder: (BuildContext context) {
-                      return Bottomsheet();
+                      return Bottomsheet(jobdata: cdata);
                     },
                   );
                 },
