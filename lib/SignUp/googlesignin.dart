@@ -7,12 +7,12 @@ import 'package:linktopus_app/login/landing_page.dart';
 
 bool _passwordVisible = false;
 
-class GoogleSignIn extends StatefulWidget {
+class EmailSignin extends StatefulWidget {
   @override
-  State<GoogleSignIn> createState() => _GoogleSignInState();
+  State<EmailSignin> createState() => _EmailSigninState();
 }
 
-class _GoogleSignInState extends State<GoogleSignIn> {
+class _EmailSigninState extends State<EmailSignin> {
   TextEditingController _mailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   @override
