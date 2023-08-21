@@ -657,7 +657,8 @@ class _ProfileState extends State<Profile> {
                               ),
                               ignoreBlank: false,
                               autoValidateMode: AutovalidateMode.disabled,
-                              selectorTextStyle: TextStyle(color: Colors.black),
+                              selectorTextStyle:
+                                  GoogleFonts.poppins(color: Colors.black),
                               initialValue: number,
                               hintText: phoneNumber == ''
                                   ? ''
@@ -717,7 +718,7 @@ class _ProfileState extends State<Profile> {
                                 // icon: const Icon(Icons.arrow_downward),
                                 // iconSize: 24,
                                 elevation: 16,
-                                style: const TextStyle(
+                                style: GoogleFonts.poppins(
                                   color: Colors.black,
                                 ),
                                 // underline: Container(

@@ -241,7 +241,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                         horizontal: size.width * 0.1),
                     child: Text(
                       item['title'],
-                      style: TextStyle(fontSize: size.width * 0.035),
+                      style: GoogleFonts.poppins(fontSize: size.width * 0.035),
                     )),
                 body: Container(
                   padding: EdgeInsets.only(

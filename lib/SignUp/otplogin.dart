@@ -85,7 +85,7 @@ class _OtpPageState extends State<OtpPage> {
                     ),
                     Text(
                       "|",
-                      style: TextStyle(fontSize: fem * 38, color: Colors.grey),
+                      style: GoogleFonts.poppins(fontSize: fem * 38, color: Colors.grey),
                     ),
                     SizedBox(
                       width: fem * 15,

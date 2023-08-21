@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/profile.dart';
 import 'filter_popup.dart';
 import 'bottom_sheet.dart';
@@ -217,7 +218,8 @@ class _Jobs_pageState extends State<Jobs_page> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Job listings',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
+                  style: GoogleFonts.poppins(
+                      fontSize: 25, fontWeight: FontWeight.w700),
                 ),
               ),
               //search bar
@@ -282,7 +284,7 @@ class _buttonRowState extends State<_buttonRow> {
               children: [
                 Text(
                   'Sort',
-                  style: TextStyle(color: Colors.black),
+                  style: GoogleFonts.poppins(color: Colors.black),
                 ),
                 Icon(
                   Icons.sort,
@@ -301,7 +303,7 @@ class _buttonRowState extends State<_buttonRow> {
                 children: [
                   Text(
                     'Bookmarked',
-                    style: TextStyle(color: Colors.black),
+                    style: GoogleFonts.poppins(color: Colors.black),
                   ),
                   Icon(
                     Icons.bookmark_border,
@@ -326,7 +328,7 @@ class _buttonRowState extends State<_buttonRow> {
                 children: [
                   Text(
                     'Filter',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                         color:
                             widget.filterapplied ? Colors.blue : Colors.black),
                   ),
