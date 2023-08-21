@@ -47,7 +47,7 @@ class _SlidingScreenState extends State<SlidingScreen> {
     } else {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => GoogleSignIn()),
+        MaterialPageRoute(builder: (context) => EmailSignin()),
       );
     }
   }
