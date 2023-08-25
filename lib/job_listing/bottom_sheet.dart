@@ -136,56 +136,77 @@ class _BottomsheetState extends State<Bottomsheet> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Icon(
-                          FontAwesomeIcons.google,
-                          size: size.width * 0.12,
-                          color: Colors.red,
-                        ),
+                        // Icon(
+                        //   FontAwesomeIcons.google,
+                        //   size: size.width * 0.12,
+                        //   color: Colors.red,
+                        // ),
+                        CircleAvatar(
+                            radius: size.width * 0.1,
+                            backgroundImage: NetworkImage(
+                                widget.jobdata.child('Image').value)),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.jobdata.child('Role').value.toString() ==
-                                      null
-                                  ? 'NA'
-                                  : widget.jobdata
-                                      .child('Role')
-                                      .value
-                                      .toString(),
-                              style: GoogleFonts.poppins(
-                                  fontSize: size.width * 0.04,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            Text(
-                              widget.jobdata
-                                          .child('Company Name')
+                            Container(
+                              width: size.width * 0.78,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  widget.jobdata
+                                              .child('Role')
+                                              .value
+                                              .toString() ==
+                                          null
+                                      ? 'NA'
+                                      : widget.jobdata
+                                          .child('Role')
                                           .value
-                                          .toString() ==
-                                      null
-                                  ? 'NA'
-                                  : widget.jobdata
-                                      .child('Company Name')
-                                      .value
-                                      .toString(),
-                              style: GoogleFonts.poppins(
-                                  fontSize: size.width * 0.043,
-                                  fontWeight: FontWeight.w400),
+                                          .toString(),
+                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.poppins(
+                                      fontSize: size.width * 0.04,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
                             ),
-                            Text(
-                              widget.jobdata
-                                          .child('Location')
-                                          .value
-                                          .toString() ==
-                                      null
-                                  ? 'NA'
-                                  : widget.jobdata
-                                      .child('Location')
-                                      .value
-                                      .toString(),
-                              style: GoogleFonts.poppins(
-                                  color: Color(0xffA9A9A9),
-                                  fontSize: size.width * 0.04,
-                                  fontWeight: FontWeight.w600),
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(
+                                widget.jobdata
+                                            .child('Company Name')
+                                            .value
+                                            .toString() ==
+                                        null
+                                    ? 'NA'
+                                    : widget.jobdata
+                                        .child('Company Name')
+                                        .value
+                                        .toString(),
+                                style: GoogleFonts.poppins(
+                                    fontSize: size.width * 0.043,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(
+                                widget.jobdata
+                                            .child('Location')
+                                            .value
+                                            .toString() ==
+                                        null
+                                    ? 'NA'
+                                    : widget.jobdata
+                                        .child('Location')
+                                        .value
+                                        .toString(),
+                                style: GoogleFonts.poppins(
+                                    color: Color(0xffA9A9A9),
+                                    fontSize: size.width * 0.04,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             ),
                           ],
                         )
@@ -244,6 +265,29 @@ class _BottomsheetState extends State<Bottomsheet> {
                             ),
                             child: GestureDetector(
                               onTap: () {
+                                if (selectedCardName == null) {
+                                  // Show a dialog when no file is selected
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('No File Selected'),
+                                        content: Text(
+                                            'Please select a file before sending the email.'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); // Close the dialog
+                                            },
+                                            child: Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  return; // Exit the function if no file is selected
+                                }
                                 _downloadFileAndFetchPath(
                                     selectedCardResumeUrl!, selectedCardName!);
 
@@ -538,7 +582,9 @@ class _BottomsheetState extends State<Bottomsheet> {
         },
       );
 
-      if (confirm) {}
+      if (confirm) {
+        selectedCardFilePath = file.path;
+      }
     } else {
       // User canceled the file selection
 
