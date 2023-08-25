@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/SignUp/googlesignin.dart';
 import 'package:linktopus_app/SplashScreen/getstarted.dart';
@@ -31,7 +32,7 @@ class _SlidingScreenState extends State<SlidingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      Navigator.push(
+      Navigator.pop(
         context,
         MaterialPageRoute(builder: (context) => GetStarted()),
       );
@@ -108,7 +109,9 @@ class _SlidingScreenState extends State<SlidingScreen> {
                   SizedBox(
                     height: height * 0.2,
                   ),
-                  Image.asset('assets/images/img_screen_1.png'),
+                  SvgPicture.asset(
+                    'assets/images/img_screen_1.svg',
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: Text(
@@ -142,7 +145,7 @@ class _SlidingScreenState extends State<SlidingScreen> {
                   SizedBox(
                     height: height * 0.2,
                   ),
-                  Image.asset('assets/images/img_screen_2.png'),
+                  SvgPicture.asset('assets/images/img_screen_2.svg'),
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: Text(
@@ -176,7 +179,7 @@ class _SlidingScreenState extends State<SlidingScreen> {
                   SizedBox(
                     height: height * 0.2,
                   ),
-                  Image.asset('assets/images/img_screen_3.png'),
+                  SvgPicture.asset('assets/images/img_screen_3.svg'),
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: Text(

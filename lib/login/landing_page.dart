@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:linktopus_app/job_listing/jobsPage.dart';
@@ -67,7 +68,7 @@ class _Landing_PageState extends State<Landing_Page> {
                           //  mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Image.asset("assets/images/google_icon.png"),
+                            SvgPicture.asset("assets/images/google_icon.svg"),
                             SizedBox(
                               width: width * 0.17,
                             ),
@@ -133,7 +134,7 @@ class _Landing_PageState extends State<Landing_Page> {
                           //  mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Image.asset("assets/images/apple_icon.png"),
+                            SvgPicture.asset("assets/images/apple_icon.svg"),
                             SizedBox(
                               width: width * 0.19,
                             ),

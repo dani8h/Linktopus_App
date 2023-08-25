@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/SignUp/codeverification.dart';
@@ -108,7 +109,7 @@ class _EmailSigninState extends State<EmailSignin> {
                   controller: _mailController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'example@gmail.com',
+                    hintText: 'Enter the email',
                     hintStyle: GoogleFonts.poppins(
                       fontSize: 15 * ffem,
                       fontWeight: FontWeight.w500,

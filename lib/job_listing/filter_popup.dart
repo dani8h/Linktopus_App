@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/job_listing/jobsPage.dart';
 import '/Widgets/Customtextbox_widget.dart';
@@ -37,8 +38,8 @@ class _JobPopupState extends State<JobPopup> {
     });
   }
 
-//Container for work type
-  Widget buildWorkTypeContainer(
+//Made this widget for the first container of work type(in-office) because the image needed some space at the top and UI was not looking good
+  Widget buildWorkTypeContainer1(
       int index, String imagePath, String text, double screenWidth) {
     Color borderColor = workTypes.contains(text) ? Colors.black : Colors.grey;
 
@@ -62,7 +63,10 @@ class _JobPopupState extends State<JobPopup> {
           ),
           child: Row(
             children: [
-              Image.asset(imagePath),
+              Padding(
+                padding: const EdgeInsets.only(top: 6.0),
+                child: SvgPicture.asset(imagePath),
+              ),
               SizedBox(width: 3.0),
               Text(
                 text,
@@ -73,6 +77,51 @@ class _JobPopupState extends State<JobPopup> {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+//Container for work type
+  Widget buildWorkTypeContainer(
+      int index, String imagePath, String text, double screenWidth) {
+    Color borderColor = workTypes.contains(text) ? Colors.black : Colors.grey;
+
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            if (workTypes.contains(text)) {
+              workTypes.remove(text);
+            } else {
+              workTypes.add(text);
+            }
+          });
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+          decoration: BoxDecoration(
+            border: Border.all(color: borderColor),
+            borderRadius: BorderRadius.circular(7),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(7.0),
+            child: Row(
+              children: [
+                SvgPicture.asset(imagePath),
+                SizedBox(width: 3.0),
+                Text(
+                  text,
+                  style: GoogleFonts.poppins(
+                    fontSize: screenWidth * 0.03,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey.shade800,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -124,21 +173,21 @@ class _JobPopupState extends State<JobPopup> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    buildWorkTypeContainer(
+                    buildWorkTypeContainer1(
                       0,
-                      'assets/images/office.png',
+                      'assets/images/office.svg',
                       'In-Office',
                       screenWidth,
                     ),
                     buildWorkTypeContainer(
                       1,
-                      'assets/images/home.png',
+                      'assets/images/home.svg',
                       'Work from Home',
                       screenWidth,
                     ),
                     buildWorkTypeContainer(
                       2,
-                      'assets/images/hybrid.png',
+                      'assets/images/hybrid.svg',
                       'Hybrid',
                       screenWidth,
                     ),

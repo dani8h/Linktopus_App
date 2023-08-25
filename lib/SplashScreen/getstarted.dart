@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/SplashScreen/sliding_screen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class GetStarted extends StatelessWidget {
   const GetStarted({super.key});
@@ -36,8 +37,11 @@ class GetStarted extends StatelessWidget {
                   height: size.height * 0.1,
                   width: size.width * 0.35,
                 ),
-                Image.asset(
-                  'assets/images/Onboarding 1 figure.png',
+                SizedBox(
+                  height: size.height * 0.025,
+                ),
+                SvgPicture.asset(
+                  'assets/images/Onboarding_1.svg',
                   height: size.height * 0.4,
                   width: size.width * 0.5,
                 ),
@@ -47,30 +51,27 @@ class GetStarted extends StatelessWidget {
                         // mainAxisAlignment: MainAxisAlignment.center,
                         //crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            'Jobs at your fingertips!',
-                            style: GoogleFonts.poppins(
-                              fontSize: size.height * 0.036,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
+                          Center(
+                            child: Text(
+                              'Jobs at your fingertips!',
+                              style: GoogleFonts.poppins(
+                                fontSize: size.height * 0.036,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                           SizedBox(
                             height: size.height * 0.01,
                           ),
                           Text(
-                            'Match with recruiters or employees',
+                            'Match with recruiters or employees easily with Linktopus Jobs!',
                             style: GoogleFonts.poppins(
                               fontSize: size.height * 0.022,
                               color: Color(0xffCFCFCF),
                             ),
-                          ),
-                          Text(
-                            'easily with Linktopus Jobr!',
-                            style: GoogleFonts.poppins(
-                              fontSize: size.height * 0.022,
-                              color: Color(0xffCFCFCF),
-                            ),
+                            textAlign: TextAlign.center,
                           ),
                           SizedBox(
                             height: size.height * 0.05,
@@ -96,16 +97,22 @@ class GetStarted extends StatelessWidget {
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      'Lets get started',
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.black,
-                                        fontSize: size.height * 0.028,
-                                        fontWeight: FontWeight.w400,
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Let\'s get started',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.black,
+                                          fontSize: size.height * 0.028,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
+                                    ),
+                                    SizedBox(
+                                      width: size.width * 0.03,
                                     ),
                                     Icon(
                                       Icons.arrow_forward,
