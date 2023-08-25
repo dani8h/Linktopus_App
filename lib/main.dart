@@ -15,6 +15,7 @@ import 'package:linktopus_app/SignUp/otplogin.dart';
 import 'package:linktopus_app/profile.dart';
 
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'package:linktopus_app/profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +26,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(
@@ -50,10 +53,20 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      color: Colors.white,
-      title: 'Flutter Demo',
-      theme: themeData,
-      home: Jobs_page(),
+      home: Homepage(),
+    );
+  }
+}
+
+class Homepage extends StatelessWidget {
+  const Homepage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: GetStarted(),
+      ),
     );
   }
 }
