@@ -574,9 +574,11 @@ class _BottomsheetState extends State<Bottomsheet> {
                 onPressed: () => Navigator.of(context).pop(false),
               ),
               TextButton(
-                child: Text("Yes"),
-                onPressed: () => Navigator.of(context).pop(true),
-              ),
+                  child: Text("Yes"),
+                  onPressed: () {
+                    sendmail();
+                    Navigator.of(context).pop(true);
+                  }),
             ],
           );
         },
