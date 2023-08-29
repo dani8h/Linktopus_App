@@ -23,14 +23,14 @@ class Jobs_page extends StatefulWidget {
 }
 
 class _Jobs_pageState extends State<Jobs_page> {
-  TextEditingController _searchController = new TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   final ref = FirebaseDatabase.instance.ref();
   List<dynamic> companylist = [];
   List<dynamic> finallist = [];
   List<dynamic> textfilteredlist = [];
   bool _loading = true;
   int n = 0;
-  ScrollController _scrollController = new ScrollController();
+  final ScrollController _scrollController = ScrollController();
   bool gettingmore = false;
   final FirebaseAuth auth = FirebaseAuth.instance;
   var uid;
@@ -41,11 +41,11 @@ class _Jobs_pageState extends State<Jobs_page> {
     final User? user = auth.currentUser;
     uid = user?.uid;
     if (uid != null) {
-      String? path = 'users/${uid}/ProfilePic';
-      print('image path is ${path}');
+      String? path = 'users/$uid/ProfilePic';
+      print('image path is $path');
       final storageRef = FirebaseStorage.instance.ref().child(path);
       ImgUrl = await storageRef.getDownloadURL();
-      print('image url ${ImgUrl}');
+      print('image url $ImgUrl');
     }
   }
 
@@ -80,7 +80,7 @@ class _Jobs_pageState extends State<Jobs_page> {
       if (widget.myfilter['Companies'] != null) {
         List<String> companyfilter = [];
         companyfilter.addAll(widget.myfilter['Companies']);
-        if (companyfilter.length > 0) {
+        if (companyfilter.isNotEmpty) {
           finallist = finallist
               .where((element) =>
                   companyfilter.contains(element.child('Company Name').value))
@@ -175,7 +175,7 @@ class _Jobs_pageState extends State<Jobs_page> {
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
           child: Column(
             children: [
               Row(
@@ -186,14 +186,14 @@ class _Jobs_pageState extends State<Jobs_page> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Profile(),
+                          builder: (context) => const Profile(),
                         ),
                       );
                     },
                     child: CircleAvatar(
                         radius: 25,
                         backgroundImage: ImgUrl == null
-                            ? AssetImage('assets/images/profilepic.jpg')
+                            ? const AssetImage('assets/images/profilepic.jpg')
                             : NetworkImage(ImgUrl!) as ImageProvider),
                   ),
                   GestureDetector(
@@ -214,7 +214,7 @@ class _Jobs_pageState extends State<Jobs_page> {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Align(
@@ -227,10 +227,10 @@ class _Jobs_pageState extends State<Jobs_page> {
               ),
               //search bar
               Container(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 child: Center(
                   child: CupertinoSearchTextField(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                     controller: _searchController,
                     placeholder: 'Search',
                     onChanged: (value) => textFilter(value),
@@ -241,12 +241,12 @@ class _Jobs_pageState extends State<Jobs_page> {
                 ),
               ),
               _buttonRow(widget.filterapplied),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Expanded(
-                child: companylist.length == 0
-                    ? Center(
+                child: companylist.isEmpty
+                    ? const Center(
                         child: Text('No results found ...'),
                       )
                     : ListView.builder(
@@ -272,7 +272,7 @@ class _Jobs_pageState extends State<Jobs_page> {
 
 class _buttonRow extends StatefulWidget {
   final bool filterapplied;
-  _buttonRow(this.filterapplied);
+  const _buttonRow(this.filterapplied);
 
   @override
   State<_buttonRow> createState() => _buttonRowState();
@@ -295,7 +295,7 @@ class _buttonRowState extends State<_buttonRow> {
                   'Sort',
                   style: GoogleFonts.poppins(color: Colors.black),
                 ),
-                Icon(
+                const Icon(
                   Icons.sort,
                   color: Colors.black,
                 )
@@ -314,7 +314,7 @@ class _buttonRowState extends State<_buttonRow> {
                     'Bookmarked',
                     style: GoogleFonts.poppins(color: Colors.black),
                   ),
-                  Icon(
+                  const Icon(
                     Icons.bookmark_border,
                     color: Colors.pinkAccent,
                   )
@@ -326,7 +326,7 @@ class _buttonRowState extends State<_buttonRow> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return JobPopup();
+                  return const JobPopup();
                 },
               );
             },
@@ -363,21 +363,19 @@ Widget _jdcard(dynamic cdata, BuildContext context) {
   //     .child('Description')
   //     .value,
   // textfilteredlist[index].child('Image').value,
-  String info = cdata.child('Description').value.toString() == null
-      ? 'NA'
-      : cdata.child('Description').value.toString();
+  String info = cdata.child('Description').value.toString() ?? 'NA';
   info = info.length > 80 ? '${info.substring(0, 80)}...Read more' : info;
 
   return Container(
-    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-    padding: EdgeInsets.all(10),
+    margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+    padding: const EdgeInsets.all(10),
     decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10), color: Color(0xffE5E5E5)),
+        borderRadius: BorderRadius.circular(10), color: const Color(0xffE5E5E5)),
     child: Row(
       // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.only(right: 15),
+          padding: const EdgeInsets.only(right: 15),
           child: CircleAvatar(
             radius: 20,
             backgroundImage: NetworkImage(cdata.child('Image').value),
@@ -388,30 +386,24 @@ Widget _jdcard(dynamic cdata, BuildContext context) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              cdata.child('Role').value.toString() == null
-                  ? 'NA'
-                  : cdata.child('Role').value.toString(),
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+              cdata.child('Role').value.toString() ?? 'NA',
+              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
             ),
             Text(
-              cdata.child('Company Name').value.toString() == null
-                  ? 'NA'
-                  : cdata.child('Company Name').value.toString(),
-              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+              cdata.child('Company Name').value.toString() ?? 'NA',
+              style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
             ),
             Text(
-              cdata.child('Location').value.toString() == null
-                  ? 'NA'
-                  : cdata.child('Location').value.toString(),
-              style: TextStyle(
+              cdata.child('Location').value.toString() ?? 'NA',
+              style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 13,
                   color: Colors.grey),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               info,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
             )
           ],
         )),
@@ -422,7 +414,7 @@ Widget _jdcard(dynamic cdata, BuildContext context) {
                 onPressed: () {
                   // print('button pressed');
                 },
-                icon: Icon(Icons.bookmark_add_outlined)),
+                icon: const Icon(Icons.bookmark_add_outlined)),
             IconButton(
                 onPressed: () {
                   showModalBottomSheet<void>(
@@ -434,7 +426,7 @@ Widget _jdcard(dynamic cdata, BuildContext context) {
                     },
                   );
                 },
-                icon: Icon(Icons.chevron_right))
+                icon: const Icon(Icons.chevron_right))
           ],
         )
       ],

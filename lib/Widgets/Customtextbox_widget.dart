@@ -8,7 +8,7 @@ class CustomTextbox extends StatefulWidget {
   final Function(bool) onPressed;
 
   const CustomTextbox(
-      {required this.text, required this.isPressed, required this.onPressed});
+      {super.key, required this.text, required this.isPressed, required this.onPressed});
 
   @override
   _CustomTextboxState createState() => _CustomTextboxState();
@@ -28,25 +28,25 @@ class _CustomTextboxState extends State<CustomTextbox> {
     return Ink(
       child: InkWell(
         splashColor: _isPressed
-            ? Color(0xffE02D72).withOpacity(0.5)
-            : Color.fromRGBO(231, 168, 193, 1),
+            ? const Color(0xffE02D72).withOpacity(0.5)
+            : const Color.fromRGBO(231, 168, 193, 1),
         splashFactory: InkRipple.splashFactory,
         borderRadius: BorderRadius.circular(39),
         child: Container(
           // width: MediaQuery.of(context).size.width * 0.22,
           //height: MediaQuery.of(context).size.height * 0.044,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(39),
               topRight: Radius.circular(39),
               bottomLeft: Radius.circular(39),
               bottomRight: Radius.circular(39),
             ),
             color: _isPressed
-                ? Color(0xffE02D72).withOpacity(0.5)
-                : Color.fromRGBO(224, 44, 114, 0.10000000149011612),
+                ? const Color(0xffE02D72).withOpacity(0.5)
+                : const Color.fromRGBO(224, 44, 114, 0.10000000149011612),
             border: Border.all(
-              color: Color.fromRGBO(231, 168, 193, 1),
+              color: const Color.fromRGBO(231, 168, 193, 1),
               width: 1,
             ),
           ),

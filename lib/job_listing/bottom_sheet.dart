@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -18,7 +16,7 @@ const GMAIL_SCHEMA = 'com.google.android.gm';
 
 class Bottomsheet extends StatefulWidget {
   final dynamic jobdata;
-  Bottomsheet({required this.jobdata});
+  const Bottomsheet({super.key, required this.jobdata});
 
   @override
   State<Bottomsheet> createState() => _BottomsheetState();
@@ -81,9 +79,7 @@ class _BottomsheetState extends State<Bottomsheet> {
         if (index == 0) {
           title = 'Job Description';
           description =
-              widget.jobdata.child('Description').value.toString() == null
-                  ? 'NA'
-                  : widget.jobdata.child('Description').value.toString();
+              widget.jobdata.child('Description').value.toString() ?? 'NA';
         } else if (index == 1) {
           title = 'Minimum Qualifications';
           description = widget.jobdata.child('Experience').value.toString();
@@ -116,7 +112,7 @@ class _BottomsheetState extends State<Bottomsheet> {
       expand: false,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30),
@@ -127,7 +123,7 @@ class _BottomsheetState extends State<Bottomsheet> {
           ),
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: size.height * 0.2,
                 width: double.infinity,
                 child: Column(
@@ -207,6 +203,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                                     fontSize: size.width * 0.04,
                                     fontWeight: FontWeight.w600),
                               ),
+
                             ),
                           ],
                         )
@@ -215,10 +212,10 @@ class _BottomsheetState extends State<Bottomsheet> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        TagWidget('Top Rated', Icon(Icons.star)),
-                        TagWidget('In Office', Icon(Icons.apartment)),
-                        TagWidget('For You', Icon(Icons.favorite_outlined)),
-                        TagWidget('Rupees', Icon(Icons.currency_rupee)),
+                        TagWidget('Top Rated', const Icon(Icons.star)),
+                        TagWidget('In Office', const Icon(Icons.apartment)),
+                        TagWidget('For You', const Icon(Icons.favorite_outlined)),
+                        TagWidget('Rupees', const Icon(Icons.currency_rupee)),
                       ],
                     ),
                   ],
@@ -229,11 +226,11 @@ class _BottomsheetState extends State<Bottomsheet> {
               ),
               Flexible(
                 child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(bottom: 50),
+                        padding: const EdgeInsets.only(bottom: 50),
                         child: expanel(),
                       ),
                       chooseresume(),
@@ -253,7 +250,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              gradient: LinearGradient(
+                              gradient: const LinearGradient(
                                 begin: Alignment(-1.338, -1),
                                 end: Alignment(1.325, 1),
                                 colors: <Color>[
@@ -330,9 +327,9 @@ class _BottomsheetState extends State<Bottomsheet> {
       elevation: 2,
       borderRadius: BorderRadius.circular(6),
       child: Container(
-        padding: EdgeInsets.all(2),
+        padding: const EdgeInsets.all(2),
         child: Center(
-          child: Row(children: [icn, SizedBox(width: 0.1), Text(str)]),
+          child: Row(children: [icn, const SizedBox(width: 0.1), Text(str)]),
         ),
       ),
     );
@@ -371,7 +368,7 @@ class _BottomsheetState extends State<Bottomsheet> {
             _items[index]['isExpanded'] = !isExpanded;
           });
         },
-        animationDuration: Duration(milliseconds: 600),
+        animationDuration: const Duration(milliseconds: 600),
         children: _items
             .map(
               (item) => ExpansionPanel(
@@ -408,7 +405,7 @@ class _BottomsheetState extends State<Bottomsheet> {
       //height: 300,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 231, 229, 229),
+        color: const Color.fromARGB(255, 231, 229, 229),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
@@ -430,9 +427,9 @@ class _BottomsheetState extends State<Bottomsheet> {
               future: fetchResumes(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
-                  return Text('User not logged in');
+                  return const Text('User not logged in');
                 } else {
                   final resumes = snapshot.data;
 
@@ -455,7 +452,7 @@ class _BottomsheetState extends State<Bottomsheet> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
               child: Card(
-                color: Color(0xff2B3688),
+                color: const Color(0xff2B3688),
                 elevation: 4,
                 child: GestureDetector(
                   onTap: () => selectFile(),
@@ -541,7 +538,7 @@ class _BottomsheetState extends State<Bottomsheet> {
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 70, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 15),
             child: Text(resumeName),
           ),
         ),
@@ -566,11 +563,11 @@ class _BottomsheetState extends State<Bottomsheet> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Upload file?"),
+            title: const Text("Upload file?"),
             content: Text("Do you want to upload $fileName?"),
             actions: <Widget>[
               TextButton(
-                child: Text("No"),
+                child: const Text("No"),
                 onPressed: () => Navigator.of(context).pop(false),
               ),
               TextButton(
@@ -595,7 +592,7 @@ class _BottomsheetState extends State<Bottomsheet> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Error'),
-          content: Text('No file selected'),
+          content: const Text('No file selected'),
           actions: [
             TextButton(
               onPressed: () {
@@ -619,7 +616,7 @@ class PDFViewerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('PDF Viewer'),
+        title: const Text('PDF Viewer'),
       ),
       body: SfPdfViewer.network(
         url,
