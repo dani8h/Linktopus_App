@@ -8,6 +8,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:file_picker/file_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_mailer/flutter_mailer.dart';
+
+const GMAIL_SCHEMA = 'com.google.android.gm';
 
 class Bottomsheet extends StatefulWidget {
   final dynamic jobdata;
@@ -18,6 +23,48 @@ class Bottomsheet extends StatefulWidget {
 }
 
 class _BottomsheetState extends State<Bottomsheet> {
+  int selectedCardIndex = -1;
+  String? selectedCardName; // Variable to store the selected card's name
+  String? selectedCardResumeUrl;
+  String? selectedCardFilePath;
+
+  Future<void> sendmail() async {
+    final MailOptions mailOptions = MailOptions(
+      subject:
+          'Job Application : ${widget.jobdata.child('tags').value}-${widget.jobdata.child('Role').value}',
+      isHTML: true,
+      recipients: ['${widget.jobdata.child('Email').value}'],
+      attachments: [
+        selectedCardFilePath!,
+      ],
+      appSchema: GMAIL_SCHEMA,
+    );
+    String platformResponse;
+    try {
+      final MailerResponse response = await FlutterMailer.send(mailOptions);
+      print("here");
+      switch (response) {
+        case MailerResponse.saved:
+          platformResponse = 'mail was saved to draft';
+          break;
+        case MailerResponse.sent:
+          platformResponse = 'mail was sent';
+          break;
+        case MailerResponse.cancelled:
+          platformResponse = 'mail was cancelled';
+          break;
+        case MailerResponse.android:
+          platformResponse = 'intent was success';
+          break;
+        default:
+          platformResponse = 'unknown';
+          break;
+      }
+    } catch (error) {
+      platformResponse = error.toString();
+    }
+  }
+
   List<Map<String, dynamic>> _items = [];
   @override
   void initState() {
@@ -56,6 +103,7 @@ class _BottomsheetState extends State<Bottomsheet> {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize to -1 (no card selected)
     var size = MediaQuery.of(context).size;
     return DraggableScrollableSheet(
       initialChildSize: 0.75,
@@ -84,32 +132,78 @@ class _BottomsheetState extends State<Bottomsheet> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Icon(
-                          FontAwesomeIcons.google,
-                          size: size.width * 0.12,
-                          color: Colors.red,
-                        ),
+                        // Icon(
+                        //   FontAwesomeIcons.google,
+                        //   size: size.width * 0.12,
+                        //   color: Colors.red,
+                        // ),
+                        CircleAvatar(
+                            radius: size.width * 0.1,
+                            backgroundImage: NetworkImage(
+                                widget.jobdata.child('Image').value)),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Senior Software Engineer',
-                              style: GoogleFonts.poppins(
-                                  fontSize: size.width * 0.04,
-                                  fontWeight: FontWeight.w700),
+                            Container(
+                              width: size.width * 0.78,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  widget.jobdata
+                                              .child('Role')
+                                              .value
+                                              .toString() ==
+                                          null
+                                      ? 'NA'
+                                      : widget.jobdata
+                                          .child('Role')
+                                          .value
+                                          .toString(),
+                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.poppins(
+                                      fontSize: size.width * 0.04,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
                             ),
-                            Text(
-                              'Google LLP',
-                              style: GoogleFonts.poppins(
-                                  fontSize: size.width * 0.043,
-                                  fontWeight: FontWeight.w400),
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(
+                                widget.jobdata
+                                            .child('Company Name')
+                                            .value
+                                            .toString() ==
+                                        null
+                                    ? 'NA'
+                                    : widget.jobdata
+                                        .child('Company Name')
+                                        .value
+                                        .toString(),
+                                style: GoogleFonts.poppins(
+                                    fontSize: size.width * 0.043,
+                                    fontWeight: FontWeight.w400),
+                              ),
                             ),
-                            Text(
-                              'Bangalore, Karnataka(In-office)',
-                              style: GoogleFonts.poppins(
-                                  color: const Color(0xffA9A9A9),
-                                  fontSize: size.width * 0.04,
-                                  fontWeight: FontWeight.w600),
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(
+                                widget.jobdata
+                                            .child('Location')
+                                            .value
+                                            .toString() ==
+                                        null
+                                    ? 'NA'
+                                    : widget.jobdata
+                                        .child('Location')
+                                        .value
+                                        .toString(),
+                                style: GoogleFonts.poppins(
+                                    color: Color(0xffA9A9A9),
+                                    fontSize: size.width * 0.04,
+                                    fontWeight: FontWeight.w600),
+                              ),
+
                             ),
                           ],
                         )
@@ -167,7 +261,36 @@ class _BottomsheetState extends State<Bottomsheet> {
                               ),
                             ),
                             child: GestureDetector(
-                              onTap: () => null,
+                              onTap: () {
+                                if (selectedCardName == null) {
+                                  // Show a dialog when no file is selected
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('No File Selected'),
+                                        content: Text(
+                                            'Please select a file before sending the email.'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); // Close the dialog
+                                            },
+                                            child: Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  return; // Exit the function if no file is selected
+                                }
+                                _downloadFileAndFetchPath(
+                                    selectedCardResumeUrl!, selectedCardName!);
+
+                                //now redirect to gmail using some plugin:
+                                sendmail();
+                              },
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: size.width * 0.1,
@@ -210,6 +333,28 @@ class _BottomsheetState extends State<Bottomsheet> {
         ),
       ),
     );
+  }
+
+  Future<void> _downloadFileAndFetchPath(String fileUrl, String title) async {
+    try {
+      // Download the file from the URL
+      var response = await http.get(Uri.parse(fileUrl));
+
+      // Get the temporary directory path on the device
+      Directory tempDir = await getTemporaryDirectory();
+
+      // Create a new file in the temporary directory
+      File file = File('${tempDir.path}/${title}.pdf');
+
+      // Write the file content from the response body
+      await file.writeAsBytes(response.bodyBytes);
+
+      setState(() {
+        selectedCardFilePath = file.path; // Save the local file path
+      });
+    } catch (e) {
+      print('Error during file download: $e');
+    }
   }
 
   Widget expanel() {
@@ -287,10 +432,17 @@ class _BottomsheetState extends State<Bottomsheet> {
                   return const Text('User not logged in');
                 } else {
                   final resumes = snapshot.data;
+
                   return ListView.builder(
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return resumecard(resumes![index], resumeUrls[index]);
+                      return resumecard(
+                        resumes![index],
+                        resumeUrls[index],
+                        selectedCardIndex == index,
+                        () => toggleCardSelection(
+                            index, resumes[index], resumeUrls[index]),
+                      );
                     },
                     itemCount: resumes?.length,
                   );
@@ -356,20 +508,24 @@ class _BottomsheetState extends State<Bottomsheet> {
     }
   }
 
-  bool isSelected = false; // New variable to track the card's selection state
-  Widget resumecard(String resumeName, String resumeUrl) {
+  void toggleCardSelection(int index, String resumeName, String resumeUrl) {
+    setState(() {
+      selectedCardName = resumeName; // Store the selected card's name
+      selectedCardResumeUrl = resumeUrl;
+      selectedCardIndex = index; // Update the selected card index
+    });
+  }
+
+  Widget resumecard(String resumeName, String resumeUrl, bool isSelected,
+      Function() onLongPress) {
     var size = MediaQuery.of(context).size;
 
     return GestureDetector(
       onTap: () {
+        print(resumeUrl);
         openPDF(resumeUrl);
       },
-      onLongPress: () {
-        setState(() {
-          isSelected =
-              !isSelected; // Set the selection state to true on long press
-        });
-      },
+      onLongPress: onLongPress,
       child: Card(
         elevation: 3.0,
         child: Container(
@@ -415,15 +571,19 @@ class _BottomsheetState extends State<Bottomsheet> {
                 onPressed: () => Navigator.of(context).pop(false),
               ),
               TextButton(
-                child: const Text("Yes"),
-                onPressed: () => Navigator.of(context).pop(true),
-              ),
+                  child: Text("Yes"),
+                  onPressed: () {
+                    sendmail();
+                    Navigator.of(context).pop(true);
+                  }),
             ],
           );
         },
       );
 
-      if (confirm) {}
+      if (confirm) {
+        selectedCardFilePath = file.path;
+      }
     } else {
       // User canceled the file selection
 

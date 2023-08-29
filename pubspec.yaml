@@ -28,8 +28,10 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   syncfusion_flutter_pdfviewer: ^20.2.8
   firebase_database: ^10.2.3
+  http: ^0.13.6
+  path_provider: ^2.0.15
+  flutter_mailer: ^2.1.1
   flutter_svg: ^2.0.5
-
 
 
 dev_dependencies:
@@ -44,7 +46,6 @@ dev_dependencies:
   file_picker: ^5.2.9
   intl: ^0.18.0
 
-
 flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -53,4 +54,3 @@ flutter:
 
   assets:
     - assets/images/
-

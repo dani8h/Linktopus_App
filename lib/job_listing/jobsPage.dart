@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:linktopus_app/login/landing_page.dart';
 import 'package:linktopus_app/profile.dart';
 import 'filter_popup.dart';
 import 'bottom_sheet.dart';
@@ -196,15 +197,17 @@ class _Jobs_pageState extends State<Jobs_page> {
                             : NetworkImage(ImgUrl!) as ImageProvider),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      signout();
+                    },
                     child: Container(
                       height: 50,
                       width: 50,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
-                          border: Border.all(color: const Color(0xff4f4f4f))),
+                          border: Border.all(color: Color(0xff4f4f4f))),
                       child: const Icon(
-                        Icons.notifications_outlined,
+                        Icons.logout,
                         color: Color(0xff4f4f4f),
                       ),
                     ),
@@ -258,6 +261,12 @@ class _Jobs_pageState extends State<Jobs_page> {
         ),
       ),
     );
+  }
+
+  signout() async {
+    await auth.signOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => Landing_Page()));
   }
 }
 
