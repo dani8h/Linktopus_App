@@ -1,16 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:linktopus_app/job_listing/jobsPage.dart';
-import 'package:linktopus_app/selectRoles.dart';
 import 'package:linktopus_app/services/auth_service.dart';
 import '../SignUp/otplogin.dart';
-import '../firebase_options.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:linktopus_app/profile.dart';
 import 'mail_signup.dart';
 
 class Landing_Page extends StatefulWidget {
@@ -27,13 +19,13 @@ class _Landing_PageState extends State<Landing_Page> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-        backgroundColor: Color(0xffffffff),
+        backgroundColor: const Color(0xffffffff),
         body: Stack(
           children: [
             Container(
               width: double.infinity,
               height: height * 0.172,
-              color: Color(0xffffffff),
+              color: const Color(0xffffffff),
             ),
             Positioned(
               top: -65,
@@ -67,7 +59,7 @@ class _Landing_PageState extends State<Landing_Page> {
                           //  mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Image.asset("assets/images/google_icon.png"),
+                            SvgPicture.asset("assets/images/google_icon.svg"),
                             SizedBox(
                               width: width * 0.17,
                             ),
@@ -76,7 +68,7 @@ class _Landing_PageState extends State<Landing_Page> {
                               style: GoogleFonts.poppins(
                                 fontSize: width * 0.043,
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xff000000),
+                                color: const Color(0xff000000),
                               ),
                             )
                           ],
@@ -89,7 +81,7 @@ class _Landing_PageState extends State<Landing_Page> {
                   ),
                   GestureDetector(
                     onTap: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => EmailSignup())),
+                        MaterialPageRoute(builder: (context) => const EmailSignup())),
                     child: Card(
                       elevation: 10,
                       shape: RoundedRectangleBorder(
@@ -101,7 +93,7 @@ class _Landing_PageState extends State<Landing_Page> {
                           //  mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.email),
+                            const Icon(Icons.email),
                             SizedBox(
                               width: width * 0.17,
                             ),
@@ -110,7 +102,7 @@ class _Landing_PageState extends State<Landing_Page> {
                               style: GoogleFonts.poppins(
                                 fontSize: width * 0.043,
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xff000000),
+                                color: const Color(0xff000000),
                               ),
                             )
                           ],
@@ -133,7 +125,7 @@ class _Landing_PageState extends State<Landing_Page> {
                           //  mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Image.asset("assets/images/apple_icon.png"),
+                            SvgPicture.asset("assets/images/apple_icon.svg"),
                             SizedBox(
                               width: width * 0.19,
                             ),
@@ -142,7 +134,7 @@ class _Landing_PageState extends State<Landing_Page> {
                               style: GoogleFonts.poppins(
                                 fontSize: width * 0.043,
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xff000000),
+                                color: const Color(0xff000000),
                               ),
                             ),
                           ],
@@ -158,7 +150,7 @@ class _Landing_PageState extends State<Landing_Page> {
                     style: GoogleFonts.poppins(
                         fontSize: width * 0.06,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xff58616A)),
+                        color: const Color(0xff58616A)),
                   ),
                   SizedBox(
                     height: height * 0.05,
@@ -166,7 +158,7 @@ class _Landing_PageState extends State<Landing_Page> {
                   GestureDetector(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => OtpPage()));
+                          MaterialPageRoute(builder: (context) => const OtpPage()));
                     },
                     child: Card(
                       elevation: 6,
@@ -186,7 +178,7 @@ class _Landing_PageState extends State<Landing_Page> {
                               style: GoogleFonts.poppins(
                                 fontSize: width * 0.043,
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xff000000),
+                                color: const Color(0xff000000),
                               ),
                             )
                           ],

@@ -1,18 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:linktopus_app/SplashScreen/getstarted.dart';
-import 'package:linktopus_app/SplashScreen/sliding_screen.dart';
-import 'package:linktopus_app/job_listing/jobsPage.dart';
-import './selectRoles.dart';
-import './login/landing_page.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:linktopus_app/SignUp/codeverification.dart';
-import 'package:linktopus_app/SignUp/googlesignin.dart';
-import 'package:linktopus_app/SignUp/otplogin.dart';
-import 'package:linktopus_app/profile.dart';
 
 // import 'package:firebase_auth/firebase_auth.dart';
 
@@ -21,15 +11,17 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(
-      primaryColor: Color(0xffEF5DA8),
-      primarySwatch: MaterialColor(0xffEF5DA8, {
+      primaryColor: const Color(0xffEF5DA8),
+      primarySwatch: const MaterialColor(0xffEF5DA8, {
         50: Color(0xFFFCE4F6),
         100: Color(0xFFFFD1E2),
         200: Color(0xFFFFACC6),
@@ -49,11 +41,21 @@ class MyApp extends StatelessWidget {
       // ),
     );
 
-    return MaterialApp(
-      color: Colors.white,
-      title: 'Flutter Demo',
-      theme: themeData,
-      home: GetStarted(),
+    return const MaterialApp(
+      home: Homepage(),
+    );
+  }
+}
+
+class Homepage extends StatelessWidget {
+  const Homepage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: const GetStarted(),
+      ),
     );
   }
 }
