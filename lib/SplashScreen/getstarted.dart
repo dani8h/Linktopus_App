@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/SplashScreen/sliding_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,7 +12,7 @@ class GetStarted extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -69,7 +67,7 @@ class GetStarted extends StatelessWidget {
                             'Match with recruiters or employees easily with Linktopus Jobs!',
                             style: GoogleFonts.poppins(
                               fontSize: size.height * 0.022,
-                              color: Color(0xffCFCFCF),
+                              color: const Color(0xffCFCFCF),
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -80,7 +78,7 @@ class GetStarted extends StatelessWidget {
                             onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SlidingScreen(),
+                                builder: (context) => const SlidingScreen(),
                               ),
                             ),
                             child: Card(

@@ -5,6 +5,8 @@ import 'package:linktopus_app/SignUp/googlesignin.dart';
 import 'package:linktopus_app/SplashScreen/getstarted.dart';
 
 class SlidingScreen extends StatefulWidget {
+  const SlidingScreen({super.key});
+
   @override
   _SlidingScreenState createState() => _SlidingScreenState();
 }
@@ -28,13 +30,13 @@ class _SlidingScreenState extends State<SlidingScreen> {
   void _goToPreviousPage() {
     if (_currentPageIndex > 0) {
       _pageController.previousPage(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     } else {
       Navigator.pop(
         context,
-        MaterialPageRoute(builder: (context) => GetStarted()),
+        MaterialPageRoute(builder: (context) => const GetStarted()),
       );
     }
   }
@@ -42,13 +44,13 @@ class _SlidingScreenState extends State<SlidingScreen> {
   void _goToNextPage() {
     if (_currentPageIndex < 2) {
       _pageController.nextPage(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     } else {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => EmailSignin()),
+        MaterialPageRoute(builder: (context) => const EmailSignin()),
       );
     }
   }
@@ -57,7 +59,7 @@ class _SlidingScreenState extends State<SlidingScreen> {
     return Container(
       width: _currentPageIndex == pageIndex ? 17.0 : 16.0,
       height: _currentPageIndex == pageIndex ? 17.0 : 16.0,
-      margin: EdgeInsets.symmetric(horizontal: 4.0),
+      margin: const EdgeInsets.symmetric(horizontal: 4.0),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: _currentPageIndex == pageIndex ? Colors.white : Colors.grey,
@@ -83,7 +85,7 @@ class _SlidingScreenState extends State<SlidingScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -134,7 +136,7 @@ class _SlidingScreenState extends State<SlidingScreen> {
                         textStyle: TextStyle(
                           fontSize: width * 0.04,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xffCFCFCF),
+                          color: const Color(0xffCFCFCF),
                         ),
                       ),
                       textAlign: TextAlign.center,
@@ -168,7 +170,7 @@ class _SlidingScreenState extends State<SlidingScreen> {
                         textStyle: TextStyle(
                           fontSize: width * 0.04,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xffCFCFCF),
+                          color: const Color(0xffCFCFCF),
                         ),
                       ),
                       textAlign: TextAlign.center,
@@ -202,7 +204,7 @@ class _SlidingScreenState extends State<SlidingScreen> {
                         textStyle: TextStyle(
                           fontSize: width * 0.04,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xffCFCFCF),
+                          color: const Color(0xffCFCFCF),
                         ),
                       ),
                       textAlign: TextAlign.center,
@@ -215,6 +217,7 @@ class _SlidingScreenState extends State<SlidingScreen> {
               bottom: height * 0.05,
               left: width * 0.07,
               child: GestureDetector(
+                onTap: _goToPreviousPage,
                 child: Card(
                   elevation: 4.0,
                   shape: RoundedRectangleBorder(
@@ -225,7 +228,7 @@ class _SlidingScreenState extends State<SlidingScreen> {
                         left: 10, top: 10, bottom: 10, right: 15),
                     child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.arrow_back,
                           color: Colors.black,
                         ),
@@ -245,13 +248,13 @@ class _SlidingScreenState extends State<SlidingScreen> {
                     ),
                   ),
                 ),
-                onTap: _goToPreviousPage,
               ),
             ),
             Positioned(
               bottom: height * 0.05,
               right: width * 0.07,
               child: GestureDetector(
+                onTap: _goToNextPage,
                 child: Card(
                   elevation: 4.0,
                   shape: RoundedRectangleBorder(
@@ -274,7 +277,7 @@ class _SlidingScreenState extends State<SlidingScreen> {
                         SizedBox(
                           width: width * 0.02,
                         ),
-                        Icon(
+                        const Icon(
                           Icons.arrow_forward,
                           color: Colors.black,
                         ),
@@ -282,7 +285,6 @@ class _SlidingScreenState extends State<SlidingScreen> {
                     ),
                   ),
                 ),
-                onTap: _goToNextPage,
               ),
             ),
             Positioned(

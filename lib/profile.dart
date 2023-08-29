@@ -4,9 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
-import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +15,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 String _dropdownValue = 'Male';
 
 class Profile extends StatefulWidget {
-  Profile({Key? key}) : super(key: key);
+  const Profile({Key? key}) : super(key: key);
   @override
   State<Profile> createState() => _ProfileState();
 }
@@ -99,15 +97,15 @@ class _ProfileState extends State<Profile> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Upload file?"),
+            title: const Text("Upload file?"),
             content: Text("Do you want to upload $fileName?"),
             actions: <Widget>[
               TextButton(
-                child: Text("No"),
+                child: const Text("No"),
                 onPressed: () => Navigator.of(context).pop(false),
               ),
               TextButton(
-                child: Text("Yes"),
+                child: const Text("Yes"),
                 onPressed: () => Navigator.of(context).pop(true),
               ),
             ],
@@ -165,7 +163,7 @@ class _ProfileState extends State<Profile> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Error'),
-          content: Text('No file selected'),
+          content: const Text('No file selected'),
           actions: [
             TextButton(
               onPressed: () {
@@ -312,7 +310,7 @@ class _ProfileState extends State<Profile> {
     if (uid == null) {
       AlertDialog(
         title: const Text('Error'),
-        content: Text('Please sign in to update your details'),
+        content: const Text('Please sign in to update your details'),
         actions: [
           TextButton(
             onPressed: () {
@@ -332,15 +330,15 @@ class _ProfileState extends State<Profile> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Update details?"),
-              content: Text("Do you want to update your details?"),
+              title: const Text("Update details?"),
+              content: const Text("Do you want to update your details?"),
               actions: <Widget>[
                 TextButton(
-                  child: Text("No"),
+                  child: const Text("No"),
                   onPressed: () => Navigator.of(context).pop(false),
                 ),
                 TextButton(
-                  child: Text("Yes"),
+                  child: const Text("Yes"),
                   onPressed: () => Navigator.of(context).pop(true),
                 ),
               ],
@@ -482,8 +480,8 @@ class _ProfileState extends State<Profile> {
     fetchUserData();
   }
 
-  TextEditingController _dateController = TextEditingController();
-  TextEditingController _locController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _locController = TextEditingController();
   PhoneNumber number = PhoneNumber(isoCode: 'IN');
 
   @override
@@ -497,7 +495,7 @@ class _ProfileState extends State<Profile> {
       child: Material(
         child: Container(
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color(0xffffffff),
           ),
           child: Column(
@@ -506,7 +504,7 @@ class _ProfileState extends State<Profile> {
               Container(
                 height: fem * 110, //mediaquery
                 width: double.infinity,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -521,7 +519,7 @@ class _ProfileState extends State<Profile> {
                       child: GestureDetector(
                         onTap: () => Navigator.pop(context),
                         child: Icon(Icons.arrow_back_ios,
-                            color: Color(0xffffffff), size: 30 * fem),
+                            color: const Color(0xffffffff), size: 30 * fem),
                       ), //mediaquery
                     ),
                     Container(
@@ -534,7 +532,7 @@ class _ProfileState extends State<Profile> {
                           fontSize: 25 * ffem,
                           fontWeight: FontWeight.w700,
                           height: 1.5 * ffem / fem,
-                          color: Color(0xffffffff),
+                          color: const Color(0xffffffff),
                         ),
                       ),
                     ),
@@ -566,7 +564,7 @@ class _ProfileState extends State<Profile> {
                               color: Colors.white,
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: Color(
+                                color: const Color(
                                     0xff010088), //                   <--- border color
                                 width: 2.0,
                               ),
@@ -594,13 +592,13 @@ class _ProfileState extends State<Profile> {
                                         color: Colors.white,
                                         shape: BoxShape.circle,
                                         border: Border.all(
-                                          color: Color(
+                                          color: const Color(
                                               0xff010088), //                   <--- border color
                                           width: 3.0,
                                         ),
                                       ),
                                       child: Icon(Icons.edit_outlined,
-                                          color: Color(0xff010088),
+                                          color: const Color(0xff010088),
                                           size: 20 * fem)),
                                 ),
                               ),
@@ -626,7 +624,7 @@ class _ProfileState extends State<Profile> {
                               fontSize: 14 * ffem,
                               fontWeight: FontWeight.w300,
                               height: 1.5 * ffem / fem,
-                              color: Color(0xff000000),
+                              color: const Color(0xff000000),
                             ),
                           ),
                         ),
@@ -638,7 +636,7 @@ class _ProfileState extends State<Profile> {
                               0 * fem, 0 * fem, 0 * fem, 0 * fem),
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            border: Border.all(color: Color(0xffa8a8a8)),
+                            border: Border.all(color: const Color(0xffa8a8a8)),
                             borderRadius: BorderRadius.circular(8 * fem),
                           ),
                           child: Padding(
@@ -665,9 +663,9 @@ class _ProfileState extends State<Profile> {
                                   : phoneNumber.substring(3),
                               //textFieldController: controller_ph,
                               formatInput: false,
-                              keyboardType: TextInputType.numberWithOptions(
+                              keyboardType: const TextInputType.numberWithOptions(
                                   signed: true, decimal: true),
-                              inputBorder: OutlineInputBorder(),
+                              inputBorder: const OutlineInputBorder(),
                               onSaved: (PhoneNumber number) {
                                 print('On Saved: $number');
                               },
@@ -693,7 +691,7 @@ class _ProfileState extends State<Profile> {
                               fontSize: 14 * ffem,
                               fontWeight: FontWeight.w300,
                               height: 1.5 * ffem / fem,
-                              color: Color(0xff000000),
+                              color: const Color(0xff000000),
                             ),
                           ),
                         ),
@@ -705,7 +703,7 @@ class _ProfileState extends State<Profile> {
                               0 * fem, 0 * fem, 0 * fem, 0 * fem),
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            border: Border.all(color: Color(0xffa8a8a8)),
+                            border: Border.all(color: const Color(0xffa8a8a8)),
                             borderRadius: BorderRadius.circular(8 * fem),
                           ),
                           child: Padding(
@@ -756,8 +754,8 @@ class _ProfileState extends State<Profile> {
                           18 * fem, 12 * fem, 18 * fem, 10 * fem),
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xffa8a8a8)),
-                        color: Color(0xff2b3688),
+                        border: Border.all(color: const Color(0xffa8a8a8)),
+                        color: const Color(0xff2b3688),
                         borderRadius: BorderRadius.circular(8 * fem),
                       ),
                       child: GestureDetector(
@@ -772,7 +770,7 @@ class _ProfileState extends State<Profile> {
                               width: 20 * fem,
                               height: 19.09 * fem,
                               child: Icon(Icons.upload_rounded,
-                                  color: Color(0xffffffff), size: 25 * fem),
+                                  color: const Color(0xffffffff), size: 25 * fem),
                             ),
                             Text(
                               // uploadresumeCXi (40:7638)
@@ -781,7 +779,7 @@ class _ProfileState extends State<Profile> {
                                 fontSize: 15 * ffem,
                                 fontWeight: FontWeight.w500,
                                 height: 1.5 * ffem / fem,
-                                color: Color(0xffffffff),
+                                color: const Color(0xffffffff),
                               ),
                             ),
                             Container(
@@ -799,8 +797,8 @@ class _ProfileState extends State<Profile> {
                           18 * fem, 12 * fem, 18 * fem, 10 * fem),
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xffa8a8a8)),
-                        color: Color(0xff0a66c2),
+                        border: Border.all(color: const Color(0xffa8a8a8)),
+                        color: const Color(0xff0a66c2),
                         borderRadius: BorderRadius.circular(8 * fem),
                       ),
                       child: Row(
@@ -814,7 +812,7 @@ class _ProfileState extends State<Profile> {
                             width: 20 * fem,
                             height: 20 * fem,
                             child: Icon(Icons.person,
-                                color: Color(0xffffffff), size: 25 * fem),
+                                color: const Color(0xffffffff), size: 25 * fem),
                           ),
                           Text(
                             // attachlinkedinprofile9bN (40:7641)
@@ -823,7 +821,7 @@ class _ProfileState extends State<Profile> {
                               fontSize: 15 * ffem,
                               fontWeight: FontWeight.w500,
                               height: 1.5 * ffem / fem,
-                              color: Color(0xffffffff),
+                              color: const Color(0xffffffff),
                             ),
                           ),
                           Container(
@@ -851,7 +849,7 @@ class _ProfileState extends State<Profile> {
                                 _fullname.text,
                                 controller_ph,
                                 _qualification.text,
-                                new DateFormat('dd/MM/yyyy')
+                                DateFormat('dd/MM/yyyy')
                                     .parse(_dateController.text),
                                 _dropdownValue,
                                 _locController.text,
@@ -868,7 +866,7 @@ class _ProfileState extends State<Profile> {
                               height: 45 * fem,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5 * fem),
-                                gradient: LinearGradient(
+                                gradient: const LinearGradient(
                                   begin: Alignment(-1.338, -1),
                                   end: Alignment(1.325, 1),
                                   colors: <Color>[
@@ -885,7 +883,7 @@ class _ProfileState extends State<Profile> {
                                     fontSize: 15 * ffem,
                                     fontWeight: FontWeight.w700,
                                     height: 1.5 * ffem / fem,
-                                    color: Color(0xffffffff),
+                                    color: const Color(0xffffffff),
                                   ),
                                 ),
                               ),
@@ -939,7 +937,7 @@ class _ProfileState extends State<Profile> {
               fontSize: 14 * ffem,
               fontWeight: FontWeight.w300,
               height: 1.5 * ffem / fem,
-              color: Color(0xff000000),
+              color: const Color(0xff000000),
             ),
           ),
         ),
@@ -951,7 +949,7 @@ class _ProfileState extends State<Profile> {
               : EdgeInsets.fromLTRB(0 * fem, 0 * fem, 0 * fem, 0 * fem),
           width: double.infinity,
           decoration: BoxDecoration(
-            border: Border.all(color: Color(0xffa8a8a8)),
+            border: Border.all(color: const Color(0xffa8a8a8)),
             borderRadius: BorderRadius.circular(8 * fem),
           ),
           child: TextFormField(
@@ -962,7 +960,7 @@ class _ProfileState extends State<Profile> {
               fontSize: 15 * ffem,
               fontWeight: FontWeight.w500,
               height: 1.5 * ffem / fem,
-              color: Color(0xff000000),
+              color: const Color(0xff000000),
             ),
             //controller to be filled in
             controller: type == 'Bio'
@@ -991,7 +989,7 @@ class _ProfileState extends State<Profile> {
                 fontSize: 15 * ffem,
                 fontWeight: FontWeight.w500,
                 height: 1.5 * ffem / fem,
-                color: Color.fromARGB(141, 198, 195, 195),
+                color: const Color.fromARGB(141, 198, 195, 195),
               ),
             ),
           ),
@@ -1015,7 +1013,7 @@ class _ProfileState extends State<Profile> {
               fontSize: 14 * ffem,
               fontWeight: FontWeight.w300,
               height: 1.5 * ffem / fem,
-              color: Color(0xff000000),
+              color: const Color(0xff000000),
             ),
           ),
         ),
@@ -1025,7 +1023,7 @@ class _ProfileState extends State<Profile> {
           padding: EdgeInsets.fromLTRB(0 * fem, 0 * fem, 0 * fem, 0 * fem),
           width: double.infinity,
           decoration: BoxDecoration(
-            border: Border.all(color: Color(0xffa8a8a8)),
+            border: Border.all(color: const Color(0xffa8a8a8)),
             borderRadius: BorderRadius.circular(8 * fem),
           ),
           child: Row(
@@ -1042,7 +1040,7 @@ class _ProfileState extends State<Profile> {
                     fontSize: 15 * ffem,
                     fontWeight: FontWeight.w500,
                     height: 1.5 * ffem / fem,
-                    color: Color(0xff000000),
+                    color: const Color(0xff000000),
                   ),
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.fromLTRB(
@@ -1065,13 +1063,13 @@ class _ProfileState extends State<Profile> {
                       fontSize: 15 * ffem,
                       fontWeight: FontWeight.w500,
                       height: 1.5 * ffem / fem,
-                      color: Color.fromARGB(141, 198, 195, 195),
+                      color: const Color.fromARGB(141, 198, 195, 195),
                     ),
                   ),
                 ),
               ),
               Container(
-                color: Color(0xffA9A9A9),
+                color: const Color(0xffA9A9A9),
                 height: fem * 51.5,
                 width: fem * 1.2,
               ),

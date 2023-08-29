@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/job_listing/jobsPage.dart';
-import '/Widgets/Customtextbox_widget.dart';
 import '../Widgets/custom_box.dart';
 
 class JobPopup extends StatefulWidget {
+  const JobPopup({super.key});
+
   @override
   _JobPopupState createState() => _JobPopupState();
 }
@@ -26,15 +27,15 @@ class _JobPopupState extends State<JobPopup> {
   List<String> selectedCompanies = [];
   List<String> workTypes = [];
   final TextEditingController searchController = TextEditingController();
-  RangeValues selectedRangeValues = RangeValues(100000, 4000000);
+  RangeValues selectedRangeValues = const RangeValues(100000, 4000000);
   Map<String, dynamic> res = {};
   @override
   void initState() {
     super.initState();
     setState(() {
-      companies.forEach((element) {
+      for (var element in companies) {
         isPressed.add(false);
-      });
+      }
     });
   }
 
@@ -56,7 +57,7 @@ class _JobPopupState extends State<JobPopup> {
           });
         },
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
           decoration: BoxDecoration(
             border: Border.all(color: borderColor),
             borderRadius: BorderRadius.circular(7),
@@ -67,7 +68,7 @@ class _JobPopupState extends State<JobPopup> {
                 padding: const EdgeInsets.only(top: 6.0),
                 child: SvgPicture.asset(imagePath),
               ),
-              SizedBox(width: 3.0),
+              const SizedBox(width: 3.0),
               Text(
                 text,
                 style: GoogleFonts.poppins(
@@ -101,7 +102,7 @@ class _JobPopupState extends State<JobPopup> {
           });
         },
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
           decoration: BoxDecoration(
             border: Border.all(color: borderColor),
             borderRadius: BorderRadius.circular(7),
@@ -111,7 +112,7 @@ class _JobPopupState extends State<JobPopup> {
             child: Row(
               children: [
                 SvgPicture.asset(imagePath),
-                SizedBox(width: 3.0),
+                const SizedBox(width: 3.0),
                 Text(
                   text,
                   style: GoogleFonts.poppins(
@@ -145,7 +146,7 @@ class _JobPopupState extends State<JobPopup> {
         child: Container(
           width: popupWidth,
           height: popupHeight,
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: ListView(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -157,9 +158,9 @@ class _JobPopupState extends State<JobPopup> {
                   fontFamily: 'Poppins',
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Divider(color: Colors.grey.shade800),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Text(
                 'Work Type',
                 style: TextStyle(
@@ -168,7 +169,7 @@ class _JobPopupState extends State<JobPopup> {
                   fontFamily: 'Poppins',
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -194,7 +195,7 @@ class _JobPopupState extends State<JobPopup> {
                   ],
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Row(
                 children: [
                   Text(
@@ -205,7 +206,7 @@ class _JobPopupState extends State<JobPopup> {
                       fontFamily: 'Poppins',
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
@@ -214,15 +215,15 @@ class _JobPopupState extends State<JobPopup> {
                       fontSize: screenWidth * 0.052,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'Poppins',
-                      color: Color(0xffABABAB),
+                      color: const Color(0xffABABAB),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextField(
                 controller: searchController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Color(0xFFEF5DA8), width: 2.0),
@@ -234,7 +235,7 @@ class _JobPopupState extends State<JobPopup> {
                   hintText: 'Search',
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Text(
                 'Companies',
                 style: TextStyle(
@@ -243,7 +244,7 @@ class _JobPopupState extends State<JobPopup> {
                   fontFamily: 'Poppins',
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Container(
@@ -277,7 +278,7 @@ class _JobPopupState extends State<JobPopup> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Text(
                 'Salar-o-meter',
                 style: TextStyle(
@@ -286,18 +287,18 @@ class _JobPopupState extends State<JobPopup> {
                   fontFamily: 'Poppins',
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               SliderTheme(
                 data: SliderTheme.of(context).copyWith(
-                  activeTrackColor: Color(0xffEF5DA8),
+                  activeTrackColor: const Color(0xffEF5DA8),
                   inactiveTrackColor: Colors.white,
                   thumbColor: Colors.white,
-                  overlayColor: Color(0xffEF5DA8),
-                  thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10.0),
-                  overlayShape: RoundSliderOverlayShape(overlayRadius: 20.0),
-                  valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-                  valueIndicatorColor: Color(0xffEF5DA8),
-                  valueIndicatorTextStyle: TextStyle(
+                  overlayColor: const Color(0xffEF5DA8),
+                  thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10.0),
+                  overlayShape: const RoundSliderOverlayShape(overlayRadius: 20.0),
+                  valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
+                  valueIndicatorColor: const Color(0xffEF5DA8),
+                  valueIndicatorTextStyle: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
@@ -321,7 +322,7 @@ class _JobPopupState extends State<JobPopup> {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: const [
                         Text(
                           '0',
                           style: TextStyle(color: Colors.black),
@@ -335,7 +336,7 @@ class _JobPopupState extends State<JobPopup> {
                   ],
                 ),
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               Align(
                 alignment: Alignment.center,
                 child: GestureDetector(
@@ -354,8 +355,8 @@ class _JobPopupState extends State<JobPopup> {
                     );
                   },
                   child: Container(
-                    margin: EdgeInsets.only(bottom: 30),
-                    decoration: BoxDecoration(
+                    margin: const EdgeInsets.only(bottom: 30),
+                    decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),

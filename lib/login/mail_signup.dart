@@ -7,6 +7,8 @@ bool _passwordVisible = false;
 bool _confirmPasswordVisible = false;
 
 class EmailSignup extends StatefulWidget {
+  const EmailSignup({super.key});
+
   @override
   State<EmailSignup> createState() => _EmailSignupState();
 }
@@ -16,9 +18,9 @@ class _EmailSignupState extends State<EmailSignup> {
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
-  TextEditingController _mailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _mailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   String? _validateConfirmPassword(String? value) {
     if (value != _passwordController.text) {
@@ -50,7 +52,7 @@ class _EmailSignupState extends State<EmailSignup> {
     return null;
   }
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<void> signUpWithEmailAndPassword() async {
     if (_formKey.currentState!.validate()) {
@@ -60,11 +62,7 @@ class _EmailSignupState extends State<EmailSignup> {
           password: _passwordController.text,
         );
 
-        if (newUser != null) {
-          print('User created successfully');
-          // User creation successful
-          // You can add additional logic or navigate to another screen here
-        }
+        print('User created successfully');
       } catch (e) {
         print('Error creating user: $e');
         buildSnackBar('Error creating user. Please try again.');
@@ -105,7 +103,7 @@ class _EmailSignupState extends State<EmailSignup> {
                       onTap: () => Navigator.pop(context),
                       child: Icon(
                         Icons.arrow_back_ios,
-                        color: Color(0xff243443),
+                        color: const Color(0xff243443),
                         size: 25 * ffem,
                       ),
                     ),
@@ -128,7 +126,7 @@ class _EmailSignupState extends State<EmailSignup> {
                               fontSize: 18 * ffem,
                               fontWeight: FontWeight.w600,
                               height: 1.2125 * ffem / fem,
-                              color: Color(0xff243443),
+                              color: const Color(0xff243443),
                             ),
                           ),
                         ),
@@ -147,10 +145,10 @@ class _EmailSignupState extends State<EmailSignup> {
                     12 * fem, 0 * fem, 0 * fem, 19.31 * fem),
                 width: 377 * fem,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xffaab0b7)),
-                  color: Color(0xffffffff),
+                  border: Border.all(color: const Color(0xffaab0b7)),
+                  color: const Color(0xffffffff),
                   borderRadius: BorderRadius.circular(8 * fem),
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     begin: Alignment(0, -1),
                     end: Alignment(0, 1),
                     colors: <Color>[Color(0xffffffff), Color(0x00ffffff)],
@@ -164,7 +162,7 @@ class _EmailSignupState extends State<EmailSignup> {
                       fontSize: 15 * ffem,
                       fontWeight: FontWeight.w500,
                       height: 1.5 * ffem / fem,
-                      color: Color(0xff000000),
+                      color: const Color(0xff000000),
                     ),
                     controller: _mailController,
                     decoration: InputDecoration(
@@ -174,7 +172,7 @@ class _EmailSignupState extends State<EmailSignup> {
                         fontSize: 15 * ffem,
                         fontWeight: FontWeight.w500,
                         height: 1.5 * ffem / fem,
-                        color: Color.fromARGB(141, 198, 195, 195),
+                        color: const Color.fromARGB(141, 198, 195, 195),
                       ),
                     ),
                     validator: _validateEmail,
@@ -186,10 +184,10 @@ class _EmailSignupState extends State<EmailSignup> {
                     12 * fem, 0 * fem, 0 * fem, 19.31 * fem),
                 width: 377 * fem,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xffaab0b7)),
-                  color: Color(0xffffffff),
+                  border: Border.all(color: const Color(0xffaab0b7)),
+                  color: const Color(0xffffffff),
                   borderRadius: BorderRadius.circular(8 * fem),
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     begin: Alignment(0, -1),
                     end: Alignment(0, 1),
                     colors: <Color>[Color(0xffffffff), Color(0x00ffffff)],
@@ -213,7 +211,7 @@ class _EmailSignupState extends State<EmailSignup> {
                         fontSize: 15 * ffem,
                         fontWeight: FontWeight.w500,
                         height: 1.5 * ffem / fem,
-                        color: Color.fromARGB(141, 198, 195, 195),
+                        color: const Color.fromARGB(141, 198, 195, 195),
                       ),
                       hintText: 'Enter password',
                       suffixIcon: IconButton(
@@ -239,10 +237,10 @@ class _EmailSignupState extends State<EmailSignup> {
                     12 * fem, 0 * fem, 0 * fem, 19.31 * fem),
                 width: 377 * fem,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xffaab0b7)),
-                  color: Color(0xffffffff),
+                  border: Border.all(color: const Color(0xffaab0b7)),
+                  color: const Color(0xffffffff),
                   borderRadius: BorderRadius.circular(8 * fem),
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     begin: Alignment(0, -1),
                     end: Alignment(0, 1),
                     colors: <Color>[Color(0xffffffff), Color(0x00ffffff)],
@@ -266,7 +264,7 @@ class _EmailSignupState extends State<EmailSignup> {
                         fontSize: 15 * ffem,
                         fontWeight: FontWeight.w500,
                         height: 1.5 * ffem / fem,
-                        color: Color.fromARGB(141, 198, 195, 195),
+                        color: const Color.fromARGB(141, 198, 195, 195),
                       ),
                       hintText: 'Confirm password',
                       suffixIcon: IconButton(
@@ -303,18 +301,18 @@ class _EmailSignupState extends State<EmailSignup> {
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: Color.fromARGB(51, 0, 0, 0),
-                        offset: Offset(0, 4),
+                        color: const Color.fromARGB(51, 0, 0, 0),
+                        offset: const Offset(0, 4),
                         blurRadius: 16 * fem,
                       ),
                       BoxShadow(
-                        color: Color.fromARGB(51, 0, 0, 0),
-                        offset: Offset(0, 4),
+                        color: const Color.fromARGB(51, 0, 0, 0),
+                        offset: const Offset(0, 4),
                         blurRadius: 16 * fem,
                       )
                     ],
                     borderRadius: BorderRadius.circular(8 * fem),
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       begin: Alignment(1, -5.315),
                       end: Alignment(-1, 4.63),
                       colors: <Color>[Color(0xffe02c72), Color(0xff4175df)],
@@ -329,7 +327,7 @@ class _EmailSignupState extends State<EmailSignup> {
                         fontSize: 24 * ffem,
                         fontWeight: FontWeight.w500,
                         height: 1.2125 * ffem / fem,
-                        color: Color(0xffffffff),
+                        color: const Color(0xffffffff),
                       ),
                     ),
                   ),
@@ -344,7 +342,7 @@ class _EmailSignupState extends State<EmailSignup> {
                     fontSize: 14 * ffem,
                     fontWeight: FontWeight.w500,
                     height: 1.2125 * ffem / fem,
-                    color: Color(0xff243443),
+                    color: const Color(0xff243443),
                   ),
                 ),
               ),
@@ -353,7 +351,7 @@ class _EmailSignupState extends State<EmailSignup> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EmailSignin(),
+                      builder: (context) => const EmailSignin(),
                     ),
                   );
                 },
@@ -364,7 +362,7 @@ class _EmailSignupState extends State<EmailSignup> {
                     fontSize: 14 * ffem,
                     fontWeight: FontWeight.w700,
                     height: 1.2125 * ffem / fem,
-                    color: Color(0xffe02c72),
+                    color: const Color(0xffe02c72),
                   ),
                 ),
               ),
