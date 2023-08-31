@@ -78,14 +78,14 @@ class _OtpPageState extends State<OtpPage> {
                       child: TextField(
                         controller: countryController,
                         keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                         ),
                       ),
                     ),
                     Text(
                       "|",
-                      style: TextStyle(fontSize: fem * 38, color: Colors.grey),
+                      style: GoogleFonts.poppins(fontSize: fem * 38, color: Colors.grey),
                     ),
                     SizedBox(
                       width: fem * 15,
@@ -96,7 +96,7 @@ class _OtpPageState extends State<OtpPage> {
                         phone = value;
                       },
                       keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "Phone",
                       ),
@@ -110,13 +110,13 @@ class _OtpPageState extends State<OtpPage> {
               GestureDetector(
                 onTap: () async {
                   await FirebaseAuth.instance.verifyPhoneNumber(
-                    phoneNumber: '${countryController.text + phone}',
+                    phoneNumber: countryController.text + phone,
                     verificationCompleted: (PhoneAuthCredential credential) {},
                     verificationFailed: (FirebaseAuthException e) {},
                     codeSent: (String verificationId, int? resendToken) {
                       OtpPage.verify = verificationId;
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Verify()));
+                          MaterialPageRoute(builder: (context) => const Verify()));
                     },
                     codeAutoRetrievalTimeout: (String verificationId) {},
                   );
@@ -125,18 +125,18 @@ class _OtpPageState extends State<OtpPage> {
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: Color.fromARGB(51, 0, 0, 0),
-                        offset: Offset(0, 4),
+                        color: const Color.fromARGB(51, 0, 0, 0),
+                        offset: const Offset(0, 4),
                         blurRadius: 16 * fem,
                       ),
                       BoxShadow(
-                        color: Color.fromARGB(51, 0, 0, 0),
-                        offset: Offset(0, 4),
+                        color: const Color.fromARGB(51, 0, 0, 0),
+                        offset: const Offset(0, 4),
                         blurRadius: 16 * fem,
                       )
                     ],
                     borderRadius: BorderRadius.circular(8 * fem),
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       begin: Alignment(1, -5.315),
                       end: Alignment(-1, 4.63),
                       colors: <Color>[Color(0xffe02c72), Color(0xff4175df)],
@@ -153,7 +153,7 @@ class _OtpPageState extends State<OtpPage> {
                         fontSize: 24 * ffem,
                         fontWeight: FontWeight.w500,
                         height: 1.2125 * ffem / fem,
-                        color: Color(0xffffffff),
+                        color: const Color(0xffffffff),
                       ),
                     ),
                   ),

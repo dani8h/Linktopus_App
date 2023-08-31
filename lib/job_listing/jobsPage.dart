@@ -3,6 +3,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:linktopus_app/login/landing_page.dart';
 import 'package:linktopus_app/profile.dart';
 import 'filter_popup.dart';
 import 'bottom_sheet.dart';
@@ -21,14 +23,14 @@ class Jobs_page extends StatefulWidget {
 }
 
 class _Jobs_pageState extends State<Jobs_page> {
-  TextEditingController _searchController = new TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   final ref = FirebaseDatabase.instance.ref();
   List<dynamic> companylist = [];
   List<dynamic> finallist = [];
   List<dynamic> textfilteredlist = [];
   bool _loading = true;
   int n = 0;
-  ScrollController _scrollController = new ScrollController();
+  final ScrollController _scrollController = ScrollController();
   bool gettingmore = false;
   final FirebaseAuth auth = FirebaseAuth.instance;
   var uid;
@@ -39,11 +41,11 @@ class _Jobs_pageState extends State<Jobs_page> {
     final User? user = auth.currentUser;
     uid = user?.uid;
     if (uid != null) {
-      String? path = 'users/${uid}/ProfilePic';
-      print('image path is ${path}');
+      String? path = 'users/$uid/ProfilePic';
+      print('image path is $path');
       final storageRef = FirebaseStorage.instance.ref().child(path);
       ImgUrl = await storageRef.getDownloadURL();
-      print('image url ${ImgUrl}');
+      print('image url $ImgUrl');
     }
   }
 
@@ -78,7 +80,7 @@ class _Jobs_pageState extends State<Jobs_page> {
       if (widget.myfilter['Companies'] != null) {
         List<String> companyfilter = [];
         companyfilter.addAll(widget.myfilter['Companies']);
-        if (companyfilter.length > 0) {
+        if (companyfilter.isNotEmpty) {
           finallist = finallist
               .where((element) =>
                   companyfilter.contains(element.child('Company Name').value))
@@ -173,7 +175,7 @@ class _Jobs_pageState extends State<Jobs_page> {
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
           child: Column(
             children: [
               Row(
@@ -184,40 +186,43 @@ class _Jobs_pageState extends State<Jobs_page> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Profile(),
+                          builder: (context) => const Profile(),
                         ),
                       );
                     },
                     child: CircleAvatar(
                         radius: 25,
                         backgroundImage: ImgUrl == null
-                            ? AssetImage('assets/images/profilepic.jpg')
+                            ? const AssetImage('assets/images/profilepic.jpg')
                             : NetworkImage(ImgUrl!) as ImageProvider),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      signout();
+                    },
                     child: Container(
                       height: 50,
                       width: 50,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
                           border: Border.all(color: Color(0xff4f4f4f))),
-                      child: Icon(
-                        Icons.notifications_outlined,
+                      child: const Icon(
+                        Icons.logout,
                         color: Color(0xff4f4f4f),
                       ),
                     ),
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Job listings',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
+                  style: GoogleFonts.poppins(
+                      fontSize: 25, fontWeight: FontWeight.w700),
                 ),
               ),
               //search bar
@@ -236,12 +241,12 @@ class _Jobs_pageState extends State<Jobs_page> {
                 ),
               ),
               _buttonRow(widget.filterapplied),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Expanded(
-                child: companylist.length == 0
-                    ? Center(
+                child: companylist.isEmpty
+                    ? const Center(
                         child: Text('No results found ...'),
                       )
                     : ListView.builder(
@@ -257,11 +262,17 @@ class _Jobs_pageState extends State<Jobs_page> {
       ),
     );
   }
+
+  signout() async {
+    await auth.signOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => Landing_Page()));
+  }
 }
 
 class _buttonRow extends StatefulWidget {
   final bool filterapplied;
-  _buttonRow(this.filterapplied);
+  const _buttonRow(this.filterapplied);
 
   @override
   State<_buttonRow> createState() => _buttonRowState();
@@ -282,9 +293,9 @@ class _buttonRowState extends State<_buttonRow> {
               children: [
                 Text(
                   'Sort',
-                  style: TextStyle(color: Colors.black),
+                  style: GoogleFonts.poppins(color: Colors.black),
                 ),
-                Icon(
+                const Icon(
                   Icons.sort,
                   color: Colors.black,
                 )
@@ -301,9 +312,9 @@ class _buttonRowState extends State<_buttonRow> {
                 children: [
                   Text(
                     'Bookmarked',
-                    style: TextStyle(color: Colors.black),
+                    style: GoogleFonts.poppins(color: Colors.black),
                   ),
-                  Icon(
+                  const Icon(
                     Icons.bookmark_border,
                     color: Colors.pinkAccent,
                   )
@@ -315,7 +326,7 @@ class _buttonRowState extends State<_buttonRow> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return JobPopup();
+                  return const JobPopup();
                 },
               );
             },
@@ -326,7 +337,7 @@ class _buttonRowState extends State<_buttonRow> {
                 children: [
                   Text(
                     'Filter',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                         color:
                             widget.filterapplied ? Colors.blue : Colors.black),
                   ),

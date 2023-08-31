@@ -23,24 +23,24 @@ class _VerifyState extends State<Verify> {
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
-      textStyle: TextStyle(
+      textStyle: GoogleFonts.poppins(
           fontSize: 20,
-          color: Color.fromRGBO(30, 60, 87, 1),
+          color: const Color.fromRGBO(30, 60, 87, 1),
           fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
-        border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
+        border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
         borderRadius: BorderRadius.circular(20),
       ),
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: Color.fromRGBO(114, 178, 238, 1)),
+      border: Border.all(color: const Color.fromRGBO(114, 178, 238, 1)),
       borderRadius: BorderRadius.circular(8),
     );
 
     final submittedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration?.copyWith(
-        color: Color.fromRGBO(234, 239, 243, 1),
+        color: const Color.fromRGBO(234, 239, 243, 1),
       ),
     );
 
@@ -52,7 +52,7 @@ class _VerifyState extends State<Verify> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_rounded,
             color: Colors.black,
           ),
@@ -130,11 +130,11 @@ class _VerifyState extends State<Verify> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Error"),
-                          content: Text("Wrong OTP"),
+                          title: const Text("Error"),
+                          content: const Text("Wrong OTP"),
                           actions: [
                             ElevatedButton(
-                              child: Text("OK"),
+                              child: const Text("OK"),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
@@ -150,18 +150,18 @@ class _VerifyState extends State<Verify> {
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: Color.fromARGB(51, 0, 0, 0),
-                          offset: Offset(0, 4),
+                          color: const Color.fromARGB(51, 0, 0, 0),
+                          offset: const Offset(0, 4),
                           blurRadius: 16 * fem,
                         ),
                         BoxShadow(
-                          color: Color.fromARGB(51, 0, 0, 0),
-                          offset: Offset(0, 4),
+                          color: const Color.fromARGB(51, 0, 0, 0),
+                          offset: const Offset(0, 4),
                           blurRadius: 16 * fem,
                         )
                       ],
                       borderRadius: BorderRadius.circular(8 * fem),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         begin: Alignment(1, -5.315),
                         end: Alignment(-1, 4.63),
                         colors: <Color>[Color(0xffe02c72), Color(0xff4175df)],
@@ -177,7 +177,7 @@ class _VerifyState extends State<Verify> {
                           fontSize: 24 * ffem,
                           fontWeight: FontWeight.w500,
                           height: 1.2125 * ffem / fem,
-                          color: Color(0xffffffff),
+                          color: const Color(0xffffffff),
                         ),
                       ),
                     )),
@@ -194,7 +194,7 @@ class _VerifyState extends State<Verify> {
                       },
                       child: Text(
                         "Edit Phone Number ?",
-                        style: TextStyle(color: Colors.black),
+                        style: GoogleFonts.poppins(color: Colors.black),
                       ))
                 ],
               )

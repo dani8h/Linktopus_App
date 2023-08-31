@@ -4,6 +4,8 @@ import 'Widgets/Customtextbox_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SelectRoles extends StatefulWidget {
+  const SelectRoles({super.key});
+
   @override
   _SelectRolesState createState() => _SelectRolesState();
 }
@@ -104,22 +106,9 @@ class _SelectRolesState extends State<SelectRoles> {
             GestureDetector(
               onTap: () {},
               child: Container(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Continue",
-                          style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                              fontSize: width * 0.05,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          )),
-                    ]),
                 width: width * 0.8,
                 height: height * 0.06,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(61),
                     topRight: Radius.circular(61),
@@ -136,6 +125,19 @@ class _SelectRolesState extends State<SelectRoles> {
                         Color.fromRGBO(47, 54, 118, 1)
                       ]),
                 ),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Continue",
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                              fontSize: width * 0.05,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          )),
+                    ]),
               ),
             ),
           ]),

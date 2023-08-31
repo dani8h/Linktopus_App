@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:linktopus_app/SignUp/codeverification.dart';
 import 'package:linktopus_app/login/landing_page.dart';
 
 bool _passwordVisible = false;
 
-class GoogleSignIn extends StatefulWidget {
+class EmailSignin extends StatefulWidget {
+  const EmailSignin({super.key});
+
   @override
-  State<GoogleSignIn> createState() => _GoogleSignInState();
+  State<EmailSignin> createState() => _EmailSigninState();
 }
 
-class _GoogleSignInState extends State<GoogleSignIn> {
-  TextEditingController _mailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+class _EmailSigninState extends State<EmailSignin> {
+  final TextEditingController _mailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double baseWidth = 428;
@@ -36,7 +35,7 @@ class _GoogleSignInState extends State<GoogleSignIn> {
                     onTap: () => Navigator.pop(context),
                     child: Icon(
                       Icons.arrow_back_ios,
-                      color: Color(0xff243443),
+                      color: const Color(0xff243443),
                       size: 25 * ffem,
                     ),
                   ),
@@ -60,7 +59,7 @@ class _GoogleSignInState extends State<GoogleSignIn> {
                             fontSize: 18 * ffem,
                             fontWeight: FontWeight.w600,
                             height: 1.2125 * ffem / fem,
-                            color: Color(0xff243443),
+                            color: const Color(0xff243443),
                           ),
                         ),
                       ),
@@ -86,10 +85,10 @@ class _GoogleSignInState extends State<GoogleSignIn> {
               //     23.64 * fem, 21.23 * fem, 23.64 * fem, 25.46 * fem),
               width: 377 * fem,
               decoration: BoxDecoration(
-                border: Border.all(color: Color(0xffaab0b7)),
-                color: Color(0xffffffff),
+                border: Border.all(color: const Color(0xffaab0b7)),
+                color: const Color(0xffffffff),
                 borderRadius: BorderRadius.circular(8 * fem),
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   begin: Alignment(0, -1),
                   end: Alignment(0, 1),
                   colors: <Color>[Color(0xffffffff), Color(0x00ffffff)],
@@ -103,17 +102,17 @@ class _GoogleSignInState extends State<GoogleSignIn> {
                     fontSize: 15 * ffem,
                     fontWeight: FontWeight.w500,
                     height: 1.5 * ffem / fem,
-                    color: Color(0xff000000),
+                    color: const Color(0xff000000),
                   ),
                   controller: _mailController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'example@gmail.com',
+                    hintText: 'Enter the email',
                     hintStyle: GoogleFonts.poppins(
                       fontSize: 15 * ffem,
                       fontWeight: FontWeight.w500,
                       height: 1.5 * ffem / fem,
-                      color: Color.fromARGB(141, 198, 195, 195),
+                      color: const Color.fromARGB(141, 198, 195, 195),
                     ),
                   ),
                 ),
@@ -127,10 +126,10 @@ class _GoogleSignInState extends State<GoogleSignIn> {
               //     23.64 * fem, 21.23 * fem, 23.64 * fem, 25.46 * fem),
               width: 377 * fem,
               decoration: BoxDecoration(
-                border: Border.all(color: Color(0xffaab0b7)),
-                color: Color(0xffffffff),
+                border: Border.all(color: const Color(0xffaab0b7)),
+                color: const Color(0xffffffff),
                 borderRadius: BorderRadius.circular(8 * fem),
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   begin: Alignment(0, -1),
                   end: Alignment(0, 1),
                   colors: <Color>[Color(0xffffffff), Color(0x00ffffff)],
@@ -158,7 +157,7 @@ class _GoogleSignInState extends State<GoogleSignIn> {
                       fontSize: 15 * ffem,
                       fontWeight: FontWeight.w500,
                       height: 1.5 * ffem / fem,
-                      color: Color.fromARGB(141, 198, 195, 195),
+                      color: const Color.fromARGB(141, 198, 195, 195),
                     ),
                     hintText: 'Enter your password',
                     suffixIcon: IconButton(
@@ -189,8 +188,8 @@ class _GoogleSignInState extends State<GoogleSignIn> {
                   fontWeight: FontWeight.w500,
                   height: 1.2125 * ffem / fem,
                   decoration: TextDecoration.underline,
-                  color: Color(0xff243443),
-                  decorationColor: Color(0xff243443),
+                  color: const Color(0xff243443),
+                  decorationColor: const Color(0xff243443),
                 ),
               ),
             ),
@@ -202,18 +201,18 @@ class _GoogleSignInState extends State<GoogleSignIn> {
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: Color.fromARGB(51, 0, 0, 0),
-                    offset: Offset(0, 4),
+                    color: const Color.fromARGB(51, 0, 0, 0),
+                    offset: const Offset(0, 4),
                     blurRadius: 16 * fem,
                   ),
                   BoxShadow(
-                    color: Color.fromARGB(51, 0, 0, 0),
-                    offset: Offset(0, 4),
+                    color: const Color.fromARGB(51, 0, 0, 0),
+                    offset: const Offset(0, 4),
                     blurRadius: 16 * fem,
                   )
                 ],
                 borderRadius: BorderRadius.circular(8 * fem),
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   begin: Alignment(1, -5.315),
                   end: Alignment(-1, 4.63),
                   colors: <Color>[Color(0xffe02c72), Color(0xff4175df)],
@@ -228,7 +227,7 @@ class _GoogleSignInState extends State<GoogleSignIn> {
                     fontSize: 24 * ffem,
                     fontWeight: FontWeight.w500,
                     height: 1.2125 * ffem / fem,
-                    color: Color(0xffffffff),
+                    color: const Color(0xffffffff),
                   ),
                 ),
               ),
@@ -242,7 +241,7 @@ class _GoogleSignInState extends State<GoogleSignIn> {
                   fontSize: 14 * ffem,
                   fontWeight: FontWeight.w500,
                   height: 1.2125 * ffem / fem,
-                  color: Color(0xff243443),
+                  color: const Color(0xff243443),
                 ),
               ),
             ),
@@ -251,7 +250,7 @@ class _GoogleSignInState extends State<GoogleSignIn> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Landing_Page(),
+                    builder: (context) => const Landing_Page(),
                   ),
                 );
               },
@@ -262,7 +261,7 @@ class _GoogleSignInState extends State<GoogleSignIn> {
                   fontSize: 14 * ffem,
                   fontWeight: FontWeight.w700,
                   height: 1.2125 * ffem / fem,
-                  color: Color(0xffe02c72),
+                  color: const Color(0xffe02c72),
                 ),
               ),
             ),
