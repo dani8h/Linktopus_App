@@ -52,7 +52,9 @@ class MyApp extends StatelessWidget {
       color: Colors.white,
       title: 'Flutter Demo',
       theme: themeData,
-      home: GetStarted(),
+      home: FirebaseAuth.instance.currentUser != Null
+          ? Jobs_page()
+          : GetStarted(),
     );
   }
 }

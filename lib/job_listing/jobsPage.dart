@@ -352,81 +352,91 @@ Widget _jdcard(dynamic cdata, BuildContext context) {
   //     .child('Description')
   //     .value,
   // textfilteredlist[index].child('Image').value,
-  String info = cdata.child('Description').value.toString() == null
-      ? 'NA'
-      : cdata.child('Description').value.toString();
+  String info = cdata.child('Description').value.toString() ?? 'NA';
   info = info.length > 80 ? '${info.substring(0, 80)}...Read more' : info;
 
-  return Container(
-    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-    padding: EdgeInsets.all(10),
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10), color: Color(0xffE5E5E5)),
-    child: Row(
-      // crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: EdgeInsets.only(right: 15),
-          child: CircleAvatar(
-            radius: 20,
-            backgroundImage: NetworkImage(cdata.child('Image').value),
+  return GestureDetector(
+    onTap: () {
+      showModalBottomSheet<void>(
+        backgroundColor: Colors.transparent,
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return Bottomsheet(jobdata: cdata);
+        },
+      );
+    },
+    child: Container(
+      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), color: Color(0xffE5E5E5)),
+      child: Row(
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.only(right: 15),
+            child: CircleAvatar(
+              radius: 20,
+              backgroundImage: NetworkImage(cdata.child('Image').value),
+            ),
           ),
-        ),
-        Expanded(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              cdata.child('Role').value.toString() == null
-                  ? 'NA'
-                  : cdata.child('Role').value.toString(),
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
-            ),
-            Text(
-              cdata.child('Company Name').value.toString() == null
-                  ? 'NA'
-                  : cdata.child('Company Name').value.toString(),
-              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
-            ),
-            Text(
-              cdata.child('Location').value.toString() == null
-                  ? 'NA'
-                  : cdata.child('Location').value.toString(),
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 13,
-                  color: Colors.grey),
-            ),
-            SizedBox(height: 10),
-            Text(
-              info,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
-            )
-          ],
-        )),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-                onPressed: () {
-                  // print('button pressed');
-                },
-                icon: Icon(Icons.bookmark_add_outlined)),
-            IconButton(
-                onPressed: () {
-                  showModalBottomSheet<void>(
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (BuildContext context) {
-                      return Bottomsheet(jobdata: cdata);
-                    },
-                  );
-                },
-                icon: Icon(Icons.chevron_right))
-          ],
-        )
-      ],
+          Expanded(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                cdata.child('Role').value.toString() == null
+                    ? 'NA'
+                    : cdata.child('Role').value.toString(),
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+              ),
+              Text(
+                cdata.child('Company Name').value.toString() == null
+                    ? 'NA'
+                    : cdata.child('Company Name').value.toString(),
+                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+              ),
+              Text(
+                cdata.child('Location').value.toString() == null
+                    ? 'NA'
+                    : cdata.child('Location').value.toString(),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 13,
+                    color: Colors.grey),
+              ),
+              SizedBox(height: 10),
+              Text(
+                info,
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
+              )
+            ],
+          )),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    // print('button pressed');
+                  },
+                  icon: Icon(Icons.bookmark_add_outlined)),
+              IconButton(
+                  onPressed: () {
+                    showModalBottomSheet<void>(
+                      backgroundColor: Colors.transparent,
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (BuildContext context) {
+                        return Bottomsheet(jobdata: cdata);
+                      },
+                    );
+                  },
+                  icon: Icon(Icons.chevron_right))
+            ],
+          )
+        ],
+      ),
     ),
   );
 }
