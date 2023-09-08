@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:linktopus_app/job_listing/jobsPage.dart';
 // import 'package:myapp/utils.dart';
 
 String _dropdownValue = 'Male';
@@ -45,6 +46,7 @@ class _ProfileState extends State<Profile> {
   bool flag = false;
 
   Future<void> fetchUserData() async {
+    print("fetching user data");
     DocumentSnapshot snapshot =
         await FirebaseFirestore.instance.collection('users').doc(uid).get();
 
@@ -55,7 +57,7 @@ class _ProfileState extends State<Profile> {
         fullName = snapshot.get('Full Name') ?? '';
         gender = snapshot.get('Gender') ?? '';
         phoneNumber = snapshot.get('Phone Number') ?? '';
-        profilePic = snapshot.get('ProfilePic') ?? '';
+
         qualification = snapshot.get('Qualification') ?? '';
         username = snapshot.get('Username') ?? '';
         location = snapshot.get('Your Location') ?? '';
@@ -69,10 +71,15 @@ class _ProfileState extends State<Profile> {
           _locController.text = location;
           controller_ph = phoneNumber;
           _dropdownValue = gender;
+          profilePic = snapshot.get('ProfilePic') ?? '';
+          print("ther username is");
+          print(username);
         });
 
         // this.image = image;
       });
+    } else {
+      print("snapshot not existing");
     }
   }
 
@@ -469,8 +476,6 @@ class _ProfileState extends State<Profile> {
     final userDocRef = firestore.collection('users').doc(uid);
     DocumentSnapshot doc = await userDocRef.get();
     if (doc.exists) flag = true;
-
-    print(flag);
   }
 
   @override
@@ -517,7 +522,12 @@ class _ProfileState extends State<Profile> {
                       margin: EdgeInsets.fromLTRB(
                           25 * fem, 5 * fem, 0 * fem, 0 * fem),
                       child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
+                        onTap: () {
+                          Navigator.pushReplacement(context, MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return Jobs_page();
+                          }));
+                        },
                         child: Icon(Icons.arrow_back_ios,
                             color: const Color(0xffffffff), size: 30 * fem),
                       ), //mediaquery
@@ -663,8 +673,9 @@ class _ProfileState extends State<Profile> {
                                   : phoneNumber.substring(3),
                               //textFieldController: controller_ph,
                               formatInput: false,
-                              keyboardType: const TextInputType.numberWithOptions(
-                                  signed: true, decimal: true),
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
                               inputBorder: const OutlineInputBorder(),
                               onSaved: (PhoneNumber number) {
                                 print('On Saved: $number');
@@ -770,7 +781,8 @@ class _ProfileState extends State<Profile> {
                               width: 20 * fem,
                               height: 19.09 * fem,
                               child: Icon(Icons.upload_rounded,
-                                  color: const Color(0xffffffff), size: 25 * fem),
+                                  color: const Color(0xffffffff),
+                                  size: 25 * fem),
                             ),
                             Text(
                               // uploadresumeCXi (40:7638)
@@ -841,7 +853,7 @@ class _ProfileState extends State<Profile> {
                         children: [
                           TextButton(
                             onPressed: () async {
-                              print('pressed');
+                              // print('pressed');
                               //i want to write a function to push all the textediting controller fields to a firebase document called users
                               await sendUserData(
                                 _username.text,
@@ -856,7 +868,12 @@ class _ProfileState extends State<Profile> {
                                 isPaidUser,
                                 image,
                                 context,
-                              );
+                              ).then((value) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Jobs_page()));
+                              });
                             },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,

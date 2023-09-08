@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:linktopus_app/SplashScreen/getstarted.dart';
 import 'package:linktopus_app/job_listing/jobsPage.dart';
+import 'package:linktopus_app/login/mail_signup.dart';
 import './selectRoles.dart';
 import './login/landing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -40,21 +42,86 @@ class MyApp extends StatelessWidget {
         800: Color(0xFFC5326E),
         900: Color(0xFFA71D54),
       }),
-      // Customize other theme properties as needed
-      // fontFamily: 'Roboto',
-      // textTheme: TextTheme(
-      //   headline6: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      //   bodyText2: TextStyle(fontSize: 16),
-      // ),
     );
 
-    return MaterialApp(
-      color: Colors.white,
-      title: 'Flutter Demo',
-      theme: themeData,
-      home: FirebaseAuth.instance.currentUser != Null
-          ? Jobs_page()
-          : GetStarted(),
-    );
+    var uid = FirebaseAuth.instance.currentUser?.uid;
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    if (uid == null) {
+      return MaterialApp(
+          color: Colors.white,
+          title: 'Flutter Demo',
+          theme: themeData,
+          home: EmailSignin());
+    } else {
+      return FutureBuilder(
+          future: users.doc(uid).get(),
+          builder: (context, snapshot) {
+            if (snapshot.data?.data() == null) {
+              return MaterialApp(
+                  color: Colors.white,
+                  title: 'Flutter Demo',
+                  theme: themeData,
+                  home: Profile());
+            } else {
+              return MaterialApp(
+                  color: Colors.white,
+                  title: 'Flutter Demo',
+                  theme: themeData,
+                  home: Jobs_page());
+            }
+          });
+    }
   }
+
+//
+//
+// var uid = FirebaseAuth.instance.currentUser?.uid;
+// CollectionReference users = FirebaseFirestore.instance.collection('users');
+// // return FutureBuilder(
+// //     future: users.doc(uid).get(),
+// //     builder: (context, snapshot) {
+// //       if (uid == null) {
+// //         return MaterialApp(
+// //             color: Colors.white,
+// //             title: 'Flutter Demo',
+// //             theme: themeData,
+// //             home: EmailSignup());
+// //       }
+// //       if (snapshot == null || !snapshot.data!.exists) {
+// //         return MaterialApp(
+// //             color: Colors.white,
+// //             title: 'Flutter Demo',
+// //             theme: themeData,
+// //             home: Profile());
+// //       }
+// //
+// //       return MaterialApp(
+// //           color: Colors.white,
+// //           title: 'Flutter Demo',
+// //           theme: themeData,
+// //           home: Jobs_page());
+// //     });
+// // var uid = FirebaseAuth.instance.currentUser?.uid;
+// FirebaseFirestore db = FirebaseFirestore.instance;
+// // DocumentSnapshot doc =  db.collection('users').doc(uid).get();
+//
+// print(uid);
+// if (uid != null) {
+// return MaterialApp(
+// color: Colors.white,
+// title: 'Flutter Demo',
+// theme: themeData,
+// home: Jobs_page());
+// } else if (uid != null) {
+// return MaterialApp(
+// color: Colors.white,
+// title: 'Flutter Demo',
+// theme: themeData,
+// home: Profile());
+// } else {
+// return MaterialApp(
+// color: Colors.white,
+// title: 'Flutter Demo',
+// theme: themeData,
+// home: GetStarted());
 }

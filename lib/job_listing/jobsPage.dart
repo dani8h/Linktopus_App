@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:linktopus_app/SignUp/googlesignin.dart';
 import 'package:linktopus_app/login/landing_page.dart';
+import 'package:linktopus_app/login/mail_signup.dart';
 import 'package:linktopus_app/profile.dart';
 import 'filter_popup.dart';
 import 'bottom_sheet.dart';
@@ -266,7 +268,7 @@ class _Jobs_pageState extends State<Jobs_page> {
   signout() async {
     await auth.signOut();
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => Landing_Page()));
+        context, MaterialPageRoute(builder: (context) => EmailSignin()));
   }
 }
 
@@ -326,7 +328,7 @@ class _buttonRowState extends State<_buttonRow> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return const JobPopup();
+                  return JobPopup();
                 },
               );
             },

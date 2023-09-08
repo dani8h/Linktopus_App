@@ -131,11 +131,6 @@ class _BottomsheetState extends State<Bottomsheet> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        // Icon(
-                        //   FontAwesomeIcons.google,
-                        //   size: size.width * 0.12,
-                        //   color: Colors.red,
-                        // ),
                         CircleAvatar(
                             radius: size.width * 0.1,
                             backgroundImage: NetworkImage(
