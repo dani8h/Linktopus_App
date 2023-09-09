@@ -80,8 +80,10 @@ class _Landing_PageState extends State<Landing_Page> {
                     height: height * 0.01,
                   ),
                   GestureDetector(
-                    onTap: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const EmailSignup())),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const EmailSignup())),
                     child: Card(
                       elevation: 10,
                       shape: RoundedRectangleBorder(
@@ -157,8 +159,10 @@ class _Landing_PageState extends State<Landing_Page> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const OtpPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const OtpPage()));
                     },
                     child: Card(
                       elevation: 6,
