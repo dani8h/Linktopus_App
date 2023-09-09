@@ -1,35 +1,50 @@
 {
   "project_info": {
-    "project_number": "972010493205",
-    "firebase_url": "https://linktopus-abd56-default-rtdb.firebaseio.com",
-    "project_id": "linktopus-abd56",
-    "storage_bucket": "linktopus-abd56.appspot.com"
+    "project_number": "422635113271",
+    "firebase_url": "https://linktopus-bfe2d-default-rtdb.firebaseio.com",
+    "project_id": "linktopus-bfe2d",
+    "storage_bucket": "linktopus-bfe2d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:972010493205:android:8657cdb7fe9e3e6b1f451c",
+        "mobilesdk_app_id": "1:422635113271:android:2ef396c3bdb3a6f72568b2",
         "android_client_info": {
-          "package_name": "com.example.linktopus_app"
+          "package_name": "com.linktopus.linktopusapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "972010493205-2mjejcudm1r9f6jpg43kdt4q54pfj8em.apps.googleusercontent.com",
+          "client_id": "422635113271-6j9hjqfeorfi5m41qqvde05cnljti1ou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.linktopus.linktopusapp",
+            "certificate_hash": "0c7b8dddd076018aabb87dfc970bd5415a29dd17"
+          }
+        },
+        {
+          "client_id": "422635113271-nnb2ukggs40rk4nvr70fk1ve0mm4bd3r.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC-RuMZS-Rra16QUXsJ94D5d9XuMqSkWEw"
+          "current_key": "AIzaSyDY8bC1KP9683o3ZY-RB3rsrKNL2f4aFl8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "972010493205-2mjejcudm1r9f6jpg43kdt4q54pfj8em.apps.googleusercontent.com",
+              "client_id": "422635113271-drm9spn7hcp50mv9bu18rkkgdcqeb9ad.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "422635113271-r36b5ltsb93vo2j2q22hmulgo73bp8l6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.linktopusApp"
+              }
             }
           ]
         }
