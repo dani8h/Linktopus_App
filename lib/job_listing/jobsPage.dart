@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/SignUp/googlesignin.dart';
-import 'package:linktopus_app/login/landing_page.dart';
-import 'package:linktopus_app/login/mail_signup.dart';
 import 'package:linktopus_app/profile.dart';
 import 'filter_popup.dart';
 import 'bottom_sheet.dart';
@@ -207,7 +205,7 @@ class _Jobs_pageState extends State<Jobs_page> {
                       width: 50,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
-                          border: Border.all(color: Color(0xff4f4f4f))),
+                          border: Border.all(color: const Color(0xff4f4f4f))),
                       child: const Icon(
                         Icons.logout,
                         color: Color(0xff4f4f4f),
@@ -229,10 +227,10 @@ class _Jobs_pageState extends State<Jobs_page> {
               ),
               //search bar
               Container(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 child: Center(
                   child: CupertinoSearchTextField(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                     controller: _searchController,
                     placeholder: 'Search',
                     onChanged: (value) => textFilter(value),
@@ -268,7 +266,7 @@ class _Jobs_pageState extends State<Jobs_page> {
   signout() async {
     await auth.signOut();
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => EmailSignin()));
+        context, MaterialPageRoute(builder: (context) => const EmailSignin()));
   }
 }
 
@@ -328,7 +326,7 @@ class _buttonRowState extends State<_buttonRow> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return JobPopup();
+                  return const JobPopup();
                 },
               );
             },
@@ -380,15 +378,15 @@ Widget _jdcard(dynamic cdata, BuildContext context) {
       );
     },
     child: Container(
-      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-      padding: EdgeInsets.all(10),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: Color(0xffE5E5E5)),
+          borderRadius: BorderRadius.circular(10), color: const Color(0xffE5E5E5)),
       child: Row(
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.only(right: 15),
+            padding: const EdgeInsets.only(right: 15),
             child: CircleAvatar(
               radius: 20,
               backgroundImage: NetworkImage(cdata.child('Image').value),
@@ -399,30 +397,24 @@ Widget _jdcard(dynamic cdata, BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                cdata.child('Role').value.toString() == null
-                    ? 'NA'
-                    : cdata.child('Role').value.toString(),
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                cdata.child('Role').value.toString() ?? 'NA',
+                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
               ),
               Text(
-                cdata.child('Company Name').value.toString() == null
-                    ? 'NA'
-                    : cdata.child('Company Name').value.toString(),
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+                cdata.child('Company Name').value.toString() ?? 'NA',
+                style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
               ),
               Text(
-                cdata.child('Location').value.toString() == null
-                    ? 'NA'
-                    : cdata.child('Location').value.toString(),
-                style: TextStyle(
+                cdata.child('Location').value.toString() ?? 'NA',
+                style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 13,
                     color: Colors.grey),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 info,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
+                style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
               )
             ],
           )),
@@ -433,7 +425,7 @@ Widget _jdcard(dynamic cdata, BuildContext context) {
                   onPressed: () {
                     // print('button pressed');
                   },
-                  icon: Icon(Icons.bookmark_add_outlined)),
+                  icon: const Icon(Icons.bookmark_add_outlined)),
               IconButton(
                   onPressed: () {
                     showModalBottomSheet<void>(
@@ -445,7 +437,7 @@ Widget _jdcard(dynamic cdata, BuildContext context) {
                       },
                     );
                   },
-                  icon: Icon(Icons.chevron_right))
+                  icon: const Icon(Icons.chevron_right))
             ],
           )
         ],

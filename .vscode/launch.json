@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/shubh/development/playground/Linktopus/Linktopus_App",
+      "program": "/Users/shubh/development/playground/Linktopus/Linktopus_App/build/Debug/outDebug"
+    }
+  ]
+}

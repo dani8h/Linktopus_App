@@ -45,43 +45,53 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCH_ZnNFBm5r9IHQjavgfdID04VDNn7xng',
-    appId: '1:972010493205:web:477d96951166c2221f451c',
-    messagingSenderId: '972010493205',
-    projectId: 'linktopus-abd56',
-    authDomain: 'linktopus-abd56.firebaseapp.com',
-    databaseURL: 'https://linktopus-abd56-default-rtdb.firebaseio.com',
-    storageBucket: 'linktopus-abd56.appspot.com',
-    measurementId: 'G-2VKVH47YP0',
+    appId: '1:422635113271:web:6f3d2032b01aa7262568b2', // Update the appId.
+    messagingSenderId: '422635113271', // Update the messagingSenderId.
+    projectId:
+        'linktopus-bfe2d', // Update the projectId to match the new project ID.
+    authDomain:
+        'linktopus-bfe2d.firebaseapp.com', // Update authDomain based on the project ID.
+    storageBucket: 'linktopus-bfe2d.appspot.com', // Update the storageBucket.
+    measurementId:
+        'G-2VKVH47YP0', // MeasurementId for Google Analytics (if used).
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC-RuMZS-Rra16QUXsJ94D5d9XuMqSkWEw',
-    appId: '1:972010493205:android:8657cdb7fe9e3e6b1f451c',
-    messagingSenderId: '972010493205',
-    projectId: 'linktopus-abd56',
-    databaseURL: 'https://linktopus-abd56-default-rtdb.firebaseio.com',
-    storageBucket: 'linktopus-abd56.appspot.com',
+    appId: '1:422635113271:android:6f3d2032b01aa7262568b2', // Update the appId.
+    messagingSenderId: '422635113271', // Update the messagingSenderId.
+    projectId:
+        'linktopus-bfe2d', // Update the projectId to match the new project ID.
+    databaseURL:
+        'https://linktopus-bfe2d-default-rtdb.firebaseio.com', // Update the databaseURL.
+    storageBucket: 'linktopus-bfe2d.appspot.com', // Update the storageBucket.
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAKLKbN-TjmqOyc7qup7O3KaKbwYEmdB9c',
-    appId: '1:972010493205:ios:20252e44d97b4f541f451c',
-    messagingSenderId: '972010493205',
-    projectId: 'linktopus-abd56',
-    databaseURL: 'https://linktopus-abd56-default-rtdb.firebaseio.com',
-    storageBucket: 'linktopus-abd56.appspot.com',
-    iosClientId: '972010493205-h49u97g86n9in748jei2v6gu9bs27n40.apps.googleusercontent.com',
-    iosBundleId: 'com.example.linktopusApp',
+    appId: '1:422635113271:ios:6f3d2032b01aa7262568b2', // Update the appId.
+    messagingSenderId: '422635113271', // Update the messagingSenderId.
+    projectId:
+        'linktopus-bfe2d', // Update the projectId to match the new project ID.
+    databaseURL:
+        'https://linktopus-bfe2d-default-rtdb.firebaseio.com', // Update the databaseURL.
+    storageBucket: 'linktopus-bfe2d.appspot.com', // Update the storageBucket.
+    iosClientId:
+        '422635113271-r36b5ltsb93vo2j2q22hmulgo73bp8l6.apps.googleusercontent.com', // Update with your iOS client ID.
+    iosBundleId: 'com.example.linktopusApp', // Update with your iOS bundle ID.
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAKLKbN-TjmqOyc7qup7O3KaKbwYEmdB9c',
-    appId: '1:972010493205:ios:20252e44d97b4f541f451c',
-    messagingSenderId: '972010493205',
-    projectId: 'linktopus-abd56',
-    databaseURL: 'https://linktopus-abd56-default-rtdb.firebaseio.com',
-    storageBucket: 'linktopus-abd56.appspot.com',
-    iosClientId: '972010493205-h49u97g86n9in748jei2v6gu9bs27n40.apps.googleusercontent.com',
-    iosBundleId: 'com.example.linktopusApp',
+    appId: '1:422635113271:ios:6f3d2032b01aa7262568b2', // Update the appId.
+    messagingSenderId: '422635113271', // Update the messagingSenderId.
+    projectId:
+        'linktopus-bfe2d', // Update the projectId to match the new project ID.
+    databaseURL:
+        'https://linktopus-bfe2d-default-rtdb.firebaseio.com', // Update the databaseURL.
+    storageBucket: 'linktopus-bfe2d.appspot.com', // Update the storageBucket.
+    iosClientId:
+        '422635113271-r36b5ltsb93vo2j2q22hmulgo73bp8l6.apps.googleusercontent.com', // Update with your iOS client ID.
+    iosBundleId: 'com.example.linktopusApp', // Update with your iOS bundle ID.
   );
 }

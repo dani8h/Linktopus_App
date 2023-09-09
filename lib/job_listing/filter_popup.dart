@@ -320,9 +320,9 @@ class _JobPopupState extends State<JobPopup> {
                         });
                       },
                     ),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text(
                           '0',
                           style: TextStyle(color: Colors.black),
