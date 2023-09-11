@@ -42,22 +42,27 @@ class _Jobs_pageState extends State<Jobs_page> {
     uid = user?.uid;
     if (uid != null) {
       String? path = 'users/$uid/ProfilePic';
-      print('image path is $path');
+      // print('image path is $path');
       final storageRef = FirebaseStorage.instance.ref().child(path);
       ImgUrl = await storageRef.getDownloadURL();
-      print('image url $ImgUrl');
+      // print('image url $ImgUrl');
     }
   }
 
   _getcompanies() async {
     Query q = ref
-        .child('1N3PmKSTY7isdFNXaKFCALDT9-OoYNiQ3txilEqUR5UM/Sheet1')
+        .child('1Qv9Hsn9tDmj1uZ8YyK2YMCyN1-jtVoM-0Udoi9fbHSI')
+        .child('Job Opportunities')
         .orderByKey()
         .startAfter(n.toString())
         .endAt((n + 10).toString());
     _loading = true;
     DataSnapshot dataSnapshot = await q.get();
     companylist.addAll(dataSnapshot.children);
+    // print('company data');
+    // for (dynamic e in companylist) {
+    //   print(e.value);
+    // }
     setState(() {
       _loading = false;
     });
@@ -83,7 +88,7 @@ class _Jobs_pageState extends State<Jobs_page> {
         if (companyfilter.isNotEmpty) {
           finallist = finallist
               .where((element) =>
-                  companyfilter.contains(element.child('Company Name').value))
+                  companyfilter.contains(element.child('Company').value))
               .toList();
         }
       }
@@ -129,7 +134,7 @@ class _Jobs_pageState extends State<Jobs_page> {
     } else {
       textfilteredlist = finallist
           .where((element) => element
-              .child('Role')
+              .child('Profile')
               .value
               .toString()
               .toLowerCase()
@@ -227,10 +232,12 @@ class _Jobs_pageState extends State<Jobs_page> {
               ),
               //search bar
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 child: Center(
                   child: CupertinoSearchTextField(
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 10),
                     controller: _searchController,
                     placeholder: 'Search',
                     onChanged: (value) => textFilter(value),
@@ -363,7 +370,7 @@ Widget _jdcard(dynamic cdata, BuildContext context) {
   //     .child('Description')
   //     .value,
   // textfilteredlist[index].child('Image').value,
-  String info = cdata.child('Description').value.toString() ?? 'NA';
+  String info = cdata.child('Job Description').value.toString() ?? 'NA';
   info = info.length > 80 ? '${info.substring(0, 80)}...Read more' : info;
 
   return GestureDetector(
@@ -381,28 +388,33 @@ Widget _jdcard(dynamic cdata, BuildContext context) {
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: const Color(0xffE5E5E5)),
+          borderRadius: BorderRadius.circular(10),
+          color: const Color(0xffE5E5E5)),
       child: Row(
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: const EdgeInsets.only(right: 15),
             child: CircleAvatar(
-              radius: 20,
-              backgroundImage: NetworkImage(cdata.child('Image').value),
-            ),
+                radius: 20,
+                backgroundImage: cdata.child('Image').value.toString() != ""
+                    ? NetworkImage(cdata.child('Image').value.toString())
+                    : NetworkImage(
+                        'https://www.searchenginejournal.com/wp-content/uploads/2017/06/shutterstock_268688447.jpg')),
           ),
           Expanded(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                cdata.child('Role').value.toString() ?? 'NA',
-                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                cdata.child('Profile').value.toString() ?? 'NA',
+                style:
+                    const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
               ),
               Text(
-                cdata.child('Company Name').value.toString() ?? 'NA',
-                style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+                cdata.child('Company').value.toString() ?? 'NA',
+                style:
+                    const TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
               ),
               Text(
                 cdata.child('Location').value.toString() ?? 'NA',
@@ -414,7 +426,8 @@ Widget _jdcard(dynamic cdata, BuildContext context) {
               const SizedBox(height: 10),
               Text(
                 info,
-                style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
+                style:
+                    const TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
               )
             ],
           )),

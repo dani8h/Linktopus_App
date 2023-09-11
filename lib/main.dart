@@ -2,31 +2,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:linktopus_app/SplashScreen/getstarted.dart';
+import 'package:linktopus_app/job_listing/jobsPage.dart';
+import 'package:linktopus_app/login/mail_signup.dart';
+import './selectRoles.dart';
+import './login/landing_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:linktopus_app/SignUp/codeverification.dart';
 import 'package:linktopus_app/SignUp/googlesignin.dart';
+import 'package:linktopus_app/SignUp/otplogin.dart';
 import 'package:linktopus_app/profile.dart';
 
 // import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    name: "Linktopus",
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const MyApp());
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = ThemeData(
-      primaryColor: const Color(0xffEF5DA8),
-      primarySwatch: const MaterialColor(0xffEF5DA8, {
+      primaryColor: Color(0xffEF5DA8),
+      primarySwatch: MaterialColor(0xffEF5DA8, {
         50: Color(0xFFFCE4F6),
         100: Color(0xFFFFD1E2),
         200: Color(0xFFFFACC6),
@@ -43,30 +45,27 @@ class MyApp extends StatelessWidget {
     var uid = FirebaseAuth.instance.currentUser?.uid;
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     if (uid == null) {
-      print("NOOVVV");
       return MaterialApp(
-          color: Colors.yellow,
+          color: Colors.white,
           title: 'Flutter Demo',
           theme: themeData,
-          home: const EmailSignin());
+          home: EmailSignin());
     } else {
-      print("HAXOR");
       return FutureBuilder(
           future: users.doc(uid).get(),
           builder: (context, snapshot) {
             if (snapshot.data?.data() == null) {
               return MaterialApp(
-                color: Colors.green,
-                title: 'Flutter Demo',
-                theme: themeData,
-                home: const Profile(),
-              );
+                  color: Colors.white,
+                  title: 'Flutter Demo',
+                  theme: themeData,
+                  home: Profile());
             } else {
               return MaterialApp(
                   color: Colors.white,
                   title: 'Flutter Demo',
                   theme: themeData,
-                  home: const GetStarted());
+                  home: Jobs_page());
             }
           });
     }

@@ -68,7 +68,8 @@ class _BottomsheetState extends State<Bottomsheet> {
   @override
   void initState() {
     super.initState();
-
+    print('data is');
+    print(widget.jobdata.value);
     _items = List.generate(
       2,
       (index) {
@@ -76,12 +77,12 @@ class _BottomsheetState extends State<Bottomsheet> {
         String description;
 
         if (index == 0) {
-          title = 'Minimum Qualifications';
+          title = 'Minimum Experience';
           description = widget.jobdata.child('Experience').value.toString();
         } else {
           title = 'Preferred Qualifications';
           description =
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+              widget.jobdata.child('Preferred Qualifications').value.toString();
         }
 
         return {
@@ -130,8 +131,17 @@ class _BottomsheetState extends State<Bottomsheet> {
                       children: [
                         CircleAvatar(
                             radius: size.width * 0.1,
-                            backgroundImage: NetworkImage(
-                                widget.jobdata.child('Image').value)),
+                            backgroundImage: widget.jobdata
+                                        .child('Image')
+                                        .value
+                                        .toString() !=
+                                    ""
+                                ? NetworkImage(widget.jobdata
+                                    .child('Image')
+                                    .value
+                                    .toString())
+                                : NetworkImage(
+                                    'https://www.searchenginejournal.com/wp-content/uploads/2017/06/shutterstock_268688447.jpg')),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -141,9 +151,10 @@ class _BottomsheetState extends State<Bottomsheet> {
                                 padding: const EdgeInsets.all(4.0),
                                 child: Text(
                                   widget.jobdata
-                                          .child('Role')
+                                          .child('Profile')
                                           .value
-                                          .toString() ?? 'NA',
+                                          .toString() ??
+                                      'NA',
                                   softWrap: true,
                                   overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.poppins(
@@ -156,9 +167,10 @@ class _BottomsheetState extends State<Bottomsheet> {
                               padding: const EdgeInsets.all(4.0),
                               child: Text(
                                 widget.jobdata
-                                        .child('Company Name')
+                                        .child('Company')
                                         .value
-                                        .toString() ?? 'NA',
+                                        .toString() ??
+                                    'NA',
                                 style: GoogleFonts.poppins(
                                     fontSize: size.width * 0.043,
                                     fontWeight: FontWeight.w400),
@@ -170,7 +182,8 @@ class _BottomsheetState extends State<Bottomsheet> {
                                 widget.jobdata
                                         .child('Location')
                                         .value
-                                        .toString() ?? 'NA',
+                                        .toString() ??
+                                    'NA',
                                 style: GoogleFonts.poppins(
                                     color: const Color(0xffA9A9A9),
                                     fontSize: size.width * 0.04,
@@ -206,11 +219,15 @@ class _BottomsheetState extends State<Bottomsheet> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            Text(widget.jobdata
-                                    .child('Description')
-                                    .value
-                                    .toString() ??
-                                'NA'),
+                            Text(
+                              widget.jobdata
+                                      .child('Job Description')
+                                      .value
+                                      .toString() ??
+                                  'NA',
+                              style: GoogleFonts.poppins(
+                                  fontSize: 14, color: Colors.black),
+                            ),
                           ],
                         ),
                       ),
