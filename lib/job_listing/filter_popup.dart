@@ -25,7 +25,6 @@ class _JobPopupState extends State<JobPopup> {
   ];
   List<bool> isPressed = [];
   List<String> selectedCompanies = [];
-  List<String> workTypes = [];
   final TextEditingController searchController = TextEditingController();
   RangeValues selectedRangeValues = const RangeValues(100000, 4000000);
   Map<String, dynamic> res = {};
@@ -37,96 +36,6 @@ class _JobPopupState extends State<JobPopup> {
         isPressed.add(false);
       }
     });
-  }
-
-//Made this widget for the first container of work type(in-office) because the image needed some space at the top and UI was not looking good
-  Widget buildWorkTypeContainer1(
-      int index, String imagePath, String text, double screenWidth) {
-    Color borderColor = workTypes.contains(text) ? Colors.black : Colors.grey;
-
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            if (workTypes.contains(text)) {
-              workTypes.remove(text);
-            } else {
-              workTypes.add(text);
-            }
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-          decoration: BoxDecoration(
-            border: Border.all(color: borderColor),
-            borderRadius: BorderRadius.circular(7),
-          ),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 6.0),
-                child: SvgPicture.asset(imagePath),
-              ),
-              const SizedBox(width: 3.0),
-              Text(
-                text,
-                style: GoogleFonts.poppins(
-                  fontSize: screenWidth * 0.03,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey.shade800,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-//Container for work type
-  Widget buildWorkTypeContainer(
-      int index, String imagePath, String text, double screenWidth) {
-    Color borderColor = workTypes.contains(text) ? Colors.black : Colors.grey;
-
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            if (workTypes.contains(text)) {
-              workTypes.remove(text);
-            } else {
-              workTypes.add(text);
-            }
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-          decoration: BoxDecoration(
-            border: Border.all(color: borderColor),
-            borderRadius: BorderRadius.circular(7),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(7.0),
-            child: Row(
-              children: [
-                SvgPicture.asset(imagePath),
-                const SizedBox(width: 3.0),
-                Text(
-                  text,
-                  style: GoogleFonts.poppins(
-                    fontSize: screenWidth * 0.03,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey.shade800,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
   }
 
   @override
@@ -160,41 +69,6 @@ class _JobPopupState extends State<JobPopup> {
               ),
               const SizedBox(height: 8.0),
               Divider(color: Colors.grey.shade800),
-              const SizedBox(height: 8.0),
-              Text(
-                'Work Type',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.052,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: 'Poppins',
-                ),
-              ),
-              const SizedBox(height: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    buildWorkTypeContainer1(
-                      0,
-                      'assets/images/office.svg',
-                      'In-Office',
-                      screenWidth,
-                    ),
-                    buildWorkTypeContainer(
-                      1,
-                      'assets/images/home.svg',
-                      'Work from Home',
-                      screenWidth,
-                    ),
-                    buildWorkTypeContainer(
-                      2,
-                      'assets/images/hybrid.svg',
-                      'Hybrid',
-                      screenWidth,
-                    ),
-                  ],
-                ),
-              ),
               const SizedBox(height: 16.0),
               Row(
                 children: [
@@ -294,8 +168,10 @@ class _JobPopupState extends State<JobPopup> {
                   inactiveTrackColor: Colors.white,
                   thumbColor: Colors.white,
                   overlayColor: const Color(0xffEF5DA8),
-                  thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10.0),
-                  overlayShape: const RoundSliderOverlayShape(overlayRadius: 20.0),
+                  thumbShape:
+                      const RoundSliderThumbShape(enabledThumbRadius: 10.0),
+                  overlayShape:
+                      const RoundSliderOverlayShape(overlayRadius: 20.0),
                   valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
                   valueIndicatorColor: const Color(0xffEF5DA8),
                   valueIndicatorTextStyle: const TextStyle(
@@ -341,12 +217,13 @@ class _JobPopupState extends State<JobPopup> {
                 alignment: Alignment.center,
                 child: GestureDetector(
                   onTap: () {
-                    res['Work Type'] = workTypes;
+                    // res['Work Type'] = workTypes;
                     res['Location'] = searchController.text;
                     res['upper range'] = selectedRangeValues.end;
                     res['lower range'] = selectedRangeValues.start;
                     res['Companies'] = selectedCompanies;
-                    // print(res);
+                    print("Res : ");
+                    print(res);
                     Navigator.push(
                       context,
                       MaterialPageRoute(

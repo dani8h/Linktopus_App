@@ -35,6 +35,7 @@ class AuthService {
       final User? user = userCredential.user;
 
       if (user == null) {
+        print("NUll");
         return null;
       }
 

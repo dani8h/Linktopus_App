@@ -47,7 +47,9 @@ class _Landing_PageState extends State<Landing_Page> {
                     height: height * 0.33,
                   ),
                   GestureDetector(
-                    onTap: () => AuthService().signIngWithGoogle(context),
+                    onTap: () {
+                      AuthService().signIngWithGoogle(context);
+                    },
                     child: Card(
                       elevation: 10,
                       shape: RoundedRectangleBorder(

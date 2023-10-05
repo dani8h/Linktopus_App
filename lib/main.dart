@@ -70,6 +70,7 @@ class MyApp extends StatelessWidget {
           });
     }
   }
+}
 
 //
 //
@@ -122,4 +123,3 @@ class MyApp extends StatelessWidget {
 // title: 'Flutter Demo',
 // theme: themeData,
 // home: GetStarted());
-}
