@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/login/landing_page.dart';
 
@@ -32,7 +35,13 @@ class _EmailSigninState extends State<EmailSignin> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () {
+                      if (Platform.isAndroid) {
+                        SystemNavigator.pop();
+                      } else if (Platform.isIOS) {
+                        exit(0);
+                      }
+                    },
                     child: Icon(
                       Icons.arrow_back_ios,
                       color: const Color(0xff243443),
