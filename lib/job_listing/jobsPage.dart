@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart' as fstore;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +9,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/SignUp/googlesignin.dart';
 import 'package:linktopus_app/profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'filter_popup.dart';
 import 'bottom_sheet.dart';
 
@@ -37,6 +41,12 @@ class _Jobs_pageState extends State<Jobs_page> {
   var profilePic;
   String? ImgUrl;
 
+  void UpdateBookmarkFilter(bool isActive) {
+    setState(() {
+      isBookmarkFilterActive = isActive;
+    });
+  }
+
   Future<void> inputData() async {
     final User? user = auth.currentUser;
     uid = user?.uid;
@@ -50,6 +60,9 @@ class _Jobs_pageState extends State<Jobs_page> {
   }
 
   _getcompanies() async {
+    if (isBookmarkFilterActive == true) {
+      return;
+    }
     Query q = ref
         .child('1Qv9Hsn9tDmj1uZ8YyK2YMCyN1-jtVoM-0Udoi9fbHSI')
         .child('Job Opportunities')
@@ -59,7 +72,8 @@ class _Jobs_pageState extends State<Jobs_page> {
     _loading = true;
     DataSnapshot dataSnapshot = await q.get();
     companylist.addAll(dataSnapshot.children);
-    // print('company data');
+    // print('company data , ${DateTime.now()}');
+    // print(companylist.length);
     // for (dynamic e in companylist) {
     //   print(e.value);
     // }
@@ -82,7 +96,8 @@ class _Jobs_pageState extends State<Jobs_page> {
     finallist = companylist;
 
     if (widget.filterapplied) {
-      if (widget.myfilter['Companies'] != null) {
+      if (widget.myfilter['Companies'] != null &&
+          widget.myfilter['Companies'].length != 0) {
         List<String> companyfilter = [];
         companyfilter.addAll(widget.myfilter['Companies']);
         if (companyfilter.isNotEmpty) {
@@ -93,7 +108,8 @@ class _Jobs_pageState extends State<Jobs_page> {
         }
       }
 
-      if (widget.myfilter['Location'] != null) {
+      if (widget.myfilter['Location'] != null &&
+          widget.myfilter['Location'].length != 0) {
         String location = widget.myfilter['Location'].toString().toLowerCase();
         finallist = finallist
             .where((element) => element
@@ -105,25 +121,39 @@ class _Jobs_pageState extends State<Jobs_page> {
             .toList();
       }
 
-      if (widget.myfilter['upper range'] != null &&
-          widget.myfilter['upper range'] != 5000000) {
+      if (widget.myfilter['lower range'] != null &&
+          widget.myfilter['lower range'] != 5000000) {
         double upperRange = widget.myfilter['upper range'];
-        finallist = finallist
-            .where((element) => element.child('Salary').value <= upperRange)
-            .toList();
+        finallist = finallist.where((element) {
+          try {
+            double salary = double.parse(element.child('Salary').value);
+            return salary <= upperRange;
+          } catch (e) {
+            if (element.child('Salary').value == null ||
+                element.child('Salary').value == '') return true;
+            return false;
+          }
+        }).toList();
       }
       if (widget.myfilter['upper range'] != null &&
           widget.myfilter['upper range'] != 0) {
         double lowerRange = widget.myfilter['lower range'];
-        finallist = finallist
-            .where((element) => element.child('Salary').value >= lowerRange)
-            .toList();
+        finallist = finallist.where((element) {
+          try {
+            double salary = double.parse(element.child('Salary').value);
+            return salary >= lowerRange;
+          } catch (e) {
+            if (element.child('Salary').value == null ||
+                element.child('Salary').value == '') return true;
+            return false;
+          }
+        }).toList();
       }
 
-      // print('filtered companylist');
-      // for (var e in finallist) {
-      //   print(e.child('Salary').value);
-      // }
+      print("filtered companies: ");
+      for (dynamic e in finallist) {
+        print(e.value);
+      }
     }
     textfilteredlist = finallist;
   }
@@ -146,6 +176,12 @@ class _Jobs_pageState extends State<Jobs_page> {
   @override
   void initState() {
     super.initState();
+    // Load the bookmarkedStatus from local storage
+    loadBookmarkedStatus().then((loadedStatus) {
+      setState(() {
+        bookmarkedStatus = loadedStatus;
+      });
+    });
     inputData();
     _getcompanies();
     if (!_scrollController.hasClients) {
@@ -166,6 +202,8 @@ class _Jobs_pageState extends State<Jobs_page> {
       }
     });
   }
+
+  bool isBookmarkFilterActive = false;
 
   @override
   void dispose() {
@@ -247,7 +285,15 @@ class _Jobs_pageState extends State<Jobs_page> {
                   ),
                 ),
               ),
-              _buttonRow(widget.filterapplied),
+              _buttonRow(
+                widget.filterapplied,
+                updateTextFilteredList: (list) {
+                  setState(() {
+                    textfilteredlist = list;
+                  }); // Pass the callback function
+                },
+                UpdateBookmarkFilter: UpdateBookmarkFilter,
+              ),
               const SizedBox(
                 height: 30,
               ),
@@ -275,17 +321,232 @@ class _Jobs_pageState extends State<Jobs_page> {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const EmailSignin()));
   }
+
+  Map<String, bool> bookmarkedStatus = {};
+
+  // Save the bookmarkedStatus to local storage
+  Future<void> saveBookmarkedStatus(Map<String, bool> status) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('bookmarkedStatus', jsonEncode(status));
+  }
+
+  // Load the bookmarkedStatus from local storage
+  Future<Map<String, bool>> loadBookmarkedStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString('bookmarkedStatus');
+    if (jsonString != null) {
+      final decodedMap = jsonDecode(jsonString);
+      if (decodedMap is Map<String, dynamic>) {
+        return decodedMap.map((key, value) => MapEntry(key, value as bool));
+      }
+    }
+    return {}; // Default value if not found or not valid
+  }
+
+  Widget _jdcard(dynamic cdata, BuildContext context) {
+    // textfilteredlist[index].child('Role').value,
+    // textfilteredlist[index]
+    //     .child('Company Name')
+    //     .value,
+    // textfilteredlist[index].child('Location').value,
+    // textfilteredlist[index]
+    //     .child('Description')
+    //     .value,
+    // textfilteredlist[index].child('Image').value,
+    String info = cdata.child('Job Description').value.toString() ?? 'NA';
+    info = info.length > 80 ? '${info.substring(0, 80)}...Read more' : info;
+
+    // Get the bookmarked status for this job item
+    String str = "${cdata.child('Id').value}";
+    final bool isBookmarked = bookmarkedStatus[str] ?? false;
+
+    void _addToBookmarks(dynamic cdata, bool bookmarkedstatus) async {
+      final User? user = auth.currentUser;
+      if (user != null) {
+        final userDocRef =
+            fstore.FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+        // Fetch the user's document from Firestore
+        final userData = await userDocRef.get();
+
+        // Check if the 'JobsBookmarked' field exists in the document
+        if (userData.exists && userData.data()!.containsKey('JobsBookmarked')) {
+          var jobsBookmarked = userData.get('JobsBookmarked') as List<dynamic>;
+
+          // Check if the job is not already bookmarked
+          String str = "${cdata.child('Id').value}";
+          if (bookmarkedstatus) {
+            // Add the job ID to the list of bookmarked jobs
+
+            jobsBookmarked.add(str);
+          } else {
+            // Remove the job ID from the list of bookmarked jobs
+
+            jobsBookmarked.remove(str);
+          }
+          // Update the 'JobsBookmarked' field in Firestore
+          await userDocRef.update({'JobsBookmarked': jobsBookmarked});
+        } else {
+          // Create the 'JobsBookmarked' field as an empty list if it doesn't exist
+          String str = "${cdata.child('Id').value}";
+          await userDocRef.set({
+            'JobsBookmarked': [str]
+          }, fstore.SetOptions(merge: true));
+        }
+
+        // Save the updated bookmarkedStatus to local storage
+        await saveBookmarkedStatus(bookmarkedStatus);
+      }
+    }
+
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet<void>(
+          backgroundColor: Colors.transparent,
+          context: context,
+          isScrollControlled: true,
+          builder: (BuildContext context) {
+            return Bottomsheet(jobdata: cdata);
+          },
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: const Color(0xffE5E5E5)),
+        child: Row(
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(right: 15),
+              child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: cdata.child('Image').value.toString() != ""
+                      ? NetworkImage(cdata.child('Image').value.toString())
+                      : NetworkImage(
+                          'https://www.searchenginejournal.com/wp-content/uploads/2017/06/shutterstock_268688447.jpg')),
+            ),
+            Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  cdata.child('Profile').value.toString() ?? 'NA',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 18),
+                ),
+                Text(
+                  cdata.child('Company').value.toString() ?? 'NA',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w400, fontSize: 15),
+                ),
+                Text(
+                  cdata.child('Location').value.toString() ?? 'NA',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                      color: Colors.grey),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  info,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 12),
+                )
+              ],
+            )),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      // Toggle the bookmarked status for this item
+                      final bool newBookmarkStatus = !isBookmarked;
+                      String str = "${cdata.child('Id').value}";
+                      bookmarkedStatus[str] = newBookmarkStatus;
+
+                      _addToBookmarks(cdata, newBookmarkStatus);
+                      setState(() {});
+                    },
+                    icon: isBookmarked
+                        ? const Icon(Icons.bookmark)
+                        : const Icon(Icons.bookmark_border)),
+                IconButton(
+                    onPressed: () {
+                      showModalBottomSheet<void>(
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (BuildContext context) {
+                          return Bottomsheet(jobdata: cdata);
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.chevron_right))
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _buttonRow extends StatefulWidget {
   final bool filterapplied;
-  const _buttonRow(this.filterapplied);
+  final void Function(bool)
+      UpdateBookmarkFilter; // Define the callback function
+  final void Function(List<dynamic>) updateTextFilteredList;
+  const _buttonRow(this.filterapplied,
+      {required this.updateTextFilteredList,
+      required this.UpdateBookmarkFilter});
 
   @override
   State<_buttonRow> createState() => _buttonRowState();
 }
 
 class _buttonRowState extends State<_buttonRow> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  bool isBookmarkedFilterActive = false;
+  getbookmarks() async {
+    final User? user = auth.currentUser;
+    if (user != null) {
+      final userDocRef =
+          fstore.FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+      // Fetch the user's document from Firestore
+      final userData = await userDocRef.get();
+
+      List<dynamic> filteredlist = [];
+
+      // Check if the 'JobsBookmarked' field exists in the document
+      if (userData.exists && userData.data()!.containsKey('JobsBookmarked')) {
+        var jobsBookmarked = userData.get('JobsBookmarked') as List<dynamic>;
+
+        for (dynamic e in jobsBookmarked) {
+          //query for each job id
+          int checkid = int.parse(e as String);
+          Query q = FirebaseDatabase.instance
+              .ref()
+              .child('1Qv9Hsn9tDmj1uZ8YyK2YMCyN1-jtVoM-0Udoi9fbHSI')
+              .child('Job Opportunities')
+              .orderByChild('Id')
+              .equalTo(checkid);
+
+          DataSnapshot dataSnapshot = await q.get();
+          filteredlist.addAll(dataSnapshot.children);
+          // for (dynamic e in dataSnapshot.children) {
+          //   filteredlist.add(e.value);
+          // }
+        }
+
+        widget.updateTextFilteredList(filteredlist);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -311,7 +572,14 @@ class _buttonRowState extends State<_buttonRow> {
           ),
         ),
         ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+                isBookmarkedFilterActive = !isBookmarkedFilterActive;
+              });
+              getbookmarks();
+              widget.UpdateBookmarkFilter(
+                  isBookmarkedFilterActive); // Notify the parent widget
+            },
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.white)),
             child: Container(
@@ -358,103 +626,4 @@ class _buttonRowState extends State<_buttonRow> {
       ],
     );
   }
-}
-
-Widget _jdcard(dynamic cdata, BuildContext context) {
-  // textfilteredlist[index].child('Role').value,
-  // textfilteredlist[index]
-  //     .child('Company Name')
-  //     .value,
-  // textfilteredlist[index].child('Location').value,
-  // textfilteredlist[index]
-  //     .child('Description')
-  //     .value,
-  // textfilteredlist[index].child('Image').value,
-  String info = cdata.child('Job Description').value.toString() ?? 'NA';
-  info = info.length > 80 ? '${info.substring(0, 80)}...Read more' : info;
-
-  return GestureDetector(
-    onTap: () {
-      showModalBottomSheet<void>(
-        backgroundColor: Colors.transparent,
-        context: context,
-        isScrollControlled: true,
-        builder: (BuildContext context) {
-          return Bottomsheet(jobdata: cdata);
-        },
-      );
-    },
-    child: Container(
-      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: const Color(0xffE5E5E5)),
-      child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.only(right: 15),
-            child: CircleAvatar(
-                radius: 20,
-                backgroundImage: cdata.child('Image').value.toString() != ""
-                    ? NetworkImage(cdata.child('Image').value.toString())
-                    : NetworkImage(
-                        'https://www.searchenginejournal.com/wp-content/uploads/2017/06/shutterstock_268688447.jpg')),
-          ),
-          Expanded(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                cdata.child('Profile').value.toString() ?? 'NA',
-                style:
-                    const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
-              ),
-              Text(
-                cdata.child('Company').value.toString() ?? 'NA',
-                style:
-                    const TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
-              ),
-              Text(
-                cdata.child('Location').value.toString() ?? 'NA',
-                style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 13,
-                    color: Colors.grey),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                info,
-                style:
-                    const TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
-              )
-            ],
-          )),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    // print('button pressed');
-                  },
-                  icon: const Icon(Icons.bookmark_add_outlined)),
-              IconButton(
-                  onPressed: () {
-                    showModalBottomSheet<void>(
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      isScrollControlled: true,
-                      builder: (BuildContext context) {
-                        return Bottomsheet(jobdata: cdata);
-                      },
-                    );
-                  },
-                  icon: const Icon(Icons.chevron_right))
-            ],
-          )
-        ],
-      ),
-    ),
-  );
 }

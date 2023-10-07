@@ -263,7 +263,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                               ),
                             ),
                             child: GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 if (selectedCardName == null) {
                                   // Show a dialog when no file is selected
                                   showDialog(
@@ -287,11 +287,11 @@ class _BottomsheetState extends State<Bottomsheet> {
                                   );
                                   return; // Exit the function if no file is selected
                                 }
-                                _downloadFileAndFetchPath(
+                                await _downloadFileAndFetchPath(
                                     selectedCardResumeUrl!, selectedCardName!);
 
                                 //now redirect to gmail using some plugin:
-                                sendmail();
+                                await sendmail();
                               },
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
