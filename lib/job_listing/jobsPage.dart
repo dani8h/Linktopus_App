@@ -97,13 +97,13 @@ class Jobs_page extends StatefulWidget {
 
 class _Jobs_pageState extends State<Jobs_page> {
   SortBy? sortType;
-  late bool sortAscending;
+  bool sortAscending = true;
   final TextEditingController _searchController = TextEditingController();
   final ref = FirebaseDatabase.instance.ref();
   List<dynamic> companylist = [];
   List<dynamic> finallist = [];
   List<dynamic> textfilteredlist = [];
-  bool _loading = true;
+  bool loading = true;
   int n = 0;
   final ScrollController _scrollController = ScrollController();
   bool gettingmore = false;
@@ -167,7 +167,7 @@ class _Jobs_pageState extends State<Jobs_page> {
         .orderByKey()
         .startAfter(n.toString())
         .endAt((n + 10).toString());
-    _loading = true;
+    loading = true;
     DataSnapshot dataSnapshot = await q.get();
     companylist.addAll(dataSnapshot.children);
 
@@ -179,7 +179,7 @@ class _Jobs_pageState extends State<Jobs_page> {
     //   print(e.value);
     // }
     setState(() {
-      _loading = false;
+      loading = false;
     });
     applyfilter();
   }
@@ -279,6 +279,8 @@ class _Jobs_pageState extends State<Jobs_page> {
   @override
   void initState() {
     super.initState();
+    sortType = SortBy.idAscending; // Initialize the sort type
+    sortAscending = true; //
     // Load the bookmarkedStatus from local storage
     loadBookmarkedStatus().then((loadedStatus) {
       setState(() {
@@ -405,17 +407,23 @@ class _Jobs_pageState extends State<Jobs_page> {
               const SizedBox(
                 height: 30,
               ),
+
               Expanded(
-                child: companylist.isEmpty
-                    ? const Center(
-                        child: Text('No results found ...'),
+                child: loading
+                    ? Center(
+                        child: CircularProgressIndicator(),
                       )
-                    : ListView.builder(
-                        controller: _scrollController,
-                        itemCount: textfilteredlist.length,
-                        itemBuilder: (BuildContext ctx, int index) {
-                          return _jdcard(textfilteredlist[index], context);
-                        }),
+                    : companylist.isEmpty
+                        ? Center(
+                            child: Text('No results found ...'),
+                          )
+                        : ListView.builder(
+                            controller: _scrollController,
+                            itemCount: textfilteredlist.length,
+                            itemBuilder: (BuildContext ctx, int index) {
+                              return _jdcard(textfilteredlist[index], context);
+                            },
+                          ),
               )
             ],
           ),
@@ -637,7 +645,9 @@ class _buttonRow extends StatefulWidget {
       UpdateBookmarkFilter; // Define the callback function
   final void Function(List<dynamic>) updateTextFilteredList;
   SortBy? sortType;
-  final void Function(SortBy) updateSortOrder; // Callback for sorting
+  final void Function(SortBy) updateSortOrder;
+  bool isBookmarkedFilterActive;
+  // Callback for sorting
   // Add this parameter
 
   _buttonRow(this.filterapplied,
@@ -702,8 +712,11 @@ class _buttonRowState extends State<_buttonRow> {
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.white)),
             onPressed: () {
-              // Call the updateSortOrder function with the sorting type
-              widget.updateSortOrder(SortBy.idAscending);
+              // Ca ll the updateSortOrder function with the sorting type
+
+              setState(() {
+                widget.updateSortOrder(SortBy.idAscending);
+              });
             },
             child: Container(
               child: Row(
@@ -712,9 +725,13 @@ class _buttonRowState extends State<_buttonRow> {
                     'Sort',
                     style: GoogleFonts.poppins(color: Colors.black),
                   ),
-                  const Icon(
-                    Icons.sort,
-                    color: Colors.black,
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.sort,
+                        color: Colors.black,
+                      ),
+                    ],
                   )
                 ],
               ),
@@ -723,11 +740,12 @@ class _buttonRowState extends State<_buttonRow> {
           ElevatedButton(
               onPressed: () {
                 setState(() {
-                  isBookmarkedFilterActive = !isBookmarkedFilterActive;
+                  widget.isBookmarkedFilterActive = !widget
+                      .isBookmarkedFilterActive; // Toggle the bookmarked filter
                 });
                 getbookmarks();
-                widget.UpdateBookmarkFilter(
-                    isBookmarkedFilterActive); // Notify the parent widget
+                widget.UpdateBookmarkFilter(widget
+                    .isBookmarkedFilterActive); // Notify the parent widget
               },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.white)),
@@ -736,12 +754,15 @@ class _buttonRowState extends State<_buttonRow> {
                   children: [
                     Text(
                       'Bookmarked',
-                      style: GoogleFonts.poppins(color: Colors.black),
+                      style: GoogleFonts.poppins(
+                          color: widget.isBookmarkedFilterActive
+                              ? Colors.blue
+                              : Colors.black),
                     ),
-                    const Icon(
+                    Icon(
                       Icons.bookmark_border,
                       color: Colors.pinkAccent,
-                    )
+                    ),
                   ],
                 ),
               )),
