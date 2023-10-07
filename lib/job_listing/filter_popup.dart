@@ -21,7 +21,7 @@ class _JobPopupState extends State<JobPopup> {
     "TCS",
     "Bosch",
     "Hindustan Unilever",
-    "American Tourister"
+    "American Tourister",
   ];
   List<bool> isPressed = [];
   List<String> selectedCompanies = [];

@@ -171,6 +171,13 @@ class _Jobs_pageState extends State<Jobs_page> {
     DataSnapshot dataSnapshot = await q.get();
     companylist.addAll(dataSnapshot.children);
 
+    // Fetch the bookmarked status for each job
+    await fetchBookmarkedJobs();
+    // print('company data , ${DateTime.now()}');
+    // print(companylist.length);
+    // for (dynamic e in companylist) {
+    //   print(e.value);
+    // }
     setState(() {
       _loading = false;
     });
@@ -186,8 +193,8 @@ class _Jobs_pageState extends State<Jobs_page> {
     });
   }
 
-  applyfilter() async {
-    finallist = companylist;
+  applyfilter() {
+    if (isBookmarkFilterActive == false) finallist = companylist;
 
     if (widget.filterapplied) {
       if (widget.myfilter['Companies'] != null &&
@@ -383,10 +390,13 @@ class _Jobs_pageState extends State<Jobs_page> {
               ),
               _buttonRow(
                 widget.filterapplied,
+                isBookmarkedFilterActive: isBookmarkFilterActive,
                 updateTextFilteredList: (list) {
                   setState(() {
-                    textfilteredlist = list;
+                    //textfilteredlist = list;
+                    finallist = list;
                   }); // Pass the callback function
+                  applyfilter();
                 },
                 UpdateBookmarkFilter: UpdateBookmarkFilter,
                 sortType: sortType,
@@ -421,6 +431,35 @@ class _Jobs_pageState extends State<Jobs_page> {
   }
 
   Map<String, bool> bookmarkedStatus = {};
+
+  Future<void> fetchBookmarkedJobs() async {
+    final User? user = auth.currentUser;
+    if (user != null) {
+      final userDocRef =
+          fstore.FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+      // Fetch the user's document from Firestore
+      final userData = await userDocRef.get();
+
+      // Initialize bookmarkedStatus map
+      final Map<String, bool> updatedStatus = {};
+
+      // Check if the 'JobsBookmarked' field exists in the document
+      if (userData.exists && userData.data()!.containsKey('JobsBookmarked')) {
+        var jobsBookmarked = userData.get('JobsBookmarked') as List<dynamic>;
+
+        for (var jobEntry in companylist) {
+          final jobId = jobEntry.child('Id').value.toString();
+          final isBookmarked = jobsBookmarked.contains(jobId);
+          updatedStatus[jobId] = isBookmarked;
+        }
+      }
+
+      setState(() {
+        bookmarkedStatus = updatedStatus;
+      });
+    }
+  }
 
   // Save the bookmarkedStatus to local storage
   Future<void> saveBookmarkedStatus(Map<String, bool> status) async {
@@ -491,7 +530,7 @@ class _Jobs_pageState extends State<Jobs_page> {
             'JobsBookmarked': [str]
           }, fstore.SetOptions(merge: true));
         }
-
+        bookmarkedStatus[str] = bookmarkedstatus;
         // Save the updated bookmarkedStatus to local storage
         await saveBookmarkedStatus(bookmarkedStatus);
       }
@@ -605,7 +644,8 @@ class _buttonRow extends StatefulWidget {
       {required this.updateTextFilteredList,
       required this.UpdateBookmarkFilter,
       required this.sortType,
-      required this.updateSortOrder});
+      required this.updateSortOrder,
+      required this.isBookmarkedFilterActive});
 
   @override
   State<_buttonRow> createState() => _buttonRowState();
@@ -613,7 +653,7 @@ class _buttonRow extends StatefulWidget {
 
 class _buttonRowState extends State<_buttonRow> {
   final FirebaseAuth auth = FirebaseAuth.instance;
-  bool isBookmarkedFilterActive = false;
+  //bool isBookmarkedFilterActive = false;
   getbookmarks() async {
     final User? user = auth.currentUser;
     if (user != null) {
