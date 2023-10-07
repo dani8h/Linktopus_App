@@ -1,3 +1,66 @@
+// Future<void> updateSortOrder(SortBy newSortType) async {
+//   if (sortType == newSortType) {
+//     // Toggle between ascending and descending
+//     sortAscending = !sortAscending;
+//   } else {
+//     sortType = newSortType;
+//     sortAscending = true;
+//   }
+
+//   // Print a message to check if the function is called
+//   print('updateSortOrder called with newSortType: $newSortType');
+
+//   // Reset the pagination
+//   n = 0;
+
+//   // Clear the companylist to prevent duplicates
+//   companylist.clear();
+
+//   // Fetch the data asynchronously
+//   await _getcompanies();
+
+//   // Apply the sorting logic
+//   if (sortType == SortBy.salaryAscending ||
+//       sortType == SortBy.salaryDescending) {
+//     // Sort by Salary
+//     companylist.sort((a, b) {
+//       var salaryA = double.tryParse(a.child('Salary').value.toString()) ?? 0;
+//       var salaryB = double.tryParse(b.child('Salary').value.toString()) ?? 0;
+//       int comparisonResult = sortAscending
+//           ? salaryA.compareTo(salaryB)
+//           : salaryB.compareTo(salaryA);
+
+//       // Print the sorting details
+//       print(
+//           'Sorting by Salary: Salary A: $salaryA, Salary B: $salaryB, Comparison Result: $comparisonResult');
+
+//       return comparisonResult;
+//     });
+//   } else if (sortType == SortBy.idAscending ||
+//       sortType == SortBy.idDescending) {
+//     // Sort by ID
+//     companylist.sort((a, b) {
+//       var idA = int.tryParse(a.child('Id').value.toString()) ?? 0;
+//       var idB = int.tryParse(b.child('Id').value.toString()) ?? 0;
+//       int comparisonResult =
+//           sortAscending ? idA.compareTo(idB) : idB.compareTo(idA);
+
+//       // Print the sorting details
+//       print(
+//           'Sorting by ID: ID A: $idA, ID B: $idB, Comparison Result: $comparisonResult');
+//       print(companylist.length);
+
+//       return comparisonResult;
+//     });
+//   }
+
+//   // Apply any filters
+//   applyfilter();
+
+//   // Refresh the UI after sorting and filtering
+//   setState(() {});
+// }
+
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart' as fstore;
@@ -13,8 +76,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'filter_popup.dart';
 import 'bottom_sheet.dart';
 
+enum SortBy {
+  idAscending,
+  idDescending,
+}
+
 class Jobs_page extends StatefulWidget {
   bool filterapplied = false;
+
   Map<String, dynamic> myfilter = {};
   Jobs_page([Map<String, dynamic>? filter]) {
     if (filter != null) {
@@ -27,6 +96,8 @@ class Jobs_page extends StatefulWidget {
 }
 
 class _Jobs_pageState extends State<Jobs_page> {
+  SortBy? sortType;
+  late bool sortAscending;
   final TextEditingController _searchController = TextEditingController();
   final ref = FirebaseDatabase.instance.ref();
   List<dynamic> companylist = [];
@@ -45,6 +116,33 @@ class _Jobs_pageState extends State<Jobs_page> {
     setState(() {
       isBookmarkFilterActive = isActive;
     });
+  }
+
+  void updateSortOrder(SortBy newSortType) {
+    if (sortType == newSortType) {
+      // Toggle between ascending and descending
+      sortAscending = !sortAscending;
+    } else {
+      sortType = newSortType;
+      sortAscending =
+          true; // Default to ascending order when a new sorting type is selected
+    }
+
+    // Perform the sorting here
+    if (sortType == SortBy.idAscending || sortType == SortBy.idDescending) {
+      // Sort by ID
+      companylist.sort((a, b) {
+        var idA = int.tryParse(a.child('Id').value.toString()) ?? 0;
+        var idB = int.tryParse(b.child('Id').value.toString()) ?? 0;
+        int comparisonResult =
+            sortAscending ? idA.compareTo(idB) : idB.compareTo(idA);
+        return comparisonResult;
+      });
+
+      // Update the UI by calling applyfilter() and setState()
+      applyfilter();
+      setState(() {});
+    }
   }
 
   Future<void> inputData() async {
@@ -72,11 +170,7 @@ class _Jobs_pageState extends State<Jobs_page> {
     _loading = true;
     DataSnapshot dataSnapshot = await q.get();
     companylist.addAll(dataSnapshot.children);
-    // print('company data , ${DateTime.now()}');
-    // print(companylist.length);
-    // for (dynamic e in companylist) {
-    //   print(e.value);
-    // }
+
     setState(() {
       _loading = false;
     });
@@ -92,7 +186,7 @@ class _Jobs_pageState extends State<Jobs_page> {
     });
   }
 
-  applyfilter() {
+  applyfilter() async {
     finallist = companylist;
 
     if (widget.filterapplied) {
@@ -155,7 +249,9 @@ class _Jobs_pageState extends State<Jobs_page> {
         print(e.value);
       }
     }
-    textfilteredlist = finallist;
+    textfilteredlist = finallist.toSet().toList();
+
+    textfilteredlist.toSet().toList();
   }
 
   void textFilter(String t) {
@@ -293,6 +389,8 @@ class _Jobs_pageState extends State<Jobs_page> {
                   }); // Pass the callback function
                 },
                 UpdateBookmarkFilter: UpdateBookmarkFilter,
+                sortType: sortType,
+                updateSortOrder: updateSortOrder,
               ),
               const SizedBox(
                 height: 30,
@@ -499,9 +597,15 @@ class _buttonRow extends StatefulWidget {
   final void Function(bool)
       UpdateBookmarkFilter; // Define the callback function
   final void Function(List<dynamic>) updateTextFilteredList;
-  const _buttonRow(this.filterapplied,
+  SortBy? sortType;
+  final void Function(SortBy) updateSortOrder; // Callback for sorting
+  // Add this parameter
+
+  _buttonRow(this.filterapplied,
       {required this.updateTextFilteredList,
-      required this.UpdateBookmarkFilter});
+      required this.UpdateBookmarkFilter,
+      required this.sortType,
+      required this.updateSortOrder});
 
   @override
   State<_buttonRow> createState() => _buttonRowState();
@@ -549,81 +653,88 @@ class _buttonRowState extends State<_buttonRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        ElevatedButton(
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.white)),
-          onPressed: () {},
-          child: Container(
-            child: Row(
-              children: [
-                Text(
-                  'Sort',
-                  style: GoogleFonts.poppins(color: Colors.black),
-                ),
-                const Icon(
-                  Icons.sort,
-                  color: Colors.black,
-                )
-              ],
-            ),
-          ),
-        ),
-        ElevatedButton(
-            onPressed: () {
-              setState(() {
-                isBookmarkedFilterActive = !isBookmarkedFilterActive;
-              });
-              getbookmarks();
-              widget.UpdateBookmarkFilter(
-                  isBookmarkedFilterActive); // Notify the parent widget
-            },
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.white)),
+            onPressed: () {
+              // Call the updateSortOrder function with the sorting type
+              widget.updateSortOrder(SortBy.idAscending);
+            },
             child: Container(
               child: Row(
                 children: [
                   Text(
-                    'Bookmarked',
+                    'Sort',
                     style: GoogleFonts.poppins(color: Colors.black),
                   ),
                   const Icon(
-                    Icons.bookmark_border,
-                    color: Colors.pinkAccent,
+                    Icons.sort,
+                    color: Colors.black,
                   )
                 ],
               ),
-            )),
-        ElevatedButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return const JobPopup();
-                },
-              );
-            },
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.white)),
-            child: Container(
-              child: Row(
-                children: [
-                  Text(
-                    'Filter',
-                    style: GoogleFonts.poppins(
-                        color:
-                            widget.filterapplied ? Colors.blue : Colors.black),
-                  ),
-                  Icon(
-                    Icons.filter_alt_outlined,
-                    color: widget.filterapplied ? Colors.blue : Colors.black,
-                  )
-                ],
-              ),
-            )),
-      ],
+            ),
+          ),
+          ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  isBookmarkedFilterActive = !isBookmarkedFilterActive;
+                });
+                getbookmarks();
+                widget.UpdateBookmarkFilter(
+                    isBookmarkedFilterActive); // Notify the parent widget
+              },
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white)),
+              child: Container(
+                child: Row(
+                  children: [
+                    Text(
+                      'Bookmarked',
+                      style: GoogleFonts.poppins(color: Colors.black),
+                    ),
+                    const Icon(
+                      Icons.bookmark_border,
+                      color: Colors.pinkAccent,
+                    )
+                  ],
+                ),
+              )),
+          ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const JobPopup();
+                  },
+                );
+              },
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white)),
+              child: Container(
+                child: Row(
+                  children: [
+                    Text(
+                      'Filter',
+                      style: GoogleFonts.poppins(
+                          color: widget.filterapplied
+                              ? Colors.blue
+                              : Colors.black),
+                    ),
+                    Icon(
+                      Icons.filter_alt_outlined,
+                      color: widget.filterapplied ? Colors.blue : Colors.black,
+                    )
+                  ],
+                ),
+              )),
+        ],
+      ),
     );
   }
 }

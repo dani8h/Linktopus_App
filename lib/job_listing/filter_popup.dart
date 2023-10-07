@@ -252,7 +252,7 @@ class _JobPopupState extends State<JobPopup> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          top: 15, bottom: 15, left: 20, right: 20),
+                          top: 40, bottom: 15, left: 20, right: 20),
                       child: Text(
                         'Apply',
                         style: TextStyle(
