@@ -389,7 +389,7 @@ class _Jobs_pageState extends State<Jobs_page> {
                 ),
               ),
               _buttonRow(
-                widget.filterapplied,
+                widget.myfilter.length != 0 ? widget.filterapplied : false,
                 isBookmarkedFilterActive: isBookmarkFilterActive,
                 updateTextFilteredList: (list) {
                   setState(() {
