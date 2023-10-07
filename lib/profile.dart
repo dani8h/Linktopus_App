@@ -804,49 +804,6 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                     Container(
-                      // group167ua (40:7643)
-                      padding: EdgeInsets.fromLTRB(
-                          18 * fem, 12 * fem, 18 * fem, 10 * fem),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xffa8a8a8)),
-                        color: const Color(0xff0a66c2),
-                        borderRadius: BorderRadius.circular(8 * fem),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            // vectorDxc (40:7640)
-                            margin: EdgeInsets.fromLTRB(
-                                0 * fem, 0 * fem, 0 * fem, 1 * fem),
-                            width: 20 * fem,
-                            height: 20 * fem,
-                            child: Icon(Icons.person,
-                                color: const Color(0xffffffff), size: 25 * fem),
-                          ),
-                          Text(
-                            // attachlinkedinprofile9bN (40:7641)
-                            'Attach LinkedIn Profile',
-                            style: GoogleFonts.poppins(
-                              fontSize: 15 * ffem,
-                              fontWeight: FontWeight.w500,
-                              height: 1.5 * ffem / fem,
-                              color: const Color(0xffffffff),
-                            ),
-                          ),
-                          Container(
-                            width: 1 * fem,
-                            height: 1 * fem,
-                            color: Colors.transparent,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(
-                          18 * fem, 27 * fem, 19 * fem, 0 * fem),
                       width: double.infinity,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,

@@ -566,7 +566,7 @@ class _BottomsheetState extends State<Bottomsheet> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("Upload file?"),
-            content: Text("Do you want to upload $fileName?"),
+            content: Text("Do you wanna Apply to the Job with $fileName?"),
             actions: <Widget>[
               TextButton(
                 child: const Text("No"),
@@ -574,8 +574,8 @@ class _BottomsheetState extends State<Bottomsheet> {
               ),
               TextButton(
                   child: const Text("Yes"),
-                  onPressed: () {
-                    sendmail();
+                  onPressed: () async {
+                    await sendmail();
                     Navigator.of(context).pop(true);
                   }),
             ],
