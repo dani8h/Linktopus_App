@@ -46,10 +46,12 @@ class MyApp extends StatelessWidget {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     if (uid == null) {
       return MaterialApp(
-          color: Colors.white,
-          title: 'Flutter Demo',
-          theme: themeData,
-          home: EmailSignin());
+        color: Colors.white,
+        title: 'Flutter Demo',
+        theme: themeData,
+        // home: EmailSignin(),
+        home: const GetStarted(),
+      );
     } else {
       return FutureBuilder(
           future: users.doc(uid).get(),

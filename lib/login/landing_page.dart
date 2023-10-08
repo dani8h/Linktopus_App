@@ -52,6 +52,7 @@ class _Landing_PageState extends State<Landing_Page> {
                     },
                     child: Card(
                       elevation: 10,
+                      margin: EdgeInsets.only(left: 20, right: 20),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(9.03)),
                       child: Padding(
@@ -88,6 +89,7 @@ class _Landing_PageState extends State<Landing_Page> {
                             builder: (context) => const EmailSignup())),
                     child: Card(
                       elevation: 10,
+                      margin: EdgeInsets.only(left: 20, right: 20),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(9.03)),
                       child: Padding(
@@ -120,6 +122,7 @@ class _Landing_PageState extends State<Landing_Page> {
                   GestureDetector(
                     child: Card(
                       elevation: 10,
+                      margin: EdgeInsets.only(left: 20, right: 20),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(9.03)),
                       child: Padding(
@@ -167,7 +170,8 @@ class _Landing_PageState extends State<Landing_Page> {
                               builder: (context) => const OtpPage()));
                     },
                     child: Card(
-                      elevation: 6,
+                      elevation: 10,
+                      margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(9.03)),
                       child: Padding(
