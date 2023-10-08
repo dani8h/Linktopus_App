@@ -71,6 +71,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/SignUp/googlesignin.dart';
+import 'package:linktopus_app/SplashScreen/getstarted.dart';
 import 'package:linktopus_app/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'filter_popup.dart';
@@ -435,7 +436,11 @@ class _Jobs_pageState extends State<Jobs_page> {
   signout() async {
     await auth.signOut();
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const EmailSignin()));
+        context,
+        MaterialPageRoute(
+          //builder: (context) => const EmailSignin(),
+          builder: (context) => const GetStarted(),
+        ));
   }
 
   Map<String, bool> bookmarkedStatus = {};
