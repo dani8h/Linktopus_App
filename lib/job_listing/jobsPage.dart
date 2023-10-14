@@ -195,7 +195,7 @@ class _Jobs_pageState extends State<Jobs_page> {
     });
   }
 
-  applyfilter() {
+  applyfilter() async {
     if (isBookmarkFilterActive == false) finallist = companylist;
 
     if (widget.filterapplied) {
@@ -252,22 +252,61 @@ class _Jobs_pageState extends State<Jobs_page> {
           }
         }).toList();
       }
-      // if (widget.myfilter['Dist lower range'] != null &&
-      //     widget.myfilter['Dist lower range'] != 0) {
-      //   double lowerRange = widget.myfilter['Dist lower range'];
-      //   Position currentPosition = await Geolocator.getCurrentPosition();
-      //   finallist = finallist.where((element) {
-      //     try {
-      //       dynamic location = double.parse(element.child('Location').value);
-      //       double distance = 0.0;
-      //       return distance >= lowerRange;
-      //     } catch (e) {
-      //       if (element.child('Location').value == null ||
-      //           element.child('Location').value == '') return true;
-      //       return false;
-      //     }
-      //   }).toList();
-      // }
+      if (widget.myfilter['Dist lower range'] != null &&
+          widget.myfilter['Dist lower range'] != 0) {
+        double lowerRange = widget.myfilter['Dist lower range'];
+        Position currentPosition = await Geolocator.getCurrentPosition();
+        finallist = finallist.where((element) {
+          try {
+            String locationStr = element.child('Location').value;
+            List<String> locationParts =
+                locationStr.split(','); // Assuming it's comma-separated
+            double latitude = double.parse(locationParts[0]);
+            double longitude = double.parse(locationParts[1]);
+
+            // Calculate the distance
+            double distance = Geolocator.distanceBetween(
+              currentPosition.latitude,
+              currentPosition.longitude,
+              latitude,
+              longitude,
+            );
+            return distance >= lowerRange;
+          } catch (e) {
+            if (element.child('Location').value == null ||
+                element.child('Location').value == '') return true;
+            return false;
+          }
+        }).toList();
+      }
+
+      if (widget.myfilter['Dist upper range'] != null &&
+          widget.myfilter['Dist upper range'] != 0) {
+        double upperRange = widget.myfilter['Dist upper range'];
+        Position currentPosition = await Geolocator.getCurrentPosition();
+        finallist = finallist.where((element) {
+          try {
+            String locationStr = element.child('Location').value;
+            List<String> locationParts =
+                locationStr.split(','); // Assuming it's comma-separated
+            double latitude = double.parse(locationParts[0]);
+            double longitude = double.parse(locationParts[1]);
+
+            // Calculate the distance
+            double distance = Geolocator.distanceBetween(
+              currentPosition.latitude,
+              currentPosition.longitude,
+              latitude,
+              longitude,
+            );
+            return distance <= upperRange;
+          } catch (e) {
+            if (element.child('Location').value == null ||
+                element.child('Location').value == '') return true;
+            return false;
+          }
+        }).toList();
+      }
 
       print("filtered companies: ");
       for (dynamic e in finallist) {
@@ -279,34 +318,18 @@ class _Jobs_pageState extends State<Jobs_page> {
     textfilteredlist.toSet().toList();
   }
 
-  bool mycheck(dynamic element, String t) {
-    bool a;
-    bool b;
-    element
-            .child('Profile')
-            .value
-            .toString()
-            .toLowerCase()
-            .contains(t.toLowerCase())
-        ? a = true
-        : a = false;
-    element
-            .child('Company')
-            .value
-            .toString()
-            .toLowerCase()
-            .contains(t.toLowerCase())
-        ? b = true
-        : b = false;
-    return a || b;
-  }
-
   void textFilter(String t) {
     if (t.isEmpty) {
       textfilteredlist = finallist;
     } else {
-      textfilteredlist =
-          finallist.where((element) => mycheck(element, t)).toList();
+      textfilteredlist = finallist
+          .where((element) => element
+              .child('Profile')
+              .value
+              .toString()
+              .toLowerCase()
+              .contains(t.toLowerCase()))
+          .toList();
     }
   }
 
