@@ -27,6 +27,7 @@ class _JobPopupState extends State<JobPopup> {
   List<String> selectedCompanies = [];
   final TextEditingController searchController = TextEditingController();
   RangeValues selectedRangeValues = const RangeValues(100000, 4000000);
+  RangeValues selectedDistanceRange = const RangeValues(0, 100);
   Map<String, dynamic> res = {};
   @override
   void initState() {
@@ -70,29 +71,13 @@ class _JobPopupState extends State<JobPopup> {
               const SizedBox(height: 8.0),
               Divider(color: Colors.grey.shade800),
               const SizedBox(height: 16.0),
-              Row(
-                children: [
-                  Text(
-                    'Location',
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.052,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Poppins',
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Distance',
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.052,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Poppins',
-                      color: const Color(0xffABABAB),
-                    ),
-                  ),
-                ],
+              Text(
+                'Location',
+                style: TextStyle(
+                  fontSize: screenWidth * 0.052,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Poppins',
+                ),
               ),
               const SizedBox(height: 20.0),
               TextField(
@@ -213,6 +198,66 @@ class _JobPopupState extends State<JobPopup> {
                 ),
               ),
               const SizedBox(height: 10.0),
+              Text(
+                'Distance (in Km)',
+                style: TextStyle(
+                  fontSize: screenWidth * 0.052,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Poppins',
+                ),
+              ),
+              const SizedBox(height: 8.0),
+              SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  activeTrackColor: const Color(0xffEF5DA8),
+                  inactiveTrackColor: Colors.white,
+                  thumbColor: Colors.white,
+                  overlayColor: const Color(0xffEF5DA8),
+                  thumbShape:
+                      const RoundSliderThumbShape(enabledThumbRadius: 10.0),
+                  overlayShape:
+                      const RoundSliderOverlayShape(overlayRadius: 20.0),
+                  valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
+                  valueIndicatorColor: const Color(0xffEF5DA8),
+                  valueIndicatorTextStyle: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    RangeSlider(
+                      values: selectedDistanceRange,
+                      min: 0,
+                      max: 100,
+                      divisions: 10,
+                      labels: RangeLabels(
+                        selectedDistanceRange.start.toString(),
+                        selectedDistanceRange.end.toString(),
+                      ),
+                      onChanged: (RangeValues values) {
+                        setState(() {
+                          selectedDistanceRange = values;
+                        });
+                      },
+                    ),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '0',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        Text(
+                          '100+',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10.0),
               Align(
                 alignment: Alignment.center,
                 child: GestureDetector(
@@ -222,6 +267,8 @@ class _JobPopupState extends State<JobPopup> {
                     res['upper range'] = selectedRangeValues.end;
                     res['lower range'] = selectedRangeValues.start;
                     res['Companies'] = selectedCompanies;
+                    res['Dist upper range']= selectedDistanceRange.start;
+                    res['Dist lower range']= selectedDistanceRange.end;
                     print("Res : ");
                     print(res);
                     Navigator.push(

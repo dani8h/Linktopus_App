@@ -69,6 +69,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/SignUp/googlesignin.dart';
 import 'package:linktopus_app/SplashScreen/getstarted.dart';
@@ -251,6 +252,22 @@ class _Jobs_pageState extends State<Jobs_page> {
           }
         }).toList();
       }
+      // if (widget.myfilter['Dist lower range'] != null &&
+      //     widget.myfilter['Dist lower range'] != 0) {
+      //   double lowerRange = widget.myfilter['Dist lower range'];
+      //   Position currentPosition = await Geolocator.getCurrentPosition();
+      //   finallist = finallist.where((element) {
+      //     try {
+      //       dynamic location = double.parse(element.child('Location').value);
+      //       double distance = 0.0;
+      //       return distance >= lowerRange;
+      //     } catch (e) {
+      //       if (element.child('Location').value == null ||
+      //           element.child('Location').value == '') return true;
+      //       return false;
+      //     }
+      //   }).toList();
+      // }
 
       print("filtered companies: ");
       for (dynamic e in finallist) {
@@ -319,114 +336,154 @@ class _Jobs_pageState extends State<Jobs_page> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Profile(),
-                        ),
-                      );
+    return WillPopScope(
+      onWillPop: () async {
+        if (auth.currentUser != null) {
+          return await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Confirm Exit"),
+                content: Text("Do you want to exit the app?"),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text("No"),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
                     },
-                    child: CircleAvatar(
-                        radius: 25,
-                        backgroundImage: ImgUrl == null
-                            ? const AssetImage('assets/images/profilepic.jpg')
-                            : NetworkImage(ImgUrl!) as ImageProvider),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      signout();
+                  TextButton(
+                    child: Text("Yes"),
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
                     },
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(color: const Color(0xff4f4f4f))),
-                      child: const Icon(
-                        Icons.logout,
-                        color: Color(0xff4f4f4f),
-                      ),
-                    ),
-                  )
+                  ),
                 ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Job listings',
-                  style: GoogleFonts.poppins(
-                      fontSize: 25, fontWeight: FontWeight.w700),
+              );
+            },
+          );
+        } else {
+          // If not logged in, handle the back button press as needed
+          // For example, you can navigate to the login page:
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const GetStarted(),
+            ),
+          );
+          return false; // Return false to prevent the back button from exiting the app
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Profile(),
+                          ),
+                        );
+                      },
+                      child: CircleAvatar(
+                          radius: 25,
+                          backgroundImage: ImgUrl == null
+                              ? const AssetImage('assets/images/profilepic.jpg')
+                              : NetworkImage(ImgUrl!) as ImageProvider),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        signout();
+                      },
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            border: Border.all(color: const Color(0xff4f4f4f))),
+                        child: const Icon(
+                          Icons.logout,
+                          color: Color(0xff4f4f4f),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              ),
-              //search bar
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: Center(
-                  child: CupertinoSearchTextField(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 10),
-                    controller: _searchController,
-                    placeholder: 'Search',
-                    onChanged: (value) => textFilter(value),
-                    // onSubmitted: (String s) {
-                    //   print("string searched ${s}");
-                    // },
+                const SizedBox(
+                  height: 20,
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Job listings',
+                    style: GoogleFonts.poppins(
+                        fontSize: 25, fontWeight: FontWeight.w700),
                   ),
                 ),
-              ),
-              _buttonRow(
-                widget.myfilter.length != 0 ? widget.filterapplied : false,
-                isBookmarkedFilterActive: isBookmarkFilterActive,
-                updateTextFilteredList: (list) {
-                  setState(() {
-                    //textfilteredlist = list;
-                    finallist = list;
-                  }); // Pass the callback function
-                  applyfilter();
-                },
-                UpdateBookmarkFilter: UpdateBookmarkFilter,
-                sortType: sortType,
-                updateSortOrder: updateSortOrder,
-              ),
-              const SizedBox(
-                height: 30,
-              ),
+                //search bar
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                  child: Center(
+                    child: CupertinoSearchTextField(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 10),
+                      controller: _searchController,
+                      placeholder: 'Search',
+                      onChanged: (value) => textFilter(value),
+                      // onSubmitted: (String s) {
+                      //   print("string searched ${s}");
+                      // },
+                    ),
+                  ),
+                ),
+                _buttonRow(
+                  widget.myfilter.length != 0 ? widget.filterapplied : false,
+                  isBookmarkedFilterActive: isBookmarkFilterActive,
+                  updateTextFilteredList: (list) {
+                    setState(() {
+                      //textfilteredlist = list;
+                      finallist = list;
+                    }); // Pass the callback function
+                    applyfilter();
+                  },
+                  UpdateBookmarkFilter: UpdateBookmarkFilter,
+                  sortType: sortType,
+                  updateSortOrder: updateSortOrder,
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
 
-              Expanded(
-                child: loading
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : companylist.isEmpty
-                        ? Center(
-                            child: Text('No results found ...'),
-                          )
-                        : ListView.builder(
-                            controller: _scrollController,
-                            itemCount: textfilteredlist.length,
-                            itemBuilder: (BuildContext ctx, int index) {
-                              return _jdcard(textfilteredlist[index], context);
-                            },
-                          ),
-              )
-            ],
+                Expanded(
+                  child: loading
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : companylist.isEmpty
+                          ? Center(
+                              child: Text('No results found ...'),
+                            )
+                          : ListView.builder(
+                              controller: _scrollController,
+                              itemCount: textfilteredlist.length,
+                              itemBuilder: (BuildContext ctx, int index) {
+                                return _jdcard(
+                                    textfilteredlist[index], context);
+                              },
+                            ),
+                )
+              ],
+            ),
           ),
         ),
       ),
