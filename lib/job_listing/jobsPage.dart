@@ -262,18 +262,34 @@ class _Jobs_pageState extends State<Jobs_page> {
     textfilteredlist.toSet().toList();
   }
 
+  bool mycheck(dynamic element, String t) {
+    bool a;
+    bool b;
+    element
+            .child('Profile')
+            .value
+            .toString()
+            .toLowerCase()
+            .contains(t.toLowerCase())
+        ? a = true
+        : a = false;
+    element
+            .child('Company')
+            .value
+            .toString()
+            .toLowerCase()
+            .contains(t.toLowerCase())
+        ? b = true
+        : b = false;
+    return a || b;
+  }
+
   void textFilter(String t) {
     if (t.isEmpty) {
       textfilteredlist = finallist;
     } else {
-      textfilteredlist = finallist
-          .where((element) => element
-              .child('Profile')
-              .value
-              .toString()
-              .toLowerCase()
-              .contains(t.toLowerCase()))
-          .toList();
+      textfilteredlist =
+          finallist.where((element) => mycheck(element, t)).toList();
     }
   }
 
