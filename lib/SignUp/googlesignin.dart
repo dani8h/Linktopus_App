@@ -52,10 +52,10 @@ class _EmailSigninState extends State<EmailSignin> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Image.asset(
-                        'assets/images/LinktopusLogo.png',
-                        width: 180 * fem,
-                        height: 180 * fem,
+                      SvgPicture.asset(
+                        'assets/images/2.svg',
+                        width: 160 * fem,
+                        height: 160 * fem,
                         fit: BoxFit.cover,
                       ),
                       Container(

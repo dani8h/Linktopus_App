@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     if (uid == null) {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         color: Colors.white,
         title: 'Flutter Demo',
         theme: themeData,
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
                   home: Profile());
             } else {
               return MaterialApp(
+                  debugShowCheckedModeBanner: false,
                   color: Colors.white,
                   title: 'Flutter Demo',
                   theme: themeData,
