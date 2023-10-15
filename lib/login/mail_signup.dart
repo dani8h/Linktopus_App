@@ -113,7 +113,7 @@ class _EmailSignupState extends State<EmailSignup> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SvgPicture.asset(
-                          'assets/images/Linktopus colored.svg',
+                          'assets/images/2.svg',
                           width: 120 * fem,
                           height: 120 * fem,
                           fit: BoxFit.cover,

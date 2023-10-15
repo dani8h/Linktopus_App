@@ -28,12 +28,13 @@ class _Landing_PageState extends State<Landing_Page> {
               color: const Color(0xffffffff),
             ),
             Positioned(
-              top: -65,
+              top: 48,
               left: 0,
               right: 0,
-              child: Image.asset(
-                "assets/images/LinktopusLogo.png",
-
+              child: SvgPicture.asset(
+                'assets/images/2.svg',
+                width: width * 0.23,
+                height: height * 0.23,
                 //height: 20,
               ),
             ),

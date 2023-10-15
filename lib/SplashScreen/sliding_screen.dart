@@ -297,8 +297,8 @@ class _SlidingScreenState extends State<SlidingScreen> {
                 bottom: height * 0.83,
                 left: 0,
                 right: 0,
-                child: SvgPicture.asset(
-                  'assets/images/Linktopus white.svg',
+                child: Image.asset(
+                  'assets/images/Logo_white.png',
                   height: height * 0.1,
                 ))
           ],
