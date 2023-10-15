@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:linktopus_app/job_listing/jobsPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../profile.dart';
 
 class AuthService {
@@ -55,10 +56,32 @@ class AuthService {
           MaterialPageRoute(builder: (context) => const Profile()),
         );
       } else {
+        // Set SharedPreferences to indicate that the user is logged in
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('isLoggedIn', true);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Jobs_page()),
         );
+        if (prefs.getBool('isLoggedIn') == true) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Welcome Back ${user.displayName}!"),
+                content: Text("You are logged in."),
+                actions: <Widget>[
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Close"),
+                  ),
+                ],
+              );
+            },
+          );
+        }
       }
 
       return user;
