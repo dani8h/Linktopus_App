@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:linktopus_app/SignUp/googlesignin.dart';
@@ -20,7 +21,8 @@ class _EmailSignupState extends State<EmailSignup> {
 
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   String? _validateConfirmPassword(String? value) {
     if (value != _passwordController.text) {
@@ -110,10 +112,10 @@ class _EmailSignupState extends State<EmailSignup> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Image.asset(
-                          'assets/images/Linktopus_app.png',
-                          width: 180 * fem,
-                          height: 180 * fem,
+                        SvgPicture.asset(
+                          'assets/images/Linktopus colored.svg',
+                          width: 120 * fem,
+                          height: 120 * fem,
                           fit: BoxFit.cover,
                         ),
                         Container(

@@ -758,6 +758,9 @@ class _buttonRowState extends State<_buttonRow> {
               ),
             ),
           ),
+          SizedBox(
+            width: 10,
+          ),
           ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -787,6 +790,9 @@ class _buttonRowState extends State<_buttonRow> {
                   ],
                 ),
               )),
+          SizedBox(
+            width: 10,
+          ),
           ElevatedButton(
               onPressed: () {
                 showDialog(
