@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linktopus_app/login/landing_page.dart';
 
@@ -52,7 +53,7 @@ class _EmailSigninState extends State<EmailSignin> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Image.asset(
-                        'assets/images/Linktopus_app.png',
+                        'assets/images/LinktopusLogo.png',
                         width: 180 * fem,
                         height: 180 * fem,
                         fit: BoxFit.cover,
@@ -62,7 +63,7 @@ class _EmailSigninState extends State<EmailSignin> {
                         margin: EdgeInsets.fromLTRB(
                             1 * fem, 0 * fem, 0 * fem, 49 * fem),
                         child: Text(
-                          'Sign in with Google',
+                          'Sign in with Email',
                           textAlign: TextAlign.center,
                           style: GoogleFonts.inter(
                             fontSize: 18 * ffem,

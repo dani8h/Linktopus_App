@@ -30,8 +30,8 @@ class GetStarted extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(
-                  'assets/images/Logo_white.png',
+                SvgPicture.asset(
+                  'assets/images/Linktopus white.svg',
                   height: size.height * 0.1,
                   width: size.width * 0.35,
                 ),

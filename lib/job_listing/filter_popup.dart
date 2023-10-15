@@ -83,15 +83,6 @@ class _JobPopupState extends State<JobPopup> {
                   const SizedBox(
                     width: 10,
                   ),
-                  Text(
-                    'Distance',
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.052,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Poppins',
-                      color: const Color(0xffABABAB),
-                    ),
-                  ),
                 ],
               ),
               const SizedBox(height: 20.0),
