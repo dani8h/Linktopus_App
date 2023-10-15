@@ -32,6 +32,7 @@ class GetStarted extends StatelessWidget {
               children: [
                 Image.asset(
                   'assets/images/Logo_white.png',
+                  // 'assets/images/Linktopus_logo.png
                   height: size.height * 0.1,
                   width: size.width * 0.35,
                 ),

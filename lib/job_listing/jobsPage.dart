@@ -255,23 +255,36 @@ class _Jobs_pageState extends State<Jobs_page> {
       if (widget.myfilter['Dist lower range'] != null &&
           widget.myfilter['Dist lower range'] != 0) {
         double lowerRange = widget.myfilter['Dist lower range'];
+        LocationPermission permission = await Geolocator.requestPermission();
         Position currentPosition = await Geolocator.getCurrentPosition();
+        print("curr pos : ");
+        print(currentPosition);
         finallist = finallist.where((element) {
           try {
-            String locationStr = element.child('Location').value;
-            List<String> locationParts =
-                locationStr.split(','); // Assuming it's comma-separated
-            double latitude = double.parse(locationParts[0]);
-            double longitude = double.parse(locationParts[1]);
+            String locationStr = element.child('Location').toString();
+            if (locationStr.isNotEmpty) {
+              Map<String, dynamic> locationData =
+                  element.child('Location').value;
+              double latitude = locationData['_latitude'];
+              double longitude = locationData['_longitude'];
+              // Now, you have the latitude and longitude values for the location.
+              double distance = Geolocator.distanceBetween(
+                currentPosition.latitude,
+                currentPosition.longitude,
+                latitude,
+                longitude,
+              );
+              print("distance");
+              print(distance);
+              return distance >= lowerRange;
+            }
+            return false;
+            // List<String> locationParts =
+            //     locationStr.split(','); // Assuming it's comma-separated
+            // double latitude = double.parse(locationParts[0]);
+            // double longitude = double.parse(locationParts[1]);
 
             // Calculate the distance
-            double distance = Geolocator.distanceBetween(
-              currentPosition.latitude,
-              currentPosition.longitude,
-              latitude,
-              longitude,
-            );
-            return distance >= lowerRange;
           } catch (e) {
             if (element.child('Location').value == null ||
                 element.child('Location').value == '') return true;
@@ -333,9 +346,35 @@ class _Jobs_pageState extends State<Jobs_page> {
     }
   }
 
+  Future<void> checkUserLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    String userName = prefs.getString('userName') ?? '';
+    if (isLoggedIn) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Welcome Back ${userName}!"),
+            content: Text("You are logged in."),
+            actions: <Widget>[
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("Close"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    //checkUserLoginStatus();
     sortType = SortBy.idAscending; // Initialize the sort type
     sortAscending = true; //
     // Load the bookmarkedStatus from local storage
@@ -531,6 +570,8 @@ class _Jobs_pageState extends State<Jobs_page> {
 
   signout() async {
     await auth.signOut();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', false);
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -838,6 +879,9 @@ class _buttonRowState extends State<_buttonRow> {
               ),
             ),
           ),
+          SizedBox(
+            width: 10,
+          ),
           ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -867,6 +911,9 @@ class _buttonRowState extends State<_buttonRow> {
                   ],
                 ),
               )),
+          SizedBox(
+            width: 10,
+          ),
           ElevatedButton(
               onPressed: () {
                 showDialog(

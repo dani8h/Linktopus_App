@@ -267,8 +267,8 @@ class _JobPopupState extends State<JobPopup> {
                     res['upper range'] = selectedRangeValues.end;
                     res['lower range'] = selectedRangeValues.start;
                     res['Companies'] = selectedCompanies;
-                    res['Dist upper range']= selectedDistanceRange.start;
-                    res['Dist lower range']= selectedDistanceRange.end;
+                    res['Dist upper range'] = selectedDistanceRange.start;
+                    res['Dist lower range'] = selectedDistanceRange.end;
                     print("Res : ");
                     print(res);
                     Navigator.push(

@@ -294,10 +294,13 @@ class _SlidingScreenState extends State<SlidingScreen> {
               child: _buildPageIndicators(),
             ),
             Positioned(
-                bottom: height * 0.671,
+                bottom: height * 0.83,
                 left: 0,
                 right: 0,
-                child: Image.asset('assets/images/Logo_white.png'))
+                child: Image.asset(
+                  'assets/images/Logo_white.png',
+                  height: height * 0.1,
+                ))
           ],
         ),
       ),
