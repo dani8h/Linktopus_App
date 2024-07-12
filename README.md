@@ -1,16 +1,12 @@
-# linktopus_app
+Linktopus App.
 
-A new Flutter project.
+A cross platform app which will allow users to find their dream jobs.
 
-## Getting Started
+Contains various features like:
+1. searching, sorting and filter jobs.
+2. creating profile which will help in faster application.
+3. resume autoupload which applying for jobs.
 
-This project is a starting point for a Flutter application.
+Application of various techniques like autoupdating script for jobs, lazy loading from scratch and many OOPS related methods used.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Update: DB has been deactivated so incase someone wants to initialise will have to create and setup their own db connections.
